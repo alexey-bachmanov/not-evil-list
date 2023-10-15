@@ -22,40 +22,17 @@ export const metadata: Metadata = {
   description: "A directory of Philadelphia's lawful-good businesses",
 };
 
-// setup theme
-const theme = createTheme({
-  palette: {
-    background: {
-      paper: '#fff',
-    },
-    text: {
-      primary: '#173A5E',
-      secondary: '#46505A',
-    },
-    action: {
-      active: '#001E3C',
-    },
-    success: {
-      dark: '#009688',
-    },
-  },
-});
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <ThemeProvider theme={theme}>
-      <html lang="en">
-        <body className={roboto.className}>
-          <main>
-            <CssBaseline />
-            {children}
-          </main>
-        </body>
-      </html>
-    </ThemeProvider>
+    <html lang="en">
+      <CssBaseline />
+      <body className={roboto.className}>
+        <main>{children}</main>
+      </body>
+    </html>
   );
 }

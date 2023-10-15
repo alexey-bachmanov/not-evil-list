@@ -12,7 +12,14 @@ const Map: React.FC = function () {
   const zoom = 13;
 
   // Don't render this component at all on the server
-  if (!window) return <></>;
+  if (!window) {
+    return (
+      <div style={{ backgroundColor: 'red' }}>
+        This is being rendered on the server
+      </div>
+    );
+  }
+
   // Do render it on the client
   return (
     <MapContainer center={position} zoom={zoom} scrollWheelZoom={true}>

@@ -9,7 +9,8 @@ This is a cool little application showcasing, and allowing a detailed search of 
 - React.js
 - Next.js (including backend routes)
 - Redux.js
-- Material UI (including Grid)
+- Material UI Components (including Grid)
+- Leaflet map library
 
 ## Techniques used
 
