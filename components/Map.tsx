@@ -3,9 +3,19 @@
 // on the home page
 
 import React from 'react';
+import L from 'leaflet';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+// create custom icon
+L.Marker.prototype.options.icon = L.icon({
+  iconUrl: 'images/marker-icon.png',
+  shadowUrl: 'images/marker-shadow.png',
+  iconAnchor: [12, 41],
+  shadowAnchor: [12, 41],
+  popupAnchor: [0, -36],
+});
 
 const Map: React.FC = function () {
   const position: LatLngTuple = [40.002, -75.161];
@@ -22,7 +32,12 @@ const Map: React.FC = function () {
 
   // Do render it on the client
   return (
-    <MapContainer center={position} zoom={zoom} scrollWheelZoom={true}>
+    <MapContainer
+      center={position}
+      zoom={zoom}
+      scrollWheelZoom={true}
+      style={{ width: '100%', height: '100vh' }}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

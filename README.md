@@ -7,14 +7,14 @@ This is a cool little application showcasing, and allowing a detailed search of 
 ## Technologies used
 
 - React.js
-- Next.js (including backend routes)
+- Next.js
 - Redux.js
-- Material UI Components (including Grid)
+- Material UI Components
 - Leaflet map library
 
 ## Techniques used
 
-- Next.js SSR
+- Next.js Server-side rendering
 - Geospatial data modelling
 
 ## To-do

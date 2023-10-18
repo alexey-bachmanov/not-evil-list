@@ -1,5 +1,4 @@
 // imports
-import '../styles/globals.css';
 import 'leaflet/dist/leaflet.css';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
@@ -30,9 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <CssBaseline />
-      <body className={roboto.className}>
-        <main>{children}</main>
-      </body>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 }
