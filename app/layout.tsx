@@ -2,12 +2,8 @@
 import 'leaflet/dist/leaflet.css';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-import store from '@/store/store';
-import { Provider } from 'react-redux';
 
 // Material UI imports
-import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/system';
 
 // import Roboto font using Next.js
 const roboto = Roboto({
@@ -28,7 +24,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <CssBaseline />
       <body className={roboto.className}>{children}</body>
     </html>
   );
