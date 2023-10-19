@@ -11,7 +11,7 @@ const Logo: React.FC = function () {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'left',
+        justifyContent: 'center',
         mt: 3,
         ml: 'auto',
         mr: 'auto',
