@@ -4,20 +4,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 ///// CREATE THEME /////
-// augment default theme interface to allow custom variables like drawerWidth
-declare module '@mui/material/styles' {
-  interface Theme {
-    dimensions: {
-      drawerWidth: Number;
-    };
-  }
-  interface ThemeOptions {
-    dimensions: {
-      drawerWidth: number;
-    };
-  }
-}
-
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -27,9 +13,6 @@ const theme = createTheme({
     secondary: {
       main: '#f50057',
     },
-  },
-  dimensions: {
-    drawerWidth: 380,
   },
 });
 

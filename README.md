@@ -19,12 +19,18 @@ This is a cool little application showcasing, and allowing a detailed search of 
 
 ## To-do
 
-- Wireframes
+- Pages
   - Main landing page
-    - Search results drawer
     - Details drawer
-  - "Submit new business" page
-    - Form with relevant fields
+    - Login modal
+    - Different SearchButtonGroup states (logged out vs admin vs user)
   - Admin "review new submissions" page
   - Admin "create/update/delete" page
-- Connect logic up with Redux
+- Connect MongoDB
+- Implement reviews
+- Implement CLI to populate DB with data
+
+## Behaviors to implement
+
+- Clicking on a marker selects that business and brings up its details drawer, changes marker color
+- Clicking in search results selects that business and brings up its detail drawer, changes marker color

@@ -3,11 +3,11 @@ import { BusinessDataEntry } from '@/store/resultsSlice';
 
 // MUI imports
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-const formatPhoneNumber = function (num: Number) {
+const formatPhoneNumber = function (num: String) {
   const numString = String(num);
   return `\(${numString.slice(0, 3)}\) ${numString.slice(
     3,
@@ -18,20 +18,31 @@ const formatPhoneNumber = function (num: Number) {
 const SearchResult: React.FC<{ business: BusinessDataEntry }> = function ({
   business,
 }) {
+  const typoMargins = 1;
   return (
-    <>
-      <Divider variant="middle" />
-      <ListItem>
-        <ListItemText />
-        <Typography variant="h6">{business.companyName}</Typography>
-        <Typography variant="caption">{business.address}</Typography>
-        <Typography variant="caption">
+    <Grid container component="li" spacing={1}>
+      <Grid item xs={12}>
+        <Typography variant="h6" marginLeft={typoMargins}>
+          {business.companyName}
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="caption" marginLeft={typoMargins}>
+          {business.address}
+        </Typography>
+      </Grid>
+      <Grid item xs={6} textAlign="right">
+        <Typography variant="caption" marginRight={typoMargins}>
           {formatPhoneNumber(business.phone)}
         </Typography>
-        <Typography variant="caption">{business.website}</Typography>
-        <Typography variant="caption">{business.description}</Typography>
-      </ListItem>
-    </>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="caption" margin={typoMargins}>
+          {business.description}
+        </Typography>
+        <Divider variant="middle" />
+      </Grid>
+    </Grid>
   );
 };
 

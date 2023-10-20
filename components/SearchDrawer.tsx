@@ -1,28 +1,21 @@
-'use client';
-
-// imports
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import SearchBar from './SearchBar';
 import SearchResultsList from './SearchResultsList';
+import SearchButtonGroup from './SearchButtonGroup';
 
-// Material UI imports
-import Drawer from '@mui/material/Drawer';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
+// MUI imports
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
 
 const SearchDrawer: React.FC = function () {
-  const router = useRouter();
-
   return (
-    <Drawer variant="permanent">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <SearchBar />
+      <Divider variant="middle" />
       <SearchResultsList />
-      <ButtonGroup fullWidth sx={{ p: 1 }}>
-        <Button onClick={() => router.push('/new-business')}>Add</Button>
-        <Button>Log in</Button>
-      </ButtonGroup>
-    </Drawer>
+      <Divider variant="middle" />
+      <SearchButtonGroup />
+    </Box>
   );
 };
 

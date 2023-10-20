@@ -10,9 +10,13 @@ import Box from '@mui/material/Box';
 export default function HomePage() {
   return (
     <Providers>
-      <Box component="main">
-        <Map />
-        <SearchDrawer />
+      <Box component="main" sx={{ display: 'flex' }}>
+        <Box sx={{ width: '400px' }}>
+          <SearchDrawer />
+        </Box>
+        <Box sx={{ flexBasis: '100%' }}>
+          <Map />
+        </Box>
       </Box>
     </Providers>
   );
