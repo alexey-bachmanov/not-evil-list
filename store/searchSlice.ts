@@ -8,6 +8,7 @@ const searchSlice = createSlice({
   reducers: {
     executeSearch(state, action) {
       state.searchParameter = action.payload;
+      console.log(state.searchParameter);
     },
   },
 });

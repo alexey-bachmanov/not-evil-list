@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "65331e369e75194a8c412a12",
+    "companyName": "Jake's Vegan Steaks",
+    "address": "1315 Wood St",
+    "addressCity": "Philadelphia",
+    "addressState": "PA",
+    "addressZip": "19107",
+    "phone": "2151234567",
+    "website": "https://www.github.com",
+    "description": "You can have anything you want, as long as it's vegetables",
+    "location": {
+      "type": "Point",
+      "coordinates": [39.958794, -75.160615]
+    }
+  },
+  {
+    "_id": "65331e369e75194a8c412a13",
+    "companyName": "Yer-bar-matte",
+    "address": "1601 Fairmount Ave",
+    "addressCity": "Philadelphia",
+    "addressState": "PA",
+    "addressZip": "19130",
+    "phone": "2151234567",
+    "website": "https://www.github.com",
+    "description": "A bar for board games and yerba matte. Is it supposed to taste like dirt?",
+    "location": {
+      "type": "Point",
+      "coordinates": [39.967382, -75.163937]
+    }
+  },
+  {
+    "_id": "65331e369e75194a8c412a14",
+    "companyName": "Smooth-flo Gluten-free Car Wash",
+    "address": "1428 North Broad St",
+    "addressCity": "Philadelphia",
+    "addressState": "PA",
+    "addressZip": "19121",
+    "phone": "2151234567",
+    "website": "https://www.github.com",
+    "description": "Aren't you tired of high-gluten water glomming on your car?",
+    "location": {
+      "type": "Point",
+      "coordinates": [39.975354, -75.158876]
+    }
+  }
+]

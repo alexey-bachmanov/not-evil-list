@@ -14,7 +14,10 @@ const SearchBar: React.FC = function () {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: dispatch search query to redux context
+    // TODO: send search query to a custom hook (useSearch?) and redux state
+    // TODO: custom hook uses useEffect to make a call to our backend api?
+    // TODO: backend does the DB query and returns list of results
+    // TODO: results are stored in redux state for SearchResultsList to use
   };
 
   return (
