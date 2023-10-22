@@ -12,7 +12,9 @@
     "location": {
       "type": "Point",
       "coordinates": [39.958794, -75.160615]
-    }
+    },
+    "ratingsAvg": 4.5,
+    "ratingsQty": 0
   },
   {
     "_id": "65331e369e75194a8c412a13",
@@ -27,7 +29,9 @@
     "location": {
       "type": "Point",
       "coordinates": [39.967382, -75.163937]
-    }
+    },
+    "ratingsAvg": 4.5,
+    "ratingsQty": 0
   },
   {
     "_id": "65331e369e75194a8c412a14",
@@ -42,6 +46,8 @@
     "location": {
       "type": "Point",
       "coordinates": [39.975354, -75.158876]
-    }
+    },
+    "ratingsAvg": 4.5,
+    "ratingsQty": 0
   }
 ]

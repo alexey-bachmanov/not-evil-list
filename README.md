@@ -26,13 +26,9 @@ This is a full-stack application showcasing and allowing a detailed search of Ph
     - Different SearchButtonGroup states (logged out vs admin vs user)
   - Admin "review new submissions" page
   - Admin "create/update/delete" page
-- Connect MongoDB
-  - Write mongo-related code into backend APIs
-- Implement search
-  - Connect SearchBar and searchSlice
-  - Connect SearchBar and backend apis
-  - Connect backend apis and resultsSlice
+- Implement search functions
 - Implement reviews
+- implement geolocaation stuff to convert address to coordinates
 - Make SearchResult component look better
 - Make scrollbars look better
 - Mobile devices

@@ -4,18 +4,15 @@ import { Provider } from 'react-redux';
 
 // slice imports
 import searchSlice from './searchSlice';
-import resultsSlice from './resultsSlice';
 
 ///// STORE COMPOSITION /////
 export const store = configureStore({
   reducer: {
     search: searchSlice.reducer,
-    results: resultsSlice.reducer,
   },
 });
 
 export const searchActions = searchSlice.actions;
-export const resultsActions = resultsSlice.actions;
 
 ///// PROVIDER /////
 export const ReduxProvider: React.FC<{ children: React.ReactNode }> =

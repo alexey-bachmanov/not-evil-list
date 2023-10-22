@@ -3,12 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 const searchSlice = createSlice({
   name: 'searchSlice',
   initialState: {
-    searchParameter: '',
+    query: '',
+    results: [],
   },
   reducers: {
     executeSearch(state, action) {
-      state.searchParameter = action.payload;
-      console.log(state.searchParameter);
+      // since we can't do async tasks in the reducers, the results list
+      // is generated asynchrounously in the SearchBar component and stored
+      // in the redux state when it becomes available.
+      state.query = action.payload.query;
+      state.results = action.payload.results;
     },
   },
 });

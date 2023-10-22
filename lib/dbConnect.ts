@@ -40,6 +40,8 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      autoCreate: false,
+      dbName: 'Not-Evil-List',
     };
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
@@ -49,6 +51,7 @@ async function dbConnect() {
   // resolved promise as your connection from now on.
   try {
     cached.conn = await cached.promise;
+    console.log('connected to mongoDB!');
   } catch (err) {
     cached.promise = null;
     throw err;

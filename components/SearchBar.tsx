@@ -1,6 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { searchActions } from '@/store';
 
 // Material UI imports
 import TextField from '@mui/material/TextField';
@@ -9,15 +10,34 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar: React.FC = function () {
-  // const dispatch = useDispatch();
-  const dispatch = () => {};
+  const dispatch = useDispatch();
+  const searchBoxPointer = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: send search query to a custom hook (useSearch?) and redux state
-    // TODO: custom hook uses useEffect to make a call to our backend api?
-    // TODO: backend does the DB query and returns list of results
-    // TODO: results are stored in redux state for SearchResultsList to use
+    // this if statement will always pass unless something is terribly, terribly wrong
+    // it's only here to assure typescript that searchBoxPointer.current exists
+    if (searchBoxPointer.current) {
+      const query = searchBoxPointer.current.value;
+      // make a fetch call to our backend API
+      // TODO: any kind of error handling here
+      const response = await fetch('/api/businesses', {
+        method: 'GET',
+        headers: {
+          'search-query': query,
+        },
+      });
+      // parse the response data
+      const responseParsed = await response.json();
+      console.log(responseParsed.data.businesses);
+      // pass search query and results up to redux state
+      dispatch(
+        searchActions.executeSearch({
+          query: query,
+          results: responseParsed.data.businesses,
+        })
+      );
+    }
   };
 
   return (
@@ -29,6 +49,7 @@ const SearchBar: React.FC = function () {
     >
       <TextField
         id="search-bar"
+        inputRef={searchBoxPointer}
         className="text"
         label="Search..."
         variant="outlined"

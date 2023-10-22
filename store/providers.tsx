@@ -1,6 +1,6 @@
 // compose all providers (redux, theme, etc) into one big provider
 import React from 'react';
-import { ReduxProvider } from './store';
+import { ReduxProvider } from './index';
 import AppThemeProvider from '@/styles/theme';
 
 // since layout.tsx can't be a client component, Providers will have to

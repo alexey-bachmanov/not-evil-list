@@ -72,5 +72,10 @@ businessSchema.index({ location: '2dsphere' });
 // TODO: Make pre-save middleware to do that
 
 ///// MODEL /////
-const Business = mongoose.model('Business', businessSchema);
+// because we're runing on a serverless framework, it sometimes happens
+// that this module is run more than once, and we get an error saying
+// 'Cannot overwrite model once compiled'. This short circuit asks for
+// the existing model, and if it can't find it, creates a new one.
+const Business =
+  mongoose.models.Business || mongoose.model('Business', businessSchema);
 export default Business;
