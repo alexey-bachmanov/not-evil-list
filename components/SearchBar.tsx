@@ -29,7 +29,6 @@ const SearchBar: React.FC = function () {
       });
       // parse the response data
       const responseParsed = await response.json();
-      console.log(responseParsed.data.businesses);
       // pass search query and results up to redux state
       dispatch(
         searchActions.executeSearch({

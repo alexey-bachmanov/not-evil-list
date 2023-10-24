@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+type GeoJSON = { type: String; coordinates: [Number] };
 const businessSchema = new mongoose.Schema({
   companyName: {
     type: String,
@@ -44,16 +45,17 @@ const businessSchema = new mongoose.Schema({
   location: {
     // ↓ GeoJSON
     type: {
-      type: String,
-      default: 'Point',
-      enum: ['Point'],
-    },
-    coordinates: {
-      type: [Number], // [longitude, latitude]
-      // TODO: remove default coordinates
-      default: [39.9521406, -75.1645622],
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+      },
     },
     // ↑ GeoJSON
+    // required: [true, 'business must have a GeoJSON location'],
   },
   ratingAvg: {
     type: Number,
@@ -68,8 +70,6 @@ const businessSchema = new mongoose.Schema({
 businessSchema.index({ location: '2dsphere' });
 
 ///// MIDDLEWARE /////
-// pre-save, do geocoding api call to get LngLat
-// TODO: Make pre-save middleware to do that
 
 ///// MODEL /////
 // because we're runing on a serverless framework, it sometimes happens

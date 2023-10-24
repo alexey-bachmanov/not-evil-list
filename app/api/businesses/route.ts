@@ -5,6 +5,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Business from '@/models/business';
 
+///// GEOCODING UTIL /////
+const addressToGeoJSON = async (
+  address: String,
+  city: String,
+  state: String
+) => {
+  const apiKey = process.env.POSITIONSTACK_API_KEY;
+  const response = await fetch(
+    `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query= ${address}, ${city} ${state}`
+  );
+  const responseParsed = await response.json();
+  return {
+    type: 'Point',
+    coordinates: [
+      Number(responseParsed.data[0].latitude),
+      Number(responseParsed.data[0].longitude),
+    ],
+  };
+};
+
 ///// GET (RETRIEVE ALL BUSINESSES) /////
 export async function GET(req: NextRequest) {
   try {
@@ -22,8 +42,16 @@ export async function GET(req: NextRequest) {
 ///// POST (CREATE NEW BUSINESS) /////
 export async function POST(req: NextRequest) {
   try {
+    // check connection to DB, as usual
     await dbConnect();
+    // parse input information
     const body = await req.json();
+    // use positionStack api to get coordinates
+    body.location = await addressToGeoJSON(
+      body.address,
+      body.addressCity,
+      body.addressState
+    );
     const newBusiness = await Business.create(body);
     return NextResponse.json({
       success: true,

@@ -1,6 +1,5 @@
 [
   {
-    "_id": "65331e369e75194a8c412a12",
     "companyName": "Jake's Vegan Steaks",
     "address": "1315 Wood St",
     "addressCity": "Philadelphia",
@@ -17,7 +16,6 @@
     "ratingsQty": 0
   },
   {
-    "_id": "65331e369e75194a8c412a13",
     "companyName": "Yer-bar-matte",
     "address": "1601 Fairmount Ave",
     "addressCity": "Philadelphia",
@@ -34,7 +32,6 @@
     "ratingsQty": 0
   },
   {
-    "_id": "65331e369e75194a8c412a14",
     "companyName": "Smooth-flo Gluten-free Car Wash",
     "address": "1428 North Broad St",
     "addressCity": "Philadelphia",
@@ -42,7 +39,7 @@
     "addressZip": "19121",
     "phone": "2151234567",
     "website": "https://www.github.com",
-    "description": "Aren't you tired of high-gluten water glomming on your car?",
+    "description": "Aren't you tired of high-gluten water sticking to your car?",
     "location": {
       "type": "Point",
       "coordinates": [39.975354, -75.158876]

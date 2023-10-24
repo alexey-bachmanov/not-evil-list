@@ -26,9 +26,8 @@ This is a full-stack application showcasing and allowing a detailed search of Ph
     - Different SearchButtonGroup states (logged out vs admin vs user)
   - Admin "review new submissions" page
   - Admin "create/update/delete" page
-- Implement search functions
+- Implement search functions besides "get all"
 - Implement reviews
-- implement geolocaation stuff to convert address to coordinates
 - Make SearchResult component look better
 - Make scrollbars look better
 - Mobile devices
