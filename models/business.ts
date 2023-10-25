@@ -1,6 +1,19 @@
 import mongoose from 'mongoose';
 
-type GeoJSON = { type: String; coordinates: [Number] };
+// ↓ GeoJSON
+const pointSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['Point'],
+    default: 'Point',
+    required: true,
+  },
+  coordinates: {
+    type: [Number], // [longitude, latitude]
+    required: true,
+  },
+});
+// ↑ GeoJSON
 const businessSchema = new mongoose.Schema({
   companyName: {
     type: String,
@@ -43,19 +56,8 @@ const businessSchema = new mongoose.Schema({
     required: [true, 'business must have a description'],
   },
   location: {
-    // ↓ GeoJSON
-    type: {
-      type: {
-        type: String,
-        default: 'Point',
-        enum: ['Point'],
-      },
-      coordinates: {
-        type: [Number], // [longitude, latitude]
-      },
-    },
-    // ↑ GeoJSON
-    // required: [true, 'business must have a GeoJSON location'],
+    type: pointSchema,
+    required: [true, 'business must have GeoJSON location info'],
   },
   ratingAvg: {
     type: Number,

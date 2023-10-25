@@ -10,7 +10,7 @@
     "description": "You can have anything you want, as long as it's vegetables",
     "location": {
       "type": "Point",
-      "coordinates": [39.958794, -75.160615]
+      "coordinates": [-75.160615, 39.958794]
     },
     "ratingsAvg": 4.5,
     "ratingsQty": 0
@@ -26,7 +26,7 @@
     "description": "A bar for board games and yerba matte. Is it supposed to taste like dirt?",
     "location": {
       "type": "Point",
-      "coordinates": [39.967382, -75.163937]
+      "coordinates": [-75.163937, 39.967382]
     },
     "ratingsAvg": 4.5,
     "ratingsQty": 0
@@ -42,7 +42,7 @@
     "description": "Aren't you tired of high-gluten water sticking to your car?",
     "location": {
       "type": "Point",
-      "coordinates": [39.975354, -75.158876]
+      "coordinates": [-75.158876, 39.975354]
     },
     "ratingsAvg": 4.5,
     "ratingsQty": 0

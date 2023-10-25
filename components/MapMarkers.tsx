@@ -12,7 +12,12 @@ const MapMarkers: React.FC = function () {
   // turn array of search results into array of map markers
   const markersJSX = searchResults.map((el) => {
     return (
-      <Marker key={el._id} position={el.location.coordinates}>
+      // GeoJSON has format [ lng, lat ]
+      // Marker expects [ lat, lng ]
+      <Marker
+        key={el._id}
+        position={[el.location.coordinates[1], el.location.coordinates[0]]}
+      >
         <Popup>{el.companyName}</Popup>
       </Marker>
     );

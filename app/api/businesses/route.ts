@@ -6,23 +6,25 @@ import dbConnect from '@/lib/dbConnect';
 import Business from '@/models/business';
 
 ///// GEOCODING UTIL /////
-const addressToGeoJSON = async (
+const addressToGeoData = async (
   address: String,
   city: String,
   state: String
 ) => {
-  const apiKey = process.env.POSITIONSTACK_API_KEY;
-  const response = await fetch(
-    `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query= ${address}, ${city} ${state}`
-  );
-  const responseParsed = await response.json();
-  return {
-    type: 'Point',
-    coordinates: [
-      Number(responseParsed.data[0].latitude),
-      Number(responseParsed.data[0].longitude),
-    ],
-  };
+  try {
+    const apiKey = process.env.POSITIONSTACK_API_KEY;
+    const response = await fetch(
+      `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query= ${address}, ${city} ${state}`
+    );
+    const responseParsed = await response.json();
+    if (!responseParsed.data[0]) {
+      throw new Error('GeoLocation API failed to return data');
+    }
+    return responseParsed.data[0];
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
 ///// GET (RETRIEVE ALL BUSINESSES) /////
@@ -47,12 +49,28 @@ export async function POST(req: NextRequest) {
     // parse input information
     const body = await req.json();
     // use positionStack api to get coordinates
-    body.location = await addressToGeoJSON(
+    const geoData = await addressToGeoData(
       body.address,
       body.addressCity,
       body.addressState
     );
-    const newBusiness = await Business.create(body);
+    // store mix of parsed geodata and input data
+    const newBusiness = await Business.create({
+      companyName: body.companyName,
+      address: geoData.name,
+      addressCity: geoData.locality,
+      addressState: geoData.region_code,
+      addressZip: geoData.postal_code,
+      phone: body.phone,
+      website: body.website,
+      description: body.description,
+      location: {
+        type: 'Point',
+        coordinates: [geoData.longitude, geoData.latitude],
+      },
+      ratingsAvg: 4.5,
+      ratingsQty: 0,
+    });
     return NextResponse.json({
       success: true,
       data: { business: newBusiness },
