@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Logo from '@/components/Logo';
+import Providers from '@/store/providers';
 
 // MUI imports
 import Container from '@mui/material/Container';
@@ -8,9 +9,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Providers from '@/store/providers';
 
-const HomePage: React.FC = function () {
+const NewBusinessPage: React.FC = function () {
   const handleSubmit = () => {};
 
   return (
@@ -107,4 +107,4 @@ const HomePage: React.FC = function () {
   );
 };
 
-export default HomePage;
+export default NewBusinessPage;

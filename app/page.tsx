@@ -2,7 +2,7 @@
 import React from 'react';
 import Providers from '@/store/providers';
 import Map from '@/components/Map';
-import SearchDrawer from '@/components/SearchDrawer';
+import SearchDrawer from '@/components/LandingPage/SearchDrawer';
 
 // MUI imports
 import Box from '@mui/material/Box';

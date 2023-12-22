@@ -1,8 +1,7 @@
 import React from 'react';
-import { BusinessDataEntry } from '@/store/resultsSlice';
+import { BusinessDataEntry } from '@/types';
 
 // MUI imports
-import ListItem from '@mui/material/ListItem';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
