@@ -23,7 +23,6 @@ const addressToGeoData = async (
     return responseParsed.data[0];
   } catch (err) {
     console.error(err);
-    return null;
   }
 };
 

@@ -67,6 +67,10 @@ const businessSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 ///// INDICIES /////
 businessSchema.index({ location: '2dsphere' });
