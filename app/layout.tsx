@@ -1,21 +1,15 @@
+'use client';
 // imports
 import 'leaflet/dist/leaflet.css';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-
-// Material UI imports
+import Providers from '@/store/providers';
 
 // import Roboto font using Next.js
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
 });
-
-// set up global metadata
-export const metadata: Metadata = {
-  title: 'Not-Evil-List',
-  description: "A directory of Philadelphia's lawful-good businesses",
-};
 
 export default function RootLayout({
   children,
@@ -24,7 +18,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <head>
+        <title>Not-Evil-List</title>
+        <meta
+          name="description"
+          content="A directory of Philadelphia's lawful-good businesses"
+        />
+      </head>
+      <body className={roboto.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

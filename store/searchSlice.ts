@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const searchSlice = createSlice({
   name: 'searchSlice',
@@ -7,7 +7,10 @@ const searchSlice = createSlice({
     results: [],
   },
   reducers: {
-    executeSearch(state, action) {
+    executeSearch(
+      state,
+      action: PayloadAction<{ query: string; results: [] }>
+    ) {
       // since we can't do async tasks in the reducers, the results list
       // is generated asynchrounously in the SearchBar component and stored
       // in the redux state when it becomes available.
