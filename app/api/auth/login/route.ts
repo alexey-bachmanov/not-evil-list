@@ -2,6 +2,7 @@
 // Log in (get JWT)
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
+import ApiError from '@/lib/apiError';
 import User from '@/models/user';
 import createSendToken from '@/lib/createSendToken';
 
@@ -13,28 +14,30 @@ export async function POST(req: NextRequest) {
 
     // check if a body was sent
     if (!req.body) {
-      throw new Error('No credentials provided');
+      throw new ApiError('No credentials provided', 401);
     }
 
     // check if email and password exist
     const body = await req.json();
     if (!body.email || !body.password) {
-      throw new Error('No credentials provided');
+      throw new ApiError('No credentials provided', 401);
     }
 
     // check if user exists and password is correct
     const user = await User.findOne({ email: body.email }).select('+password');
     if (!user || !(await user.passwordMatch(body.password, user.password))) {
-      throw new Error('Incorrect email or password');
+      throw new ApiError('Incorrect email or password', 401);
     }
     // create a response
     let res = NextResponse.json({
       success: true,
-      user: {
-        _id: user._id,
-        userName: user.userName,
-        email: user.email,
-        role: user.role,
+      data: {
+        user: {
+          _id: user._id,
+          userName: user.userName,
+          email: user.email,
+          role: user.role,
+        },
       },
     });
 
@@ -44,22 +47,15 @@ export async function POST(req: NextRequest) {
     return res;
   } catch (err: any) {
     console.error(err);
-
-    // no credentials
-    if (err.message === 'No credentials provided') {
+    // catch any errors we created ourselves
+    if (err.isOperational) {
       return NextResponse.json(
         { success: false, message: err.message },
-        { status: 401 }
+        { status: err.statusCode }
       );
     }
 
-    // email or password incorrect
-    if (err.message === 'Incorrect email or password') {
-      return NextResponse.json(
-        { success: false, message: err.message },
-        { status: 401 }
-      );
-    }
+    // catch any internal errors
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

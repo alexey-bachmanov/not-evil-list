@@ -3,28 +3,8 @@
 // create new business
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
+import addressToGeoData from '@/lib/addressToGeoData';
 import Business from '@/models/business';
-
-///// GEOCODING UTIL /////
-const addressToGeoData = async (
-  address: String,
-  city: String,
-  state: String
-) => {
-  try {
-    const apiKey = process.env.POSITIONSTACK_API_KEY;
-    const response = await fetch(
-      `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query= ${address}, ${city} ${state}`
-    );
-    const responseParsed = await response.json();
-    if (!responseParsed.data[0]) {
-      throw new Error('GeoLocation API failed to return data');
-    }
-    return responseParsed.data[0];
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 ///// GET (RETRIEVE ALL BUSINESSES) /////
 export async function GET(req: NextRequest) {
