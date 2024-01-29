@@ -1,10 +1,6 @@
 // Contains route to:
 // Log out (get JWT that immediately expires)
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import dbConnect from '@/lib/dbConnect';
-import User from '@/models/user';
 
 ///// POST (LOG OUT) /////
 export async function POST(req: NextRequest) {
@@ -15,7 +11,7 @@ export async function POST(req: NextRequest) {
     });
     // load empty token into an httpOnly cookie
     res.cookies.set('jwt', '', {
-      expires: new Date(Date.now() + 1000), // set to expire 1s in the future
+      expires: new Date(Date.now() - 1000), // set to expire 1s in the past
       httpOnly: true,
     });
     return res;

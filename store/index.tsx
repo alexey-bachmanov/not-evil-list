@@ -5,17 +5,20 @@ import { Provider } from 'react-redux';
 // slice imports
 import searchSlice from './searchSlice';
 import authSlice from './authSlice';
+import uiSlice from './uiSlice';
 
 ///// STORE COMPOSITION /////
 export const store = configureStore({
   reducer: {
     search: searchSlice.reducer,
     auth: authSlice.reducer,
+    ui: uiSlice.reducer,
   },
 });
 
 export const searchActions = searchSlice.actions;
 export const authActions = authSlice.actions;
+export const uiActions = uiSlice.actions;
 
 // export types
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,7 +1,8 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { searchActions } from '@/store';
+import { AppDispatch } from '@/store';
+import { executeSearch } from '@/store/searchSlice';
 
 // Material UI imports
 import TextField from '@mui/material/TextField';
@@ -10,33 +11,12 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar: React.FC = function () {
-  const dispatch = useDispatch();
-  const searchBoxPointer = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // this if statement will always pass unless something is terribly, terribly wrong
-    // it's only here to assure typescript that searchBoxPointer.current exists
-    if (searchBoxPointer.current) {
-      const query = searchBoxPointer.current.value;
-      // make a fetch call to our backend API
-      // TODO: any kind of error handling here
-      const response = await fetch('/api/businesses', {
-        method: 'GET',
-        headers: {
-          'search-query': query,
-        },
-      });
-      // parse the response data
-      const responseParsed = await response.json();
-      // pass search query and results up to redux state
-      dispatch(
-        searchActions.executeSearch({
-          query: query,
-          results: responseParsed.data.businesses,
-        })
-      );
-    }
+    dispatch(executeSearch(query));
   };
 
   return (
@@ -48,11 +28,12 @@ const SearchBar: React.FC = function () {
     >
       <TextField
         id="search-bar"
-        inputRef={searchBoxPointer}
         className="text"
         label="Search..."
         variant="outlined"
         size="small"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         sx={{ flexBasis: '100%', pr: 1 }}
       />
       <IconButton type="submit" aria-label="search">

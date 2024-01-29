@@ -1,13 +1,14 @@
 export type BusinessDataEntry = {
-  companyName: String;
-  address: String;
-  addressCity: String;
-  addressState: String;
-  addressZip: String;
-  phone: String;
-  website: String | null;
-  description: String;
-  location: { type: 'Point'; coordinates: [Number] };
-  ratingAvg: Number;
-  ratingQty: Number;
+  _id: string;
+  companyName: string;
+  address: string;
+  addressCity: string;
+  addressState: string;
+  addressZip: string;
+  phone: string;
+  website: string | null;
+  description: string;
+  location: { type: 'Point'; coordinates: [number] };
+  ratingAvg: number;
+  ratingQty: number;
 };

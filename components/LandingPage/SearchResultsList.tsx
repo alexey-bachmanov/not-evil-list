@@ -8,19 +8,29 @@ import SearchResult from './SearchResult';
 import List from '@mui/material/List';
 
 const SearchResultsList: React.FC = function () {
-  const searchResults: any[] = useSelector(
-    (state: RootState) => state.search.results
-  );
+  // load stuff from our redux store
+  const searchResults = useSelector((state: RootState) => state.search.results);
+  const loadingStatus = useSelector((state: RootState) => state.search.status);
+  const errorMessage = useSelector((state: RootState) => state.search.error);
 
   // convert search result list into JSX list
   const searchResultJSX = searchResults.map((val) => {
     return <SearchResult key={String(val._id)} business={val} />;
   });
 
+  // determine what we're gonna show in the results list
+  let displayedJSX;
+  if (loadingStatus === 'loading') {
+    displayedJSX = <p>Loading...</p>;
+  }
+  if (loadingStatus === 'failure') {
+    displayedJSX = <p>{errorMessage}</p>;
+  }
+  if (loadingStatus === 'success') {
+    displayedJSX = searchResultJSX;
+  }
   return (
-    <List sx={{ overflowY: 'scroll', flexBasis: '100%' }}>
-      {searchResultJSX}
-    </List>
+    <List sx={{ overflowY: 'scroll', flexBasis: '100%' }}>{displayedJSX}</List>
   );
 };
 
