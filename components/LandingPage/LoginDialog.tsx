@@ -1,10 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch, uiActions } from '@/store';
-import { login } from '@/store/authSlice';
+import { RootState, AppDispatch, uiActions, authActions } from '@/store';
 
 // Material UI imports
+import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -14,9 +14,9 @@ import DialogActions from '@mui/material/DialogActions';
 
 const LoginDialog: React.FC = function () {
   // load stuff from our redux store
-  const isOpen = useSelector((state: RootState) => state.ui.isLoginDialogOpen);
+  const isOpen = useSelector((state: RootState) => state.ui.loginDialog.isOpen);
   const dialogType = useSelector(
-    (state: RootState) => state.ui.loginDialogType
+    (state: RootState) => state.ui.loginDialog.type
   );
   const authStatus = useSelector((state: RootState) => state.auth.status);
 
@@ -26,49 +26,39 @@ const LoginDialog: React.FC = function () {
   // set up form state
   const [userInfo, setUserInfo] = useState({
     email: '',
-    username: '',
+    userName: '',
     password: '',
     passwordConfirm: '',
   });
 
   // handlers
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (dialogType === 'login') {
       await dispatch(
-        login({ email: userInfo.email, password: userInfo.password })
+        authActions.login({
+          email: userInfo.email,
+          password: userInfo.password,
+        })
       );
     } else {
-      console.log(userInfo);
+      await dispatch(authActions.signup(userInfo));
     }
-    dispatch(
-      uiActions.setLoginDialogState({
-        isLoginDialogOpen: false,
-        loginDialogType: 'login',
-      })
-    );
+    // close the dialog window and reset state to 'login'
+    dispatch(uiActions.closeDialog());
   };
 
   const handleSwitchMode = () => {
-    dispatch(
-      uiActions.setLoginDialogState({
-        isLoginDialogOpen: true,
-        loginDialogType: dialogType === 'login' ? 'signup' : 'login',
-      })
-    );
+    dispatch(uiActions.toggleDialogType());
   };
 
   const handleClose = () => {
-    dispatch(
-      uiActions.setLoginDialogState({
-        isLoginDialogOpen: false,
-        loginDialogType: 'login',
-      })
-    );
+    dispatch(uiActions.closeDialog());
   };
 
   // define the contents of both the login form and signup form
   const loginJSX = (
-    <DialogContent>
+    <>
       <TextField
         autoFocus
         id="email"
@@ -92,11 +82,11 @@ const LoginDialog: React.FC = function () {
           setUserInfo({ ...userInfo, password: e.target.value });
         }}
       />
-    </DialogContent>
+    </>
   );
 
   const signupJSX = (
-    <DialogContent>
+    <>
       <TextField
         autoFocus
         id="email"
@@ -115,8 +105,8 @@ const LoginDialog: React.FC = function () {
         type="username"
         variant="outlined"
         fullWidth
-        value={userInfo.username}
-        onChange={(e) => setUserInfo({ ...userInfo, username: e.target.value })}
+        value={userInfo.userName}
+        onChange={(e) => setUserInfo({ ...userInfo, userName: e.target.value })}
       />
       <TextField
         id="password"
@@ -142,19 +132,25 @@ const LoginDialog: React.FC = function () {
           setUserInfo({ ...userInfo, passwordConfirm: e.target.value });
         }}
       />
-    </DialogContent>
+    </>
   );
 
   return (
     <Dialog open={isOpen} maxWidth="xs" fullWidth onClose={handleClose}>
-      <DialogTitle>{dialogType === 'login' ? 'Log in' : 'Sign up'}</DialogTitle>
-      {dialogType === 'login' ? loginJSX : signupJSX}
-      <DialogActions>
-        <Button onClick={handleSwitchMode}>
-          {dialogType === 'login' ? 'Sign up' : 'Log in'}
-        </Button>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </DialogActions>
+      <Box component="form" onSubmit={handleSubmit}>
+        <DialogTitle>
+          {dialogType === 'login' ? 'Log in' : 'Sign up'}
+        </DialogTitle>
+        <DialogContent>
+          {dialogType === 'login' ? loginJSX : signupJSX}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSwitchMode}>
+            {dialogType === 'login' ? 'Sign up' : 'Log in'}
+          </Button>
+          <Button type="submit">Submit</Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 };

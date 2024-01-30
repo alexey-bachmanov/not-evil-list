@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store';
-import { executeSearch } from '@/store/searchSlice';
+import { AppDispatch, searchActions } from '@/store';
 
 // Material UI imports
 import TextField from '@mui/material/TextField';
@@ -16,7 +15,7 @@ const SearchBar: React.FC = function () {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(executeSearch(query));
+    dispatch(searchActions.executeSearch(query));
   };
 
   return (

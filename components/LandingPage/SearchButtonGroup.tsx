@@ -16,12 +16,7 @@ const SearchButtonGroup: React.FC = function () {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDialogOpen = () => {
-    dispatch(
-      uiActions.setLoginDialogState({
-        isLoginDialogOpen: true,
-        loginDialogType: 'login',
-      })
-    );
+    dispatch(uiActions.openDialog());
   };
 
   const handleLogout = async () => {
