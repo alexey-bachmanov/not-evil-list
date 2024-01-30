@@ -76,6 +76,10 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
     );
     throw new Error(responseParsed.message);
   }
+  // if successful, show a success alert
+  thunkAPI.dispatch(
+    uiActions.openAlert({ type: 'success', message: 'Succesfully logged out' })
+  );
   return; // nothing to return, we just reset our auth state
 });
 
@@ -137,7 +141,7 @@ export const signup = createAsyncThunk(
     thunkAPI.dispatch(
       uiActions.openAlert({
         type: 'success',
-        message: 'Successfully logged in',
+        message: 'Successfully signed up. Welcome!',
       })
     );
     return {

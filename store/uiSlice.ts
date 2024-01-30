@@ -47,7 +47,6 @@ const uiSlice = createSlice({
     },
     closeAlert(state) {
       state.alert.isOpen = false;
-      state.alert.message = '';
     },
   },
 });

@@ -20,6 +20,7 @@ const AlertBar: React.FC = function () {
     <Snackbar
       open={alertState.isOpen}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      autoHideDuration={5000}
       onClose={handleClose}
     >
       <Alert severity={alertState.type} variant="filled">
