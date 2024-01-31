@@ -9,7 +9,7 @@ export const executeSearch = createAsyncThunk(
     // we don't want to use a try/catch block here, as normal, because
     // we want our errors to percolate up to the reducer
     // fetch list of businesses from our API
-    const response = await fetch('/api/businessesZ', {
+    const response = await fetch('/api/businesses', {
       method: 'GET',
       headers: {
         'search-query': query,

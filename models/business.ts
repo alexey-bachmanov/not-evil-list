@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import addressToGeoData from '@/lib/addressToGeoData';
 
 // ↓ GeoJSON
 const pointSchema = new mongoose.Schema({
@@ -38,7 +39,7 @@ const businessSchema = new mongoose.Schema({
   addressZip: {
     type: String,
     trim: true,
-    required: [true, 'business must have a zip code with its address'],
+    // required: [true, 'business must have a zip code with its address'],
   },
   phone: {
     type: String,
@@ -48,7 +49,7 @@ const businessSchema = new mongoose.Schema({
   website: {
     type: String,
     trim: true,
-    // not everyone has a website
+    default: '',
   },
   description: {
     type: String,
@@ -57,7 +58,7 @@ const businessSchema = new mongoose.Schema({
   },
   location: {
     type: pointSchema,
-    required: [true, 'business must have GeoJSON location info'],
+    // this will be set in the pre-save middleware
   },
   ratingAvg: {
     type: Number,
@@ -72,10 +73,53 @@ const businessSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+type Business = mongoose.InferSchemaType<typeof businessSchema>;
 ///// INDICIES /////
 businessSchema.index({ location: '2dsphere' });
 
 ///// MIDDLEWARE /////
+businessSchema.pre('save', async function (next) {
+  // call our geolocation api with address, city, and state to recieve
+  // cleaned up data and coordinate pair
+  const geoData = await addressToGeoData(
+    this.address,
+    this.addressCity,
+    this.addressState
+  );
+  // store data returned from the geolocation api instead of provided data
+  this.address = geoData.name;
+  this.addressCity = geoData.locality;
+  this.addressState = geoData.region_code;
+  this.addressZip = geoData.postal_code;
+  this.location = {
+    type: 'Point',
+    coordinates: [geoData.longitude, geoData.latitude],
+  };
+  return next();
+});
+
+businessSchema.post('findOneAndUpdate', async function (doc, next) {
+  // this is the same code as above, just with 'doc' replacing 'this'
+  // not very DRY, but I couldn't find a better way around mongoose's middleware
+  // call our geolocation api with address, city, and state to recieve
+  // cleaned up data and coordinate pair
+  const geoData = await addressToGeoData(
+    doc.address,
+    doc.addressCity,
+    doc.addressState
+  );
+  // store data returned from the geolocation api instead of provided data
+  doc.address = geoData.name;
+  doc.addressCity = geoData.locality;
+  doc.addressState = geoData.region_code;
+  doc.addressZip = geoData.postal_code;
+  doc.location = {
+    type: 'Point',
+    coordinates: [geoData.longitude, geoData.latitude],
+  };
+  return next();
+});
 
 ///// MODEL /////
 // because we're runing on a serverless framework, it sometimes happens

@@ -1,9 +1,9 @@
 import ApiError from './apiError';
 
 export default async function addressToGeoData(
-  address: String,
-  city: String,
-  state: String
+  address: string,
+  city: string,
+  state: string
 ) {
   const apiKey = process.env.POSITIONSTACK_API_KEY;
   const response = await fetch(

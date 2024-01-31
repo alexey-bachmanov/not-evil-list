@@ -15,7 +15,6 @@ const NewBusinessPage: React.FC = function () {
     address: '',
     addressCity: '',
     addressState: '',
-    addressZip: '',
     phone: '',
     website: '',
     description: '',
@@ -70,7 +69,7 @@ const NewBusinessPage: React.FC = function () {
             />
           </Grid>
           {/* CITY */}
-          <Grid item xs={12} sm={7}>
+          <Grid item xs={10}>
             <TextField
               name="city"
               required
@@ -84,7 +83,7 @@ const NewBusinessPage: React.FC = function () {
             />
           </Grid>
           {/* STATE */}
-          <Grid item xs={4} sm={2}>
+          <Grid item xs={2}>
             <TextField
               name="state"
               required
@@ -94,20 +93,6 @@ const NewBusinessPage: React.FC = function () {
               value={formData.addressState}
               onChange={(e) => {
                 setFormData({ ...formData, addressState: e.target.value });
-              }}
-            />
-          </Grid>
-          {/* ZIPCODE */}
-          <Grid item xs={8} sm={3}>
-            <TextField
-              name="zip"
-              required
-              id="zip"
-              label="Zip Code"
-              fullWidth
-              value={formData.addressZip}
-              onChange={(e) => {
-                setFormData({ ...formData, addressZip: e.target.value });
               }}
             />
           </Grid>

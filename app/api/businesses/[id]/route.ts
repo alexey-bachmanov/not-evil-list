@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isValidObjectId } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import dbConnect from '@/lib/dbConnect';
-import addressToGeoData from '@/lib/addressToGeoData';
 import ApiError from '@/lib/apiError';
 import Business from '@/models/business';
 import User from '@/models/user';
@@ -124,31 +123,18 @@ export async function PUT(req: NextRequest) {
       throw new ApiError('Invalid business ID', 400);
     }
 
-    // use positionStack api to get coordinates
-    const geoData = await addressToGeoData(
-      body.address,
-      body.addressCity,
-      body.addressState
-    );
-
-    // try and store a mix of parsed geodata and input data in the entry
-    const business = await Business.findByIdAndUpdate(
-      businessID,
+    // store input data, missing values are populated by our
+    // pre-save middleware
+    const business = await Business.findOneAndUpdate(
+      { _id: businessID },
       {
         companyName: body.companyName,
-        address: geoData.name,
-        addressCity: geoData.locality,
-        addressState: geoData.region_code,
-        addressZip: geoData.postal_code,
+        address: body.address,
+        addressCity: body.addressCity,
+        addressState: body.addressState,
         phone: body.phone,
         website: body.website,
         description: body.description,
-        location: {
-          type: 'Point',
-          coordinates: [geoData.longitude, geoData.latitude],
-        },
-        ratingsAvg: 4.5,
-        ratingsQty: 0,
       },
       { new: true, runValidators: true }
     );
