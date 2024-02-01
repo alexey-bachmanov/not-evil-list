@@ -1,7 +1,6 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 import SearchResultsList from './SearchResultsList';
-import SearchButtonGroup from './SearchButtonGroup';
 
 // MUI imports
 import Divider from '@mui/material/Divider';
@@ -13,8 +12,6 @@ const SearchDrawer: React.FC = function () {
       <SearchBar />
       <Divider variant="middle" />
       <SearchResultsList />
-      <Divider variant="middle" />
-      <SearchButtonGroup />
     </Box>
   );
 };

@@ -31,6 +31,7 @@ const SearchBar: React.FC = function () {
         label="Search..."
         variant="outlined"
         size="small"
+        aria-label="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         sx={{ flexBasis: '100%', pr: 1 }}

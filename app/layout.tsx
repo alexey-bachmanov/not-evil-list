@@ -1,10 +1,11 @@
 'use client';
 // imports
 import 'leaflet/dist/leaflet.css';
-import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import Providers from '@/store/providers';
 import AlertBar from '@/components/AlertBar';
+import HamburgerMenu from '@/components/HamburgerMenu';
+import LoginDialog from '@/components/LoginDialog';
 
 // import Roboto font using Next.js
 const roboto = Roboto({
@@ -28,8 +29,10 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Providers>
-          <AlertBar />
           {children}
+          <LoginDialog />
+          <AlertBar />
+          <HamburgerMenu />
         </Providers>
       </body>
     </html>
