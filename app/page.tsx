@@ -1,22 +1,20 @@
-'use client';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import Map from '@/components/Map';
+import dynamic from 'next/dynamic';
 import SearchDrawer from '@/components/LandingPage/SearchDrawer';
 import LoginDialog from '@/components/LandingPage/LoginDialog';
+// leaflet assumes window object exists when it first runs, so to
+// avoid SSR errors, we need to avoid even importing our Map component
+// to keep leaflet from running
+// import Map from '@/components/Map';
+const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 // MUI imports
 import Box from '@mui/material/Box';
 
 export default function HomePage() {
-  const isLoginDialogOpen = useSelector(
-    (state: RootState) => state.ui.loginDialog.isOpen
-  );
-
   return (
     <Box component="main" sx={{ display: 'flex' }}>
-      {isLoginDialogOpen ? <LoginDialog /> : null}
+      <LoginDialog />
       <Box sx={{ width: '400px' }}>
         <SearchDrawer />
       </Box>

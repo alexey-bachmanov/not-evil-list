@@ -8,7 +8,7 @@ export type BusinessDataEntry = {
   phone: string;
   website: string | null;
   description: string;
-  location: { type: 'Point'; coordinates: [number] };
+  location: { type: 'Point'; coordinates: [number, number] };
   ratingAvg: number;
   ratingQty: number;
 };

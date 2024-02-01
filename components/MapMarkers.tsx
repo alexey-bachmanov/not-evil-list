@@ -1,12 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { BusinessDataEntry } from '@/types';
 
 // leaflet imports
 import { Marker, Popup } from 'react-leaflet';
 
 const MapMarkers: React.FC = function () {
-  const searchResults: any[] = useSelector(
-    (state: any) => state.search.results
+  const searchResults: BusinessDataEntry[] = useSelector(
+    (state: RootState) => state.search.results
   );
 
   // turn array of search results into array of map markers

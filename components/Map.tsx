@@ -23,16 +23,6 @@ const Map: React.FC = function () {
   const position: LatLngTuple = [40.002, -75.161];
   const zoom = 13;
 
-  // Don't render this component at all on the server
-  if (!window) {
-    return (
-      <div style={{ backgroundColor: 'red' }}>
-        This is being rendered on the server
-      </div>
-    );
-  }
-
-  // Do render it on the client
   return (
     <MapContainer
       center={position}
