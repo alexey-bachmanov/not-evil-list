@@ -43,6 +43,7 @@ const HamburgerMenu: React.FC = function () {
     setAnchorEl(null);
     router.replace('/admin');
   };
+  // auth handlers
   const handleLogin = () => {
     setAnchorEl(null);
     dispatch(uiActions.openDialog());
@@ -62,7 +63,7 @@ const HamburgerMenu: React.FC = function () {
   //  logged in (admin): [Home][Admin][Logout]
   // admin page:
   //  not logged in: [Home][Add a business][Logout]
-  //  logged in as admin:[Home][Add a business][Approve new businesses][Edit a business][]
+  //  logged in as admin:[Home][Add a business][Logout]
 
   // navigation links
   const navMenuJSX = [];
@@ -90,8 +91,6 @@ const HamburgerMenu: React.FC = function () {
       </MenuItem>
     );
   }
-
-  // admin action links
 
   // login/logout links
   const authMenuJSX = [];
