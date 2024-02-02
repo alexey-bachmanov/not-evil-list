@@ -21,12 +21,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     // create new user in our DB
-    const newUser = await User.create({
+    const newUser = new User({
       userName: body.userName,
       email: body.email,
       password: body.password,
       passwordConfirm: body.passwordConfirm,
     });
+    await newUser.save();
 
     // create a response
     const res = NextResponse.json(

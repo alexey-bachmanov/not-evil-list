@@ -99,28 +99,6 @@ businessSchema.pre('save', async function (next) {
   return next();
 });
 
-businessSchema.post('findOneAndUpdate', async function (doc, next) {
-  // this is the same code as above, just with 'doc' replacing 'this'
-  // not very DRY, but I couldn't find a better way around mongoose's middleware
-  // call our geolocation api with address, city, and state to recieve
-  // cleaned up data and coordinate pair
-  const geoData = await addressToGeoData(
-    doc.address,
-    doc.addressCity,
-    doc.addressState
-  );
-  // store data returned from the geolocation api instead of provided data
-  doc.address = geoData.name;
-  doc.addressCity = geoData.locality;
-  doc.addressState = geoData.region_code;
-  doc.addressZip = geoData.postal_code;
-  doc.location = {
-    type: 'Point',
-    coordinates: [geoData.longitude, geoData.latitude],
-  };
-  return next();
-});
-
 ///// MODEL /////
 // because we're runing on a serverless framework, it sometimes happens
 // that this module is run more than once, and we get an error saying

@@ -118,26 +118,26 @@ export async function PUT(req: NextRequest) {
     // get business ID from url - there must be a better way of doing it but I can't find it
     const businessID = req.url.split('/').at(-1);
 
-    // check if it's a valid mongo ID
-    if (!isValidObjectId(businessID)) {
+    // check if it exits and is a valid mongo ID
+    if (!businessID || !isValidObjectId(businessID)) {
       throw new ApiError('Invalid business ID', 400);
     }
 
     // store input data, missing values are populated by our
     // pre-save middleware
-    const business = await Business.findOneAndUpdate(
-      { _id: businessID },
-      {
-        companyName: body.companyName,
-        address: body.address,
-        addressCity: body.addressCity,
-        addressState: body.addressState,
-        phone: body.phone,
-        website: body.website,
-        description: body.description,
-      },
-      { new: true, runValidators: true }
-    );
+    const business = await Business.findById(businessID);
+
+    // edit the business values
+    business.companyName = body.companyName;
+    business.address = body.address;
+    business.addressCity = body.addressCity;
+    business.addressState = body.addressState;
+    business.phone = body.phone;
+    business.website = body.website;
+    business.description = body.description;
+
+    // save the edited business, and trigger our pre-save middleware
+    business.save();
 
     // check if that business actually existed (findByIdAndUpdate would return null)
     if (!business) {
@@ -185,7 +185,7 @@ export async function DELETE(req: NextRequest) {
     const businessID = req.url.split('/').at(-1);
 
     // check if it's a valid mongo ID
-    if (!isValidObjectId(businessID)) {
+    if (!businessID || !isValidObjectId(businessID)) {
       throw new ApiError('Invalid business ID', 400);
     }
 

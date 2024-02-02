@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     }
     // store input data, missing values are populated by our
     // pre-save middleware
-    const newBusiness = await Business.create({
+    const newBusiness = new Business({
       companyName: body.companyName,
       address: body.address,
       addressCity: body.addressCity,
@@ -63,6 +63,8 @@ export async function POST(req: NextRequest) {
       website: body.website,
       description: body.description,
     });
+    await newBusiness.save();
+
     return NextResponse.json(
       {
         success: true,
