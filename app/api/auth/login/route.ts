@@ -46,7 +46,6 @@ export async function POST(req: NextRequest) {
 
     return res;
   } catch (err: any) {
-    console.error(err);
     // catch any errors we created ourselves
     if (err.isOperational) {
       return NextResponse.json(
@@ -56,6 +55,7 @@ export async function POST(req: NextRequest) {
     }
 
     // catch any internal errors
+    console.error(err);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

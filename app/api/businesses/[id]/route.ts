@@ -5,47 +5,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidObjectId } from 'mongoose';
-import jwt from 'jsonwebtoken';
 import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
+import authCheck from '@/lib/authCheck';
 import Business from '@/models/business';
-import User from '@/models/user';
-
-///// AUTH CHECK UTIL /////
-const authCheck = async function (req: NextRequest) {
-  // takes a NextRequest object, checks for the presence of a JWT,
-  // decodes it, and checks the roles of that user
-  // TODO: turn this functionality into middleware?
-
-  // extract jwt cookie from the request object
-  const cookie = req.cookies.get('jwt');
-  if (!cookie) {
-    throw new ApiError('No json web token attached to request', 400);
-  }
-  // extract user id from 'jwt' cookie
-  const payload = jwt.decode(cookie.value);
-  if (typeof payload === 'string' || !payload?.id) {
-    throw new ApiError(
-      'Json web token badly formed: is not an object or does not contain id field',
-      400
-    );
-  }
-  const userID = payload.id;
-
-  // check if user with that id exists and is active
-  // at this point in the code, we should already be connected to DB
-  const user = await User.findById(userID, {}).select('+active');
-  if (!user || !user.active) {
-    return { isUser: false, isAdmin: false };
-  }
-  // check if that user is an admin
-  if (user.role === 'admin') {
-    return { isUser: true, isAdmin: true };
-  }
-
-  // otherwise, our user is a regular user
-  return { isUser: true, isAdmin: false };
-};
 
 ///// GET (GET BUSINESS DETAILS, BY ID) /////
 export async function GET(req: NextRequest) {
