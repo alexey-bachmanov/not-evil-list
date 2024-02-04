@@ -7,6 +7,9 @@ import AlertBar from '@/components/AlertBar';
 import HamburgerMenu from '@/components/HamburgerMenu';
 import LoginDialog from '@/components/LoginDialog';
 
+// MUI imports
+import Box from '@mui/material/Box';
+
 // import Roboto font using Next.js
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -29,10 +32,12 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Providers>
-          {children}
-          <LoginDialog />
-          <AlertBar />
-          <HamburgerMenu />
+          <Box component="main" sx={{ width: '100vw', height: '100vh' }}>
+            {children}
+            <LoginDialog />
+            <AlertBar />
+            <HamburgerMenu />
+          </Box>
         </Providers>
       </body>
     </html>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, authActions, uiActions } from '@/store';
+import sleep from '@/lib/sleep';
 
 // MUI imports
 import Menu, { MenuProps } from '@mui/material/Menu';
@@ -26,6 +27,16 @@ const HamburgerMenu: React.FC = function () {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isOpen = Boolean(anchorEl);
   const auth = useSelector((state: RootState) => state.auth);
+  const isInAdminMode = useSelector(
+    (state: RootState) => state.ui.isInAdminMode
+  );
+  // decouple menu text state from redux state, since we want to enter
+  // admin mode immediately, but wait for the menu to close before changing
+  // the menu text
+  // this syntax at least assures us that the states match on component mount
+  const [adminModeText, setAdminModeText] = useState<
+    'Admin mode' | 'Exit Admin Mode'
+  >(isInAdminMode ? 'Exit Admin Mode' : 'Admin mode');
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const pathname = usePathname();
@@ -39,9 +50,16 @@ const HamburgerMenu: React.FC = function () {
     setAnchorEl(null);
     router.replace('/');
   };
-  const handleNavigateToAdmin = () => {
+  // admin mode handlers
+  const handleToggleAdminMode = async () => {
     setAnchorEl(null);
-    router.replace('/admin');
+    // immediately change the redux state
+    dispatch(uiActions.toggleAdminMode());
+    // wait 300ms for menu to close before changing text
+    await sleep(300);
+    setAdminModeText(
+      adminModeText === 'Admin mode' ? 'Exit Admin Mode' : 'Admin mode'
+    );
   };
   // auth handlers
   const handleLogin = () => {
@@ -56,41 +74,36 @@ const HamburgerMenu: React.FC = function () {
   // homepage:
   //  not logged in: [Add a business][Login]
   //  logged in (user): [Add a business][Logout]
-  //  logged in (admin): [Add a business][Admin][Logout]
+  //  logged in (admin): [Add a business][Admin mode][Logout]
+  //  logged in (admin) and in admin mode: [Add a business][Exit admin mode][Logout]
   // add page:
   //  not logged in: [Home][Login]
   //  logged in (user): [Home][Logout]
-  //  logged in (admin): [Home][Admin][Logout]
-  // admin page:
-  //  not logged in: [Home][Add a business][Logout]
-  //  logged in as admin:[Home][Add a business][Logout]
+  //  logged in (admin): [Home][Logout]
 
   // navigation links
   const navMenuJSX = [];
-  if (pathname === '/admin' || pathname === '/new-business') {
+  if (pathname === '/new-business') {
     navMenuJSX.push(
       <MenuItem key="home" onClick={handleNavigateToHome}>
         Home
       </MenuItem>
     );
   }
-  if (pathname === '/' || pathname === '/admin') {
+  if (pathname === '/') {
     navMenuJSX.push(
       <MenuItem key="add" onClick={handleNavigateToAddItem}>
         Add a business
       </MenuItem>
     );
   }
-  if (
-    auth.user.role === 'admin' &&
-    (pathname === '/' || pathname === '/new-business')
-  ) {
-    navMenuJSX.push(
-      <MenuItem key="admin" onClick={handleNavigateToAdmin}>
-        Admin
-      </MenuItem>
-    );
-  }
+
+  // admin mode controls
+  const adminModeControlsJSX = (
+    <MenuItem key="admin-mode" onClick={handleToggleAdminMode}>
+      {adminModeText}
+    </MenuItem>
+  );
 
   // login/logout links
   const authMenuJSX = [];
@@ -135,6 +148,7 @@ const HamburgerMenu: React.FC = function () {
         MenuListProps={{ 'aria-labelledby': 'menu-button' }}
       >
         {navMenuJSX}
+        {auth.user.role === 'admin' ? adminModeControlsJSX : null}
         <Divider variant="middle" />
         {authMenuJSX}
       </StyledMenu>

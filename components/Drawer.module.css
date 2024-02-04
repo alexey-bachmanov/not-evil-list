@@ -1,0 +1,93 @@
+.drawer {
+  height: 100vh;
+  width: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: initial;
+}
+
+.layer-1 {
+  z-index: 700;
+  transform: translate(0%, 0%);
+}
+
+.layer-2 {
+  z-index: 699;
+  transform: translate(100%, 0%);
+}
+
+.layer-3 {
+  z-index: 698;
+  transform: translate(200%, 0%);
+}
+
+.entering {
+  display: block;
+  transform: translate(-100%, 0%);
+}
+
+.entered {
+  display: block;
+}
+
+.exiting {
+  display: block;
+  transform: translate(-100%, 0%);
+}
+
+.exited {
+  display: none;
+  transform: translate(-100%, 0%);
+}
+
+@media only screen and (max-width: 768px) {
+  .drawer {
+    width: 100vw;
+    top: initial;
+    left: 0;
+    bottom: 0;
+  }
+
+  .full-height {
+    height: 100%;
+  }
+
+  .half-height {
+    height: 50%;
+  }
+
+  .layer-1 {
+    z-index: 700;
+    transform: translate(0%, 0%);
+  }
+
+  .layer-2 {
+    z-index: 701;
+    transform: translate(0%, 0%);
+  }
+
+  .layer-3 {
+    z-index: 702;
+    transform: translate(0%, 0%);
+  }
+
+  .entering {
+    display: block;
+    transform: translate(0%, 100%);
+  }
+
+  .entered {
+    display: block;
+  }
+
+  .exiting {
+    display: block;
+    transform: translate(0%, 100%);
+  }
+
+  .exited {
+    display: none;
+    transform: translate(0%, 100%);
+  }
+}

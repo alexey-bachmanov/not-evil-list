@@ -1,18 +1,27 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 import SearchResultsList from './SearchResultsList';
+import Drawer from './Drawer';
 
 // MUI imports
 import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 const SearchDrawer: React.FC = function () {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <Drawer
+      isOpen={true}
+      variant="permanent"
+      layer={1}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <SearchBar />
       <Divider variant="middle" />
       <SearchResultsList />
-    </Box>
+    </Drawer>
   );
 };
 

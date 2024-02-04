@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import DetailsDrawer from '@/components/DetailsDrawer';
 import SearchDrawer from '@/components/SearchDrawer';
 // leaflet assumes window object exists when it first runs, so to
 // avoid SSR errors, we need to avoid even importing our Map component
@@ -8,17 +9,13 @@ import SearchDrawer from '@/components/SearchDrawer';
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 // MUI imports
-import Box from '@mui/material/Box';
 
 export default function HomePage() {
   return (
-    <Box component="main" sx={{ display: 'flex' }}>
-      <Box sx={{ width: '400px' }}>
-        <SearchDrawer />
-      </Box>
-      <Box sx={{ flexBasis: '100%' }}>
-        <Map />
-      </Box>
-    </Box>
+    <>
+      <SearchDrawer />
+      <DetailsDrawer />
+      <Map />
+    </>
   );
 }

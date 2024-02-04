@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
 // slice imports, including async thunks
-import searchSlice, { executeSearch } from './searchSlice';
+import searchSlice, { executeSearch, getDetails } from './searchSlice';
 import authSlice, { login, logout, signup } from './authSlice';
 import uiSlice from './uiSlice';
 
@@ -16,7 +16,11 @@ export const store = configureStore({
   },
 });
 
-export const searchActions = { ...searchSlice.actions, executeSearch };
+export const searchActions = {
+  ...searchSlice.actions,
+  executeSearch,
+  getDetails,
+};
 export const authActions = { ...authSlice.actions, login, logout, signup };
 export const uiActions = uiSlice.actions;
 

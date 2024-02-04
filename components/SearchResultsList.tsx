@@ -6,6 +6,7 @@ import SearchResult from './SearchResult';
 
 // MUI imports
 import List from '@mui/material/List';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SearchResultsList: React.FC = function () {
   // load stuff from our redux store
@@ -21,7 +22,16 @@ const SearchResultsList: React.FC = function () {
   // determine what we're gonna show in the results list
   let displayedJSX;
   if (loadingStatus === 'loading') {
-    displayedJSX = <p>Loading...</p>;
+    displayedJSX = (
+      <CircularProgress
+        sx={{
+          position: 'relative',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%. -50%)',
+        }}
+      />
+    );
   }
   if (loadingStatus === 'failure') {
     displayedJSX = <p>{errorMessage}</p>;
