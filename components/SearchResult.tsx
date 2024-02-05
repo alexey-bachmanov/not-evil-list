@@ -24,6 +24,7 @@ const SearchResult: React.FC<{ business: BusinessDataEntry }> = function ({
   // handlers
   const handleClick = () => {
     // open the detail drawer and start loading
+    dispatch(uiActions.setSelectedBusinessId(business._id));
     dispatch(uiActions.setDetailsDrawerOpen(true));
     dispatch(searchActions.getDetails(business._id));
   };

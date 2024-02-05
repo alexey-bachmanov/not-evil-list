@@ -14,11 +14,6 @@
   - Fill out EditsDrawer component
   - Make scrollbars look better
 
-## UI behaviors to implement
-
-- Clicking on a marker selects that business and brings up its details drawer, changes marker color
-- Clicking in search results selects that business and brings up its detail drawer, changes marker color
-
 ## Search behaviors to implement
 
 - Searching "X" searches DB by company name and category (e.g. 'restaurant' or 'bar')

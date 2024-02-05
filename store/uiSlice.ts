@@ -15,6 +15,7 @@ const initialState: {
   editsDrawer: {
     isOpen: boolean;
   };
+  selectedBusinessID: string | undefined;
 } = {
   loginDialog: { isOpen: false, type: 'login' },
   alert: {
@@ -29,6 +30,7 @@ const initialState: {
   editsDrawer: {
     isOpen: false,
   },
+  selectedBusinessID: undefined,
 };
 
 const uiSlice = createSlice({
@@ -69,16 +71,28 @@ const uiSlice = createSlice({
     // details drawer stuff
     setDetailsDrawerOpen(state, action: PayloadAction<boolean>) {
       // when opening, we want to open only the details drawer,
-      // when closing, we want to close both the details drawer and edits drawer
-      if (action.payload) {
+      if (!state.detailsDrawer.isOpen && action.payload) {
+        // drawer is closed and we want it open
         state.detailsDrawer.isOpen = true;
-      } else {
+      }
+      // when closing, we want to close both the details drawer and edits drawer
+      if (state.detailsDrawer.isOpen && !action.payload) {
+        // drawer is open and we want it closed
         state.detailsDrawer.isOpen = false;
         state.editsDrawer.isOpen = false;
       }
+      // when the drawer is already in whatever state the payload desires, do nothing
     },
     setEditsDrawerOpen(state, action: PayloadAction<boolean>) {
-      state.editsDrawer.isOpen = action.payload;
+      if (
+        (!state.editsDrawer.isOpen && action.payload) || // drawer is closed and we want it open
+        (state.editsDrawer.isOpen && !action.payload) // drawer is open and we want it closed
+      ) {
+        state.editsDrawer.isOpen = action.payload;
+      }
+    },
+    setSelectedBusinessId(state, action: PayloadAction<string>) {
+      state.selectedBusinessID = action.payload;
     },
   },
 });

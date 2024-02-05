@@ -11,13 +11,13 @@ import 'leaflet/dist/leaflet.css';
 import MapMarkers from './MapMarkers';
 
 // create custom icon
-L.Marker.prototype.options.icon = L.icon({
-  iconUrl: 'images/marker-icon.png',
-  shadowUrl: 'images/marker-shadow.png',
-  iconAnchor: [12, 41],
-  shadowAnchor: [12, 41],
-  popupAnchor: [0, -36],
-});
+// L.Marker.prototype.options.icon = L.icon({
+//   iconUrl: 'images/marker-icon.png',
+//   shadowUrl: 'images/marker-shadow.png',
+//   iconAnchor: [12, 41],
+//   shadowAnchor: [12, 41],
+//   popupAnchor: [0, -36],
+// });
 
 const Map: React.FC = function () {
   const position: LatLngTuple = [40.002, -75.161];
