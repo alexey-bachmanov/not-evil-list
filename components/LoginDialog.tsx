@@ -18,7 +18,6 @@ const LoginDialog: React.FC = function () {
   const dialogType = useSelector(
     (state: RootState) => state.ui.loginDialog.type
   );
-  const authStatus = useSelector((state: RootState) => state.auth.status);
 
   // set up dispatch
   const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +45,8 @@ const LoginDialog: React.FC = function () {
     }
     // close the dialog window and reset state to 'login'
     dispatch(uiActions.closeDialog());
+    // clear the data from the form
+    setUserInfo({ email: '', userName: '', password: '', passwordConfirm: '' });
   };
 
   const handleSwitchMode = () => {

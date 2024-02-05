@@ -1,11 +1,18 @@
 ## To-do
 
-- Admin "review new submissions" functionality
-- Admin "create/update/delete" functionality
-- Implement search functions besides "get all"
-- Implement reviews
-- Make SearchResult component look better
-- Make scrollbars look better
+- Major implementations:
+  - Implement search functions besides "get all"
+  - implement catagories for businesses
+  - Implement reviews
+- Minor implementation:
+  - Admin "review new submissions" functionality
+  - Admin "update/delete" functionality
+  - Close on background click functionality for drawers
+- Look and feel:
+  - Make SearchResult component look better
+  - Fill out DetailsDrawer component
+  - Fill out EditsDrawer component
+  - Make scrollbars look better
 
 ## UI behaviors to implement
 
