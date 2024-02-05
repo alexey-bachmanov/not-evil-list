@@ -3,15 +3,31 @@
 // app and I was tired of fighting with MUI's drawers and their limitations
 // slides in from the left on desktop, underneath previous drawers
 // slides in from the bottom on mobile and covers previous drawers
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import sleep from '@/lib/sleep';
 import classes from './Drawer.module.css';
 
 // MUI imports
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Slide from '@mui/material/Slide';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
+///// usePrevious HOOK /////
+// stores a value (like a state) in a ref, which *is not* recomputed on
+// component update, allowing us to access the previous state of a component
+const usePrevious = function (value: any) {
+  const ref = useRef<any>();
+  // the current value in ref is immediately returned, and then
+  // useEffect runs to update it with the next value
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+};
+
+///// DRAWER COMPONENT /////
 const Drawer: React.FC<{
   children: React.ReactNode;
   variant: 'temporary' | 'permanent';
@@ -41,7 +57,11 @@ const Drawer: React.FC<{
         // set this component to be rendered in the DOM
         setTransitionState('entering');
         // wait a moment for it to render
-        await sleep(30);
+        // this is *such* a hack. what I wanted to do is listen for the component to update,
+        // and *then* set the state to 'entered', but that would make our state depend on component
+        // render, and it is a bad pattern to set state inside the code that runs on every component update
+        // so instead we just wait 50ms for react to do all its component updates
+        await sleep(50);
         // and set it to slide open
         setTransitionState('entered');
       }
@@ -56,7 +76,6 @@ const Drawer: React.FC<{
         setTransitionState('exited');
       }
     };
-
     if (isOpen) {
       slideOpen();
     } else {
@@ -87,16 +106,20 @@ const Drawer: React.FC<{
   }`;
 
   return (
-    <div className={styles} style={{ transition: `all ${timeout}ms` }}>
-      <Paper sx={{ width: '100%', height: '100%', ...sx }}>
-        {variant === 'temporary' && (
-          <Button onClick={handleClose}>
-            <KeyboardDoubleArrowLeftIcon />
-          </Button>
-        )}
-        {children}
-      </Paper>
-    </div>
+    <>
+      {transitionState !== 'exited' && (
+        <div className={styles} style={{ transition: `all ${timeout}ms` }}>
+          <Paper sx={{ width: '100%', height: '100%', ...sx }}>
+            {variant === 'temporary' && (
+              <Button onClick={handleClose} fullWidth>
+                <KeyboardDoubleArrowLeftIcon />
+              </Button>
+            )}
+            {children}
+          </Paper>
+        </div>
+      )}
+    </>
   );
 };
 

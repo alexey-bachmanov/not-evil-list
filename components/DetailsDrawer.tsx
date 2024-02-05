@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, uiActions } from '@/store';
 
 // MUI imports
-import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const DetailsDrawer: React.FC = function () {
   const loadingStatus = useSelector(
@@ -34,10 +34,11 @@ const DetailsDrawer: React.FC = function () {
       {loadingStatus === 'loading' && (
         <CircularProgress
           sx={{
+            display: 'block',
             position: 'relative',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%. -50%)',
+            transform: 'translate(-50% -50%)',
           }}
         />
       )}
@@ -46,6 +47,9 @@ const DetailsDrawer: React.FC = function () {
         <>
           <Typography>{business?.companyName}</Typography>
           <Typography>{business?.address}</Typography>
+          <Button onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}>
+            Edit
+          </Button>
         </>
       )}
     </Drawer>
