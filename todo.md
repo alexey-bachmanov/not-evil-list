@@ -12,7 +12,6 @@
   - Make SearchResult component look better
   - Fill out DetailsDrawer component
   - Fill out EditsDrawer component
-  - Make scrollbars look better
 
 ## Search behaviors to implement
 
