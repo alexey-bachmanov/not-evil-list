@@ -8,6 +8,7 @@
   - Admin "review new submissions" functionality
   - Admin "update/delete" functionality
   - Close on background click functionality for drawers
+  - User feedback and navigate away on new business submission
 - Look and feel:
   - Make SearchResult component look better
   - Fill out DetailsDrawer component

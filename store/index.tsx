@@ -6,6 +6,11 @@ import { Provider } from 'react-redux';
 import searchSlice, { executeSearch, getDetails } from './searchSlice';
 import authSlice, { login, logout, signup } from './authSlice';
 import uiSlice from './uiSlice';
+import adminSlice, {
+  editBusiness,
+  deleteBusiness,
+  approveBusiness,
+} from './adminSlice';
 
 ///// STORE COMPOSITION /////
 export const store = configureStore({
@@ -13,6 +18,7 @@ export const store = configureStore({
     search: searchSlice.reducer,
     auth: authSlice.reducer,
     ui: uiSlice.reducer,
+    admin: adminSlice.reducer,
   },
 });
 
@@ -23,6 +29,12 @@ export const searchActions = {
 };
 export const authActions = { ...authSlice.actions, login, logout, signup };
 export const uiActions = uiSlice.actions;
+export const adminActions = {
+  ...adminSlice.actions,
+  editBusiness,
+  deleteBusiness,
+  approveBusiness,
+};
 
 // export types
 export type RootState = ReturnType<typeof store.getState>;

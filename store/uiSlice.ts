@@ -8,7 +8,6 @@ const initialState: {
     type: 'success' | 'info' | 'warning' | 'error';
     message: string;
   };
-  isInAdminMode: boolean;
   detailsDrawer: {
     isOpen: boolean;
   };
@@ -23,7 +22,6 @@ const initialState: {
     type: 'success',
     message: '',
   },
-  isInAdminMode: false,
   detailsDrawer: {
     isOpen: false,
   },
@@ -63,10 +61,6 @@ const uiSlice = createSlice({
     },
     closeAlert(state) {
       state.alert.isOpen = false;
-    },
-    // admin mode stuff
-    toggleAdminMode(state) {
-      state.isInAdminMode = !state.isInAdminMode;
     },
     // details drawer stuff
     setDetailsDrawerOpen(state, action: PayloadAction<boolean>) {

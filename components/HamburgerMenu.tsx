@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch, authActions, uiActions } from '@/store';
+import {
+  RootState,
+  AppDispatch,
+  authActions,
+  uiActions,
+  adminActions,
+} from '@/store';
 import sleep from '@/lib/sleep';
 
 // MUI imports
@@ -28,7 +34,7 @@ const HamburgerMenu: React.FC = function () {
   const isOpen = Boolean(anchorEl);
   const auth = useSelector((state: RootState) => state.auth);
   const isInAdminMode = useSelector(
-    (state: RootState) => state.ui.isInAdminMode
+    (state: RootState) => state.admin.isInAdminMode
   );
   // decouple menu text state from redux state, since we want to enter
   // admin mode immediately, but wait for the menu to close before changing
@@ -54,7 +60,7 @@ const HamburgerMenu: React.FC = function () {
   const handleToggleAdminMode = async () => {
     setAnchorEl(null);
     // immediately change the redux state
-    dispatch(uiActions.toggleAdminMode());
+    dispatch(adminActions.toggleAdminMode());
     // wait 300ms for menu to close before changing text
     await sleep(300);
     setAdminModeText(

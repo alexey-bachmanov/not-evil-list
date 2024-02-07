@@ -2,7 +2,7 @@
 import React from 'react';
 import Drawer from './Drawer';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch, uiActions } from '@/store';
+import { RootState, AppDispatch, uiActions, adminActions } from '@/store';
 
 // MUI imports
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,6 +21,10 @@ const DetailsDrawer: React.FC = function () {
   );
   const isOpen = useSelector(
     (state: RootState) => state.ui.detailsDrawer.isOpen
+  );
+  const userRole = useSelector((state: RootState) => state.auth.user.role);
+  const isInAdminMode = useSelector(
+    (state: RootState) => state.admin.isInAdminMode
   );
   const dispatch = useDispatch<AppDispatch>();
 
@@ -47,9 +51,24 @@ const DetailsDrawer: React.FC = function () {
         <>
           <Typography>{business?.companyName}</Typography>
           <Typography>{business?.address}</Typography>
-          <Button onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}>
-            Edit
-          </Button>
+          {userRole === 'admin' && isInAdminMode && (
+            <>
+              <Button
+                fullWidth
+                onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}
+              >
+                Edit
+              </Button>
+              <Button
+                fullWidth
+                onClick={() =>
+                  dispatch(adminActions.deleteBusiness(business?._id))
+                }
+              >
+                Delete
+              </Button>
+            </>
+          )}
         </>
       )}
     </Drawer>
