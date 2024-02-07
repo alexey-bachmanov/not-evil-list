@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
+import ApiError from '@/lib/apiError';
+
+const isEmail = function (val: string) {
+  return validator.isEmail(val);
+};
 
 const userSchema = new mongoose.Schema({
   userName: {
@@ -16,7 +21,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
     validate: {
-      validator: validator.isEmail,
+      validator: isEmail,
       message: 'Valid email is required',
     },
   },
@@ -37,13 +42,6 @@ const userSchema = new mongoose.Schema({
     // required INPUT, but not required to actually be in the database
     type: String,
     required: [true, 'Password is required'],
-    validate: {
-      // only works on .create and .save
-      validator: function (val) {
-        return val === this.password;
-      },
-      message: 'Passwords do not match',
-    },
   },
   active: {
     type: Boolean,
@@ -53,6 +51,13 @@ const userSchema = new mongoose.Schema({
 });
 
 ///// MIDDLEWARE /////
+// check if password and passwordConfirm match
+userSchema.pre('save', async function (next) {
+  if (this.password !== this.passwordConfirm) {
+    throw new ApiError('Passwords do not match', 400);
+  }
+  next();
+});
 // password encryption
 userSchema.pre('save', async function (next) {
   // hash password
@@ -78,3 +83,5 @@ userSchema.methods.passwordMatch = async function (
 // the existing model, and if it can't find it, creates a new one.
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 export default User;
+// export types
+export type User = mongoose.InferSchemaType<typeof userSchema>;

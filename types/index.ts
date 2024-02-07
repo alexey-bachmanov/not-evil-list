@@ -31,3 +31,15 @@ export type BusinessDetails = {
   ratingAvg: number;
   ratingQty: number;
 };
+
+// types for API responses
+export type AppApiResponse = {
+  getBusinessList: {};
+  getBusinessDetails: {};
+  postNewBusiness: {};
+  deleteBusiness: {};
+  putBusiness: {};
+  login: {};
+  logout: {};
+  signup: {};
+};

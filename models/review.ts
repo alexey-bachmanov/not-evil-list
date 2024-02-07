@@ -11,3 +11,5 @@ const reviewSchema = new mongoose.Schema({});
 // the existing model, and if it can't find it, creates a new one.
 const Review = mongoose.models.Review || mongoose.model('Review', reviewSchema);
 export default Review;
+// export types
+export type Review = mongoose.InferSchemaType<typeof reviewSchema>;

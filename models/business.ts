@@ -74,7 +74,6 @@ const businessSchema = new mongoose.Schema({
   },
 });
 
-type Business = mongoose.InferSchemaType<typeof businessSchema>;
 ///// INDICIES /////
 businessSchema.index({ location: '2dsphere' });
 
@@ -107,3 +106,5 @@ businessSchema.pre('save', async function (next) {
 const Business =
   mongoose.models.Business || mongoose.model('Business', businessSchema);
 export default Business;
+// export types
+export type Business = mongoose.InferSchemaType<typeof businessSchema>;
