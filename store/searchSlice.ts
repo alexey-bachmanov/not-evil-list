@@ -1,7 +1,7 @@
 import { AppApiResponse, BusinessDataEntry, BusinessDetails } from '@/types';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uiActions } from '.';
-import { fetchData } from '@/lib/fetchData';
+import fetchData from '@/lib/fetchData';
 import { BusinessType } from '@/models/business';
 
 ///// THUNKS /////

@@ -10,7 +10,7 @@
 // ↑ apiData will either be ApiSuccessShape or ApiFailShape
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 
-export async function fetchData<InputType, ExpectedReturnType>(
+export default async function fetchData<InputType, ExpectedReturnType>(
   url: string,
   body?: InputType,
   options?: RequestInit

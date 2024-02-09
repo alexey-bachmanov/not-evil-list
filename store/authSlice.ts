@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uiActions } from '.';
-import { fetchData } from '@/lib/fetchData';
+import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 
 ///// THUNKS /////
