@@ -4,14 +4,12 @@
 // slides in from the left on desktop, underneath previous drawers
 // slides in from the bottom on mobile and covers previous drawers
 import React, { useState, useEffect, useRef } from 'react';
-import { Transition } from 'react-transition-group';
 import sleep from '@/lib/sleep';
 import classes from './Drawer.module.css';
 
 // MUI imports
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Slide from '@mui/material/Slide';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 ///// usePrevious HOOK /////
