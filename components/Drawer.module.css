@@ -27,12 +27,10 @@
   transform: translate(0%, 0%);
 }
 
-.entered {
-  display: block;
-}
+/* .entered {
+} */
 
 .exiting {
-  display: block;
   transform: translate(0%, 0%);
 }
 
@@ -73,16 +71,13 @@
   }
 
   .entering {
-    display: block;
     transform: translate(0%, 100%);
   }
 
-  .entered {
-    display: block;
-  }
+  /* .entered {
+  } */
 
   .exiting {
-    display: block;
     transform: translate(0%, 100%);
   }
 

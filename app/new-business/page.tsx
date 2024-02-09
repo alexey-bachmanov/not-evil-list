@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Logo from '@/components/Logo';
-import { fetchData } from '@/lib/fetchData';
+import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';

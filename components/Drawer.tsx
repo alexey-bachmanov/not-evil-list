@@ -106,16 +106,18 @@ const Drawer: React.FC<{
   return (
     <>
       {transitionState !== 'exited' && (
-        <div className={styles} style={{ transition: `all ${timeout}ms` }}>
-          <Paper sx={{ width: '100%', height: '100%', ...sx }}>
-            {variant === 'temporary' && (
-              <Button onClick={handleClose} fullWidth>
-                <KeyboardDoubleArrowLeftIcon />
-              </Button>
-            )}
-            {children}
-          </Paper>
-        </div>
+        <Paper
+          sx={{ ...sx }}
+          className={styles}
+          style={{ transition: `all ${timeout}ms` }}
+        >
+          {variant === 'temporary' && (
+            <Button onClick={handleClose} fullWidth>
+              <KeyboardDoubleArrowLeftIcon />
+            </Button>
+          )}
+          {children}
+        </Paper>
       )}
     </>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
-import { BusinessDataEntry } from '@/types';
+import { BusinessType } from '@/models/business';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, searchActions, uiActions } from '@/store';
+import formatPhoneNumber from '@/lib/formatPhoneNumber';
 
 // MUI imports
 import Grid from '@mui/material/Grid';
@@ -10,15 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
 
-const formatPhoneNumber = function (num: String) {
-  const numString = String(num);
-  return `\(${numString.slice(0, 3)}\) ${numString.slice(
-    3,
-    6
-  )}-${numString.slice(6)}`;
-};
-
-const SearchResult: React.FC<{ business: BusinessDataEntry }> = function ({
+const SearchResult: React.FC<{ business: BusinessType }> = function ({
   business,
 }) {
   const dispatch = useDispatch<AppDispatch>();

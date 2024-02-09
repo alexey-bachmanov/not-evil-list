@@ -3,11 +3,17 @@ import React from 'react';
 import Drawer from './Drawer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, uiActions, adminActions } from '@/store';
+import formatPhoneNumber from '@/lib/formatPhoneNumber';
 
 // MUI imports
+import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Divider from '@mui/material/Divider';
+import Rating from '@mui/material/Rating';
+import List from '@mui/material/List';
 
 const DetailsDrawer: React.FC = function () {
   const loadingStatus = useSelector(
@@ -28,12 +34,76 @@ const DetailsDrawer: React.FC = function () {
   );
   const dispatch = useDispatch<AppDispatch>();
 
+  const typoMargins = 1;
+  const sectionGap = 1.5;
+  const successContentsJSX = (
+    <>
+      {/* TITLE */}
+      <Typography variant="h6">{business?.companyName}</Typography>
+      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      {/* TAGS */}
+      <Typography variant="caption">Tags go here...</Typography>
+      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      {/* OVERVIEW */}
+      <Typography variant="caption" textAlign="right">
+        Overview
+      </Typography>
+      <Typography variant="body2">{business?.description}</Typography>
+      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      {/* DETAILS */}
+      <Typography variant="caption" textAlign="right">
+        Details
+      </Typography>
+      <Typography variant="subtitle2">{business?.address}</Typography>
+      <Typography variant="subtitle2">{`${business?.addressCity}, ${business?.addressState} ${business?.addressZip}`}</Typography>
+      <Typography variant="subtitle2">
+        {formatPhoneNumber(business?.phone)}
+      </Typography>
+      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      {/* REVIEWS */}
+      <Typography variant="caption" textAlign="right">
+        Reviews
+      </Typography>
+      <Rating
+        name={`${business?.companyName}-rating`}
+        value={business?.ratingAvg}
+        precision={0.1}
+        readOnly
+        sx={{ marginLeft: 'auto', marginRight: 'auto' }}
+      />
+      <List sx={{ flexBasis: '100%' }}></List>
+
+      {userRole === 'admin' && isInAdminMode && (
+        <ButtonGroup>
+          <Button
+            fullWidth
+            onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}
+          >
+            Edit
+          </Button>
+          <Button
+            fullWidth
+            onClick={() => dispatch(adminActions.deleteBusiness(business?._id))}
+          >
+            Delete
+          </Button>
+        </ButtonGroup>
+      )}
+    </>
+  );
+
   return (
     <Drawer
       isOpen={isOpen}
       variant="temporary"
       layer={2}
       onClose={() => dispatch(uiActions.setDetailsDrawerOpen(false))}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: typoMargins,
+        height: '100%',
+      }}
     >
       {loadingStatus === 'loading' && (
         <CircularProgress
@@ -42,35 +112,12 @@ const DetailsDrawer: React.FC = function () {
             position: 'relative',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50% -50%)',
+            transform: 'translate(-50%, -50%)',
           }}
         />
       )}
       {loadingStatus === 'failure' && error}
-      {loadingStatus === 'success' && (
-        <>
-          <Typography>{business?.companyName}</Typography>
-          <Typography>{business?.address}</Typography>
-          {userRole === 'admin' && isInAdminMode && (
-            <>
-              <Button
-                fullWidth
-                onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}
-              >
-                Edit
-              </Button>
-              <Button
-                fullWidth
-                onClick={() =>
-                  dispatch(adminActions.deleteBusiness(business?._id))
-                }
-              >
-                Delete
-              </Button>
-            </>
-          )}
-        </>
-      )}
+      {loadingStatus === 'success' && successContentsJSX}
     </Drawer>
   );
 };

@@ -5,7 +5,6 @@ import Drawer from './Drawer';
 
 // MUI imports
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
 
 const SearchDrawer: React.FC = function () {
   return (

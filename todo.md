@@ -9,7 +9,6 @@
   - Admin "update" functionality
   - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
-  - Fill out DetailsDrawer component
   - Fill out EditsDrawer component
   - Closing a details drawer should deselect its matching map pin
   - Disable 'submit' button on new business submission
@@ -21,7 +20,6 @@
   - Audit for keyboard navigation
 - Bugs:
   - 'Admin mode' state persits on logout
-  - Loading spinners aren't centered in drawers
 
 ## Search behaviors to implement
 
