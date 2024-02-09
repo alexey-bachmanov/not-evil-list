@@ -9,7 +9,6 @@
   - Admin "update" functionality
   - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
-  - Make SearchResult component look better
   - Fill out DetailsDrawer component
   - Fill out EditsDrawer component
   - Closing a details drawer should deselect its matching map pin
