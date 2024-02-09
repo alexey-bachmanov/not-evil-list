@@ -5,7 +5,7 @@
 // appropriate types in both the frontend and backend of our application
 import { NextRequest } from 'next/server';
 
-export async function parseBody<ExpectedReturnType>(
+export default async function parseBody<ExpectedReturnType>(
   req: NextRequest
 ): Promise<ExpectedReturnType> {
   return await req.json();

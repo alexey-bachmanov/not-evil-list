@@ -6,7 +6,7 @@ import User, { IUser, UserType } from '@/models/user';
 import ApiError from '@/lib/apiError';
 import createSendToken from '@/lib/createSendToken';
 import { AppApiRequest, AppApiResponse } from '@/types';
-import { parseBody } from '@/lib/parseBody';
+import parseBody from '@/lib/parseBody';
 
 ///// POST (SIGN UP) /////
 export async function POST(req: NextRequest) {

@@ -7,7 +7,7 @@ import Business, { BusinessType, IBusiness } from '@/models/business';
 import queryStringToMongoFilter from '@/lib/queryStringToMongoFilter';
 import ApiError from '@/lib/apiError';
 import { AppApiRequest, AppApiResponse } from '@/types';
-import { parseBody } from '@/lib/parseBody';
+import parseBody from '@/lib/parseBody';
 
 ///// GET (RETRIEVE ALL BUSINESSES) /////
 export async function GET(req: NextRequest) {
