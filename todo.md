@@ -6,18 +6,23 @@
   - Implement reviews
 - Minor implementation:
   - Admin "review new submissions" functionality
-  - Admin "update/delete" functionality
-  - Close on background click functionality for drawers
-  - User feedback and navigate away on new business submission
+  - Admin "update" functionality
   - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
   - Make SearchResult component look better
   - Fill out DetailsDrawer component
   - Fill out EditsDrawer component
+  - Closing a details drawer should deselect its matching map pin
+  - Disable 'submit' button on new business submission
+  - User feedback during login wait
 - Responsiveness:
   - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box
+  - Swipeable drawers?
 - Accesibility:
   - Audit for keyboard navigation
+- Bugs:
+  - 'Admin mode' state persits on logout
+  - Loading spinners aren't centered in drawers
 
 ## Search behaviors to implement
 
