@@ -12,4 +12,4 @@ const reviewSchema = new mongoose.Schema({});
 const Review = mongoose.models.Review || mongoose.model('Review', reviewSchema);
 export default Review;
 // export types
-export type Review = mongoose.InferSchemaType<typeof reviewSchema>;
+export type ReviewType = mongoose.InferSchemaType<typeof reviewSchema>;

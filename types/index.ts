@@ -1,3 +1,6 @@
+// import types from models
+import { BusinessType } from '@/models/business';
+
 // basic information about a business to show in the search results
 export type BusinessDataEntry = {
   _id: string;
@@ -33,13 +36,70 @@ export type BusinessDetails = {
 };
 
 // types for API responses
+export type AppApiRequest = {
+  postNewBusiness: {
+    companyName: string;
+    address: string;
+    addressCity: string;
+    addressState: string;
+    phone: string;
+    website: string;
+    description: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  signup: {
+    userName: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+  };
+};
+
 export type AppApiResponse = {
-  getBusinessList: {};
-  getBusinessDetails: {};
-  postNewBusiness: {};
-  deleteBusiness: {};
-  putBusiness: {};
-  login: {};
-  logout: {};
-  signup: {};
+  fail: {
+    success: false;
+    message: string;
+  };
+  getBusinessList: {
+    success: true;
+    data: {
+      businesses: BusinessType[];
+    };
+  };
+  getBusinessDetails: {
+    success: true;
+    data: {
+      business: BusinessType;
+    };
+  };
+  postNewBusiness: {
+    success: true;
+    data: { business: BusinessType };
+  };
+  deleteBusiness: {
+    success: true;
+    data: null;
+  };
+  putBusiness: {
+    success: true;
+    data: { business: BusinessType };
+  };
+  login: {
+    success: true;
+    data: {
+      user: { _id: string; userName: string; email: string; role: string };
+    };
+  };
+  logout: {
+    success: true;
+  };
+  signup: {
+    success: true;
+    data: {
+      user: { _id: string; userName: string; email: string; role: string };
+    };
+  };
 };

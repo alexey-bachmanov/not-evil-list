@@ -1,8 +1,38 @@
 import mongoose from 'mongoose';
 import addressToGeoData from '@/lib/addressToGeoData';
 
-// ↓ GeoJSON
-const pointSchema = new mongoose.Schema({
+///// DEFINE INTERFACES /////
+// define the basic interface for our model
+interface IPoint {
+  type: 'Point';
+  coordinates: [number, number];
+}
+export interface IBusiness {
+  companyName: string;
+  address: string;
+  addressCity: string;
+  addressState: string;
+  addressZip?: string;
+  phone: string;
+  website: string;
+  description: string;
+  ratingAvg?: number;
+  ratingQty?: number;
+  isVerified?: boolean;
+  location?: IPoint;
+}
+// extend it to include instance methods and values like '_id'
+interface IPointDocument extends IPoint, mongoose.Document {}
+interface IBusinessDocument extends IBusiness, mongoose.Document {
+  // instance methods
+}
+interface IBusinessModel extends mongoose.Model<IBusinessDocument> {
+  // static methods
+}
+
+///// DEFINE SCHEMA /////
+const pointSchema = new mongoose.Schema<IPointDocument>({
+  // ↓ GeoJSON
   type: {
     type: String,
     enum: ['Point'],
@@ -10,12 +40,13 @@ const pointSchema = new mongoose.Schema({
     required: true,
   },
   coordinates: {
-    type: [Number], // [longitude, latitude]
+    type: [Number],
     required: true,
   },
+  // ↑ GeoJSON
 });
-// ↑ GeoJSON
-const businessSchema = new mongoose.Schema({
+
+const businessSchema = new mongoose.Schema<IBusinessDocument>({
   companyName: {
     type: String,
     trim: true,
@@ -95,7 +126,7 @@ businessSchema.pre('save', async function (next) {
     type: 'Point',
     coordinates: [geoData.longitude, geoData.latitude],
   };
-  return next();
+  next();
 });
 
 ///// MODEL /////
@@ -104,7 +135,8 @@ businessSchema.pre('save', async function (next) {
 // 'Cannot overwrite model once compiled'. This short circuit asks for
 // the existing model, and if it can't find it, creates a new one.
 const Business =
-  mongoose.models.Business || mongoose.model('Business', businessSchema);
+  mongoose.models.Business ||
+  mongoose.model<IBusinessDocument, IBusinessModel>('Business', businessSchema);
 export default Business;
 // export types
-export type Business = mongoose.InferSchemaType<typeof businessSchema>;
+export type BusinessType = mongoose.InferSchemaType<typeof businessSchema>;

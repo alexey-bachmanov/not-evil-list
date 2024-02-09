@@ -3,8 +3,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
-import User from '@/models/user';
+import User, { UserType } from '@/models/user';
 import createSendToken from '@/lib/createSendToken';
+import { AppApiRequest, AppApiResponse } from '@/types';
+import { parseBody } from '@/lib/parseBody';
 
 ///// POST (LOG IN) /////
 export async function POST(req: NextRequest) {
@@ -18,18 +20,20 @@ export async function POST(req: NextRequest) {
     }
 
     // check if email and password exist
-    const body = await req.json();
+    const body = await parseBody<AppApiRequest['login']>(req);
     if (!body.email || !body.password) {
       throw new ApiError('No credentials provided', 401);
     }
 
     // check if user exists and password is correct
-    const user = await User.findOne({ email: body.email }).select('+password');
+    const user = await User.findOne<UserType>({ email: body.email }).select(
+      '+password'
+    );
     if (!user || !(await user.passwordMatch(body.password, user.password))) {
       throw new ApiError('Incorrect email or password', 401);
     }
     // create a response
-    let res = NextResponse.json({
+    let res = NextResponse.json<AppApiResponse['login']>({
       success: true,
       data: {
         user: {
@@ -48,7 +52,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     // catch any errors we created ourselves
     if (err.isOperational) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },
         { status: err.statusCode }
       );
@@ -56,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     // catch any internal errors
     console.error(err);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );

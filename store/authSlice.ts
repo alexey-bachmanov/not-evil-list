@@ -1,45 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uiActions } from '.';
+import { fetchData } from '@/lib/fetchData';
+import { AppApiRequest, AppApiResponse } from '@/types';
 
 ///// THUNKS /////
 // Log in
 export const login = createAsyncThunk(
   'auth/logIn',
   async (logInInfo: { email: string; password: string }, thunkAPI) => {
-    const response = await fetch('/api/auth/login', {
+    const reply = await fetchData<
+      AppApiRequest['login'],
+      AppApiResponse['login'] | AppApiResponse['fail']
+    >('/api/auth/login', logInInfo, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(logInInfo),
+      headers: { 'Content-Type': 'application/json' },
     });
-    if (!response) {
-      thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: 'No response recieved' })
-      );
-      throw new Error('No response recieved');
-    }
-    // parse the response data
-    const responseParsed = await response.json();
-    // data on success:
-    // {
-    // success: true,
-    // data: {
-    //   user: {
-    //     _id: user._id,
-    //     userName: user.userName,
-    //     email: user.email,
-    //     role: user.role,
-    //   },
-    // },
-    // data on failure:
-    // { success: false, message: err.message }
     // check if username and password were valid
-    if (!responseParsed.success) {
+    if (!reply.success) {
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: responseParsed.message })
+        uiActions.openAlert({ type: 'error', message: reply.message })
       );
-      throw new Error(responseParsed.message);
+      throw new Error(reply.message);
     }
     // if successful, open a success alert
     thunkAPI.dispatch(
@@ -49,12 +30,7 @@ export const login = createAsyncThunk(
       })
     );
     return {
-      user: {
-        _id: responseParsed.data.user._id,
-        userName: responseParsed.data.user.userName,
-        email: responseParsed.data.user.email,
-        role: responseParsed.data.user.role,
-      },
+      user: reply.data.user,
     };
   }
 );
@@ -62,19 +38,18 @@ export const login = createAsyncThunk(
 // Log out - this has to be an async thunk since we're calling our API
 // to get an empty httpOnly cookie that immediately expires
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-  const response = await fetch('/api/auth/logout', { method: 'POST' });
-  if (!response) {
+  const reply = await fetchData<
+    undefined,
+    AppApiResponse['logout'] | AppApiResponse['fail']
+  >('/api/auth/logout', undefined, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!reply.success) {
     thunkAPI.dispatch(
-      uiActions.openAlert({ type: 'error', message: 'No response recieved' })
+      uiActions.openAlert({ type: 'error', message: reply.message })
     );
-    throw new Error('No response recieved');
-  }
-  const responseParsed = await response.json();
-  if (!responseParsed.success) {
-    thunkAPI.dispatch(
-      uiActions.openAlert({ type: 'error', message: responseParsed.message })
-    );
-    throw new Error(responseParsed.message);
+    throw new Error(reply.message);
   }
   // if successful, show a success alert
   thunkAPI.dispatch(
@@ -103,39 +78,20 @@ export const signup = createAsyncThunk(
       throw new Error('passwords do not match');
     }
     // send our request to the API
-    const response = await fetch('/api/auth/signup', {
+    const reply = await fetchData<
+      AppApiRequest['signup'],
+      AppApiResponse['signup'] | AppApiResponse['fail']
+    >('/api/auth/signup', logInInfo, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(logInInfo),
+      headers: { 'Content-Type': 'application/json' },
     });
-    if (!response) {
-      thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: 'No response recieved' })
-      );
-      throw new Error('No response recieved');
-    }
-    const responseParsed = await response.json();
-    // data on success:
-    // {
-    // success: true,
-    // data: {
-    //   user: {
-    //     _id: user._id,
-    //     userName: user.userName,
-    //     email: user.email,
-    //     role: user.role,
-    //   },
-    // },
-    // data on failure:
-    // { success: false, message: err.message }
+
     // check if api gave us back any kind of error
-    if (!responseParsed.success) {
+    if (!reply.success) {
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: responseParsed.message })
+        uiActions.openAlert({ type: 'error', message: reply.message })
       );
-      throw new Error(responseParsed.message);
+      throw new Error(reply.message);
     }
     // if successful, open a success alert
     thunkAPI.dispatch(
@@ -145,12 +101,7 @@ export const signup = createAsyncThunk(
       })
     );
     return {
-      user: {
-        _id: responseParsed.data.user._id,
-        userName: responseParsed.data.user.userName,
-        email: responseParsed.data.user.email,
-        role: responseParsed.data.user.role,
-      },
+      user: reply.data.user,
     };
   }
 );

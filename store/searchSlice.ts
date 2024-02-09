@@ -1,6 +1,8 @@
-import { BusinessDataEntry, BusinessDetails } from '@/types';
+import { AppApiResponse, BusinessDataEntry, BusinessDetails } from '@/types';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uiActions } from '.';
+import { fetchData } from '@/lib/fetchData';
+import { BusinessType } from '@/models/business';
 
 ///// THUNKS /////
 // async thunks do async stuff and then dispatch actions to update our state
@@ -12,18 +14,21 @@ export const executeSearch = createAsyncThunk(
     // we want our errors to percolate up to the reducer
     // close the details drawer, if it's open
     thunkAPI.dispatch(uiActions.setDetailsDrawerOpen(false));
-    // fetch list of businesses from our API
-    const response = await fetch('/api/businesses', {
+    // fetch list of businesses from our API, search query is passed in the headers
+    // and the body is empty
+    const reply = await fetchData<
+      undefined,
+      AppApiResponse['getBusinessList'] | AppApiResponse['fail']
+    >('/api/businesses', undefined, {
       method: 'GET',
-      headers: {
-        'search-query': query,
-      },
+      headers: { 'search-query': query },
     });
-    // parse the response data
-    const responseParsed = await response.json();
     // pass results up to redux state
+    if (!reply.success) {
+      throw new Error(reply.message);
+    }
     return {
-      results: responseParsed.data.businesses,
+      results: reply.data.businesses,
     };
   }
 );
@@ -31,21 +36,25 @@ export const executeSearch = createAsyncThunk(
 export const getDetails = createAsyncThunk(
   'search/getDetails',
   async (id: string) => {
-    const response = await fetch(`/api/businesses/${id}`, { method: 'GET' });
-    // parse the response
-    const responseParsed = await response.json();
-    return { result: responseParsed.data.business };
+    const reply = await fetchData<
+      undefined,
+      AppApiResponse['getBusinessDetails'] | AppApiResponse['fail']
+    >(`/api/businesses/${id}`, undefined, { method: 'GET' });
+    if (!reply.success) {
+      throw new Error(reply.message);
+    }
+    return { result: reply.data.business };
   }
 );
 
 ///// SLICE CREATION /////
 const initialState: {
-  results: BusinessDataEntry[];
+  results: BusinessType[];
   status: 'idle' | 'loading' | 'success' | 'failure';
   error: string | undefined;
   businessDetails: {
     status: 'idle' | 'loading' | 'success' | 'failure';
-    details: BusinessDetails | undefined;
+    details: BusinessType | undefined;
     error: string | undefined;
   };
 } = {
@@ -67,31 +76,49 @@ const searchSlice = createSlice({
     // extraReducers handles actions from things not defined in our
     // slice's reducers, like async thunks
     // search execution:
-    builder.addCase(executeSearch.pending, (state, action) => {
-      state.status = 'loading';
-    });
-    builder.addCase(executeSearch.fulfilled, (state, action) => {
-      state.status = 'success';
-      // add search results to our results array
-      state.results = action.payload.results;
-    });
-    builder.addCase(executeSearch.rejected, (state, action) => {
-      state.status = 'failure';
-      // addd failure message to our state
-      state.error = action.error.message;
-    });
+    builder.addCase(
+      executeSearch.pending,
+      (state: typeof initialState, action) => {
+        state.status = 'loading';
+      }
+    );
+    builder.addCase(
+      executeSearch.fulfilled,
+      (state: typeof initialState, action) => {
+        state.status = 'success';
+        // add search results to our results array
+        state.results = action.payload.results;
+      }
+    );
+    builder.addCase(
+      executeSearch.rejected,
+      (state: typeof initialState, action) => {
+        state.status = 'failure';
+        // addd failure message to our state
+        state.error = action.error.message;
+      }
+    );
     // getting details:
-    builder.addCase(getDetails.pending, (state, action) => {
-      state.businessDetails.status = 'loading';
-    });
-    builder.addCase(getDetails.fulfilled, (state, action) => {
-      state.businessDetails.status = 'success';
-      state.businessDetails.details = action.payload.result;
-    });
-    builder.addCase(getDetails.rejected, (state, action) => {
-      state.businessDetails.status = 'failure';
-      state.businessDetails.error = action.error.message;
-    });
+    builder.addCase(
+      getDetails.pending,
+      (state: typeof initialState, action) => {
+        state.businessDetails.status = 'loading';
+      }
+    );
+    builder.addCase(
+      getDetails.fulfilled,
+      (state: typeof initialState, action) => {
+        state.businessDetails.status = 'success';
+        state.businessDetails.details = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getDetails.rejected,
+      (state: typeof initialState, action) => {
+        state.businessDetails.status = 'failure';
+        state.businessDetails.error = action.error.message;
+      }
+    );
   },
 });
 

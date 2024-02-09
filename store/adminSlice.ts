@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uiActions } from '.';
+import { fetchData } from '@/lib/fetchData';
+import { AppApiResponse } from '@/types';
 
 ///// THUNKS /////
 // edit a business
@@ -15,26 +17,18 @@ export const deleteBusiness = createAsyncThunk(
     if (!businessId) {
       throw new Error('deleteBusiness was called without an ID');
     }
-    const response = await fetch(`/api/businesses/${businessId}`, {
+    const reply = await fetchData<
+      undefined,
+      AppApiResponse['deleteBusiness'] | AppApiResponse['fail']
+    >(`/api/businesses/${businessId}`, undefined, {
       method: 'DELETE',
     });
-    if (!response) {
+
+    if (!reply.success) {
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: 'No response recieved' })
+        uiActions.openAlert({ type: 'error', message: reply.message })
       );
-      throw new Error('No response recieved');
-    }
-    // parse the response data
-    const responseParsed = await response.json();
-    // data on success:
-    // { success: true, data: null },
-    // data on failure:
-    // { success: false, message: err.message }
-    if (!responseParsed.success) {
-      thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: responseParsed.message })
-      );
-      throw new Error(responseParsed.message);
+      throw new Error(reply.message);
     }
     // if successful, open a success alert and close details drawer
     thunkAPI.dispatch(

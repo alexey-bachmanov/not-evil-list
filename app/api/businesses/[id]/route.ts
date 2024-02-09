@@ -9,6 +9,7 @@ import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
 import authCheck from '@/lib/authCheck';
 import Business from '@/models/business';
+import { AppApiResponse } from '@/types';
 
 ///// GET (GET BUSINESS DETAILS, BY ID) /////
 export async function GET(req: NextRequest) {
@@ -19,8 +20,8 @@ export async function GET(req: NextRequest) {
     // get business ID from url - there must be a better way of doing it but I can't find it
     const businessID = req.url.split('/').at(-1);
 
-    // check if it's a valid mongo ID
-    if (!isValidObjectId(businessID)) {
+    // check if it exists and is a valid mongo ID
+    if (!businessID || !isValidObjectId(businessID)) {
       throw new ApiError('Invalid business ID', 400);
     }
 
@@ -32,14 +33,14 @@ export async function GET(req: NextRequest) {
       throw new ApiError('Business not found', 404);
     }
 
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['getBusinessDetails']>(
       { success: true, data: { business: business } },
       { status: 200 }
     );
   } catch (err: any) {
     // catch any errors we created ourselves
     if (err.isOperational) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },
         { status: err.statusCode }
       );
@@ -47,7 +48,7 @@ export async function GET(req: NextRequest) {
 
     // catch any other errors
     console.error(err.message);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );
@@ -107,14 +108,14 @@ export async function PUT(req: NextRequest) {
       throw new ApiError('Business not found', 404);
     }
 
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['putBusiness']>(
       { success: true, data: { business: business } },
       { status: 200 }
     );
   } catch (err: any) {
     // catch any errors we created ourselves
     if (err.isOperational) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },
         { status: err.statusCode }
       );
@@ -122,7 +123,7 @@ export async function PUT(req: NextRequest) {
 
     // catch any other errors
     console.error(err.message);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );
@@ -160,11 +161,14 @@ export async function DELETE(req: NextRequest) {
       throw new ApiError('Business not found', 404);
     }
 
-    return NextResponse.json({ success: true, data: null }, { status: 200 });
+    return NextResponse.json<AppApiResponse['deleteBusiness']>(
+      { success: true, data: null },
+      { status: 200 }
+    );
   } catch (err: any) {
     // catch any errors we created ourselves
     if (err.isOperational) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },
         { status: err.statusCode }
       );
@@ -172,7 +176,7 @@ export async function DELETE(req: NextRequest) {
 
     // catch any other errors
     console.error(err.message);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );

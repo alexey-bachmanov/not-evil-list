@@ -1,6 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import Logo from '@/components/Logo';
+import { fetchData } from '@/lib/fetchData';
+import { AppApiRequest, AppApiResponse } from '@/types';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, uiActions } from '@/store';
 
 // MUI imports
 import Container from '@mui/material/Container';
@@ -8,6 +13,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import sleep from '@/lib/sleep';
 
 const NewBusinessPage: React.FC = function () {
   const [formData, setFormData] = useState({
@@ -19,19 +25,35 @@ const NewBusinessPage: React.FC = function () {
     website: '',
     description: '',
   });
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    const response = await fetch('/api/businesses', {
+    const reply = await fetchData<
+      AppApiRequest['postNewBusiness'],
+      AppApiResponse['postNewBusiness']
+    >('/api/businesses', formData, {
       method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
-    // TODO: error handling
-    // TODO: user feedback based on response
+    if (!reply.success) {
+      dispatch(
+        uiActions.openAlert({
+          type: 'error',
+          message: 'Failed to submit. Try again later',
+        })
+      );
+    } else {
+      dispatch(
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Business submitted to the database. Thank you!',
+        })
+      );
+      await sleep(4000);
+      router.replace('/');
+    }
   };
 
   return (

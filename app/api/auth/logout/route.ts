@@ -1,12 +1,13 @@
 // Contains route to:
 // Log out (get JWT that immediately expires)
+import { AppApiResponse } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 ///// POST (LOG OUT) /////
 export async function POST(req: NextRequest) {
   try {
     // create a response
-    const res = NextResponse.json({
+    const res = NextResponse.json<AppApiResponse['logout']>({
       success: true,
     });
     // load empty token into an httpOnly cookie
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
     return res;
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );

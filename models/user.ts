@@ -3,11 +3,36 @@ import bcrypt from 'bcryptjs';
 import validator from 'validator';
 import ApiError from '@/lib/apiError';
 
+// wrapper function for validator isEmail
+// avoids schema errors
 const isEmail = function (val: string) {
   return validator.isEmail(val);
 };
 
-const userSchema = new mongoose.Schema({
+///// DEFINE INTERFACES /////
+// define the basic interface for our model
+export interface IUser {
+  userName: string;
+  email: string;
+  role: 'user' | 'admin';
+  password: string;
+  passwordConfirm?: string;
+  active?: boolean;
+}
+// extend it to include instance methods and values like '_id'
+interface IUserDocument extends IUser, mongoose.Document {
+  // instance methods
+  passwordMatch: (
+    candidatepassword: string,
+    hashedpassword: string
+  ) => Promise<boolean>;
+}
+interface IUserModel extends mongoose.Model<IUserDocument> {
+  // static methods
+}
+
+///// DEFINE SCHEMA /////
+const userSchema = new mongoose.Schema<IUserDocument>({
   userName: {
     type: String,
     trim: true,
@@ -81,7 +106,9 @@ userSchema.methods.passwordMatch = async function (
 // that this module is run more than once, and we get an error saying
 // 'Cannot overwrite model once compiled'. This short circuit asks for
 // the existing model, and if it can't find it, creates a new one.
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User =
+  mongoose.models.User ||
+  mongoose.model<IUserDocument, IUserModel>('User', userSchema);
 export default User;
 // export types
-export type User = mongoose.InferSchemaType<typeof userSchema>;
+export type UserType = mongoose.InferSchemaType<typeof userSchema>;

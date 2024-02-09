@@ -2,9 +2,11 @@
 // Sign up ()
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import User from '@/models/user';
+import User, { IUser, UserType } from '@/models/user';
 import ApiError from '@/lib/apiError';
 import createSendToken from '@/lib/createSendToken';
+import { AppApiRequest, AppApiResponse } from '@/types';
+import { parseBody } from '@/lib/parseBody';
 
 ///// POST (SIGN UP) /////
 export async function POST(req: NextRequest) {
@@ -18,19 +20,15 @@ export async function POST(req: NextRequest) {
     }
 
     // read json data in req.body
-    const body = await req.json();
+    const body = await parseBody<AppApiRequest['signup']>(req);
 
     // create new user in our DB
-    const newUser = new User({
-      userName: body.userName,
-      email: body.email,
-      password: body.password,
-      passwordConfirm: body.passwordConfirm,
-    });
+    // we want to feed in data in IUser shape, but expect back data in UserType shape
+    const newUser: UserType = new User<IUser>({ ...body, role: 'user' });
     await newUser.save();
 
     // create a response
-    const res = NextResponse.json(
+    const res = NextResponse.json<AppApiResponse['signup']>(
       {
         success: true,
         data: {
@@ -54,7 +52,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     // catch any errors we created ourselves
     if (err.isOperational) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },
         { status: err.statusCode }
       );
@@ -62,13 +60,13 @@ export async function POST(req: NextRequest) {
 
     // catch mongo errors
     if (err.code === 11000) {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: 'Username or email already exists' },
         { status: 400 }
       );
     }
     if (err._message === 'User validation failed') {
-      return NextResponse.json(
+      return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: 'Validation failed' },
         { status: 400 }
       );
@@ -76,7 +74,7 @@ export async function POST(req: NextRequest) {
 
     // catch any internal errors
     console.error(err.message);
-    return NextResponse.json(
+    return NextResponse.json<AppApiResponse['fail']>(
       { success: false, message: 'Internal server error' },
       { status: 500 }
     );
