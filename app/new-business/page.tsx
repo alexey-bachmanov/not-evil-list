@@ -13,9 +13,11 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import sleep from '@/lib/sleep';
 
 const NewBusinessPage: React.FC = function () {
+  const [submitState, setSubmitState] = useState<
+    'idle' | 'submitting' | 'done'
+  >('idle');
   const [formData, setFormData] = useState({
     companyName: '',
     address: '',
@@ -26,10 +28,11 @@ const NewBusinessPage: React.FC = function () {
     description: '',
   });
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitState('submitting');
     const reply = await fetchData<
       AppApiRequest['postNewBusiness'],
       AppApiResponse['postNewBusiness']
@@ -38,6 +41,7 @@ const NewBusinessPage: React.FC = function () {
       headers: { 'Content-Type': 'application/json' },
     });
     if (!reply.success) {
+      setSubmitState('idle');
       dispatch(
         uiActions.openAlert({
           type: 'error',
@@ -45,19 +49,19 @@ const NewBusinessPage: React.FC = function () {
         })
       );
     } else {
+      setSubmitState('done');
       dispatch(
         uiActions.openAlert({
           type: 'success',
           message: 'Business submitted to the database. Thank you!',
         })
       );
-      await sleep(4000);
       router.replace('/');
     }
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container maxWidth="sm">
       <Logo />
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
@@ -163,12 +167,13 @@ const NewBusinessPage: React.FC = function () {
           </Grid>
         </Grid>
         <Button
+          disabled={submitState === 'idle' ? false : true}
           type="submit"
           variant="outlined"
           fullWidth
           sx={{ mt: 3, mb: 2 }}
         >
-          Submit
+          {submitState === 'submitting' ? 'Submitting...' : 'Submit'}
         </Button>
       </Box>
     </Container>

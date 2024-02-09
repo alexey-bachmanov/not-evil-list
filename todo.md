@@ -11,7 +11,6 @@
 - Look and feel:
   - Fill out EditsDrawer component
   - Closing a details drawer should deselect its matching map pin
-  - Disable 'submit' button on new business submission
   - User feedback during login wait
 - Responsiveness:
   - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box

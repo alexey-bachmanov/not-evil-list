@@ -3,7 +3,7 @@
 // app and I was tired of fighting with MUI's drawers and their limitations
 // slides in from the left on desktop, underneath previous drawers
 // slides in from the bottom on mobile and covers previous drawers
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import sleep from '@/lib/sleep';
 import classes from './Drawer.module.css';
 
@@ -11,19 +11,6 @@ import classes from './Drawer.module.css';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-
-///// usePrevious HOOK /////
-// stores a value (like a state) in a ref, which *is not* recomputed on
-// component update, allowing us to access the previous state of a component
-const usePrevious = function (value: any) {
-  const ref = useRef<any>();
-  // the current value in ref is immediately returned, and then
-  // useEffect runs to update it with the next value
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-};
 
 ///// DRAWER COMPONENT /////
 const Drawer: React.FC<{
