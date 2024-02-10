@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { uiActions } from '.';
+import { adminActions, uiActions } from '.';
 import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 

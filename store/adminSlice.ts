@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { uiActions } from '.';
 import fetchData from '@/lib/fetchData';
 import { AppApiResponse } from '@/types';
@@ -58,8 +58,8 @@ const adminSlice = createSlice({
   name: 'adminSlice',
   initialState: initialState,
   reducers: {
-    toggleAdminMode(state) {
-      state.isInAdminMode = !state.isInAdminMode;
+    setAdminMode(state, action: PayloadAction<boolean>) {
+      state.isInAdminMode = action.payload;
     },
   },
   extraReducers(builder) {},

@@ -60,7 +60,11 @@ const HamburgerMenu: React.FC = function () {
   const handleToggleAdminMode = async () => {
     setAnchorEl(null);
     // immediately change the redux state
-    dispatch(adminActions.toggleAdminMode());
+    if (isInAdminMode) {
+      dispatch(adminActions.setAdminMode(false));
+    } else {
+      dispatch(adminActions.setAdminMode(true));
+    }
     // wait 300ms for menu to close before changing text
     await sleep(300);
     setAdminModeText(
@@ -72,9 +76,15 @@ const HamburgerMenu: React.FC = function () {
     setAnchorEl(null);
     dispatch(uiActions.openDialog());
   };
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setAnchorEl(null);
+    // fire the logout thunk
     dispatch(authActions.logout());
+    // reset admin mode in our redux state
+    dispatch(adminActions.setAdminMode(false));
+    // and reset our menu text
+    await sleep(300);
+    setAdminModeText('Admin mode');
   };
 
   // homepage:
