@@ -1,5 +1,5 @@
-import { AppApiResponse, BusinessDataEntry, BusinessDetails } from '@/types';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { AppApiResponse } from '@/types';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { uiActions } from '.';
 import fetchData from '@/lib/fetchData';
 import { BusinessType } from '@/models/business';
@@ -49,6 +49,7 @@ export const getDetails = createAsyncThunk(
 
 ///// SLICE CREATION /////
 const initialState: {
+  searchQuery: string;
   results: BusinessType[];
   status: 'idle' | 'loading' | 'success' | 'failure';
   error: string | undefined;
@@ -58,6 +59,7 @@ const initialState: {
     error: string | undefined;
   };
 } = {
+  searchQuery: '',
   results: [],
   status: 'idle',
   error: undefined,
@@ -71,7 +73,11 @@ const initialState: {
 const searchSlice = createSlice({
   name: 'searchSlice',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setSearchQuery(state, action: PayloadAction<string>) {
+      state.searchQuery = action.payload;
+    },
+  },
   extraReducers(builder) {
     // extraReducers handles actions from things not defined in our
     // slice's reducers, like async thunks

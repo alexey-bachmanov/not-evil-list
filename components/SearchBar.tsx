@@ -15,6 +15,8 @@ const SearchBar: React.FC = function () {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // store the query for later and exexute it
+    dispatch(searchActions.setSearchQuery(query));
     dispatch(searchActions.executeSearch(query));
   };
 

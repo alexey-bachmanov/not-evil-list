@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { searchActions, uiActions } from '.';
+import { RootState, searchActions, uiActions } from '.';
 import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 
@@ -39,15 +39,15 @@ export const editBusiness = createAsyncThunk(
       );
       throw new Error(reply.message);
     }
-    // if successful, open a success alert, close edits drawer, and reload data
+    // if successful, open a success alert, and reload search results (which will reset drawer states)
     thunkAPI.dispatch(
       uiActions.openAlert({
         type: 'success',
         message: 'Business successfully updated',
       })
     );
-    thunkAPI.dispatch(uiActions.setEditsDrawerOpen(false));
-    // TODO: trigger details reload
+    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
   }
 );
 
@@ -71,15 +71,15 @@ export const deleteBusiness = createAsyncThunk(
       );
       throw new Error(reply.message);
     }
-    // if successful, open a success alert, close details drawer, and reload businesses
+    // if successful, open a success alert, and reload businesses (which will reset drawer states)
     thunkAPI.dispatch(
       uiActions.openAlert({
         type: 'success',
         message: 'Business successfully deleted',
       })
     );
-    thunkAPI.dispatch(uiActions.setDetailsDrawerOpen(false));
-    // TODO: trigger business list reload
+    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
   }
 );
 
