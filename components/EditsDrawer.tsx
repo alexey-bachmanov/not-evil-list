@@ -6,6 +6,8 @@ import { RootState, AppDispatch, uiActions } from '@/store';
 
 // MUI imports
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
 
 const EditsDrawer: React.FC = function () {
   const [formData, setFormData] = useState({

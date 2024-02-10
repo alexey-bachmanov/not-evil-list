@@ -10,15 +10,22 @@
   - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
   - Fill out EditsDrawer component
-  - Closing a details drawer should deselect its matching map pin
   - User feedback during login wait
+  - User feedback on signup attempt with duplicate email
+  - User feedback on login attempt with incorrect password
 - Responsiveness:
   - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box
   - Swipeable drawers?
 - Accesibility:
   - Audit for keyboard navigation
+  - Audit with a screen reader
+- Code improvement:
+  - Move 'create new business' logic into a redux thunk
+  - Refactor redux actions to be declarative instead of imperative?
+  - Move authentication and route protection functionality to next.js middleware?
+- Testing:
+  - Start doing it?
 - Bugs:
-  - 'Admin mode' state persits on logout
 
 ## Search behaviors to implement
 

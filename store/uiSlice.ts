@@ -14,7 +14,7 @@ const initialState: {
   editsDrawer: {
     isOpen: boolean;
   };
-  selectedBusinessID: string | undefined;
+  selectedBusinessID: string | null;
 } = {
   loginDialog: { isOpen: false, type: 'login' },
   alert: {
@@ -28,7 +28,7 @@ const initialState: {
   editsDrawer: {
     isOpen: false,
   },
-  selectedBusinessID: undefined,
+  selectedBusinessID: null,
 };
 
 const uiSlice = createSlice({
@@ -85,7 +85,7 @@ const uiSlice = createSlice({
         state.editsDrawer.isOpen = action.payload;
       }
     },
-    setSelectedBusinessId(state, action: PayloadAction<string>) {
+    setSelectedBusinessId(state, action: PayloadAction<string | null>) {
       state.selectedBusinessID = action.payload;
     },
   },

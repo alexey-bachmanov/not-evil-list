@@ -34,6 +34,11 @@ const DetailsDrawer: React.FC = function () {
   );
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleClose = () => {
+    dispatch(uiActions.setDetailsDrawerOpen(false));
+    dispatch(uiActions.setSelectedBusinessId(null));
+  };
+
   const typoMargins = 1;
   const sectionGap = 1.5;
   const successContentsJSX = (
@@ -97,7 +102,7 @@ const DetailsDrawer: React.FC = function () {
       isOpen={isOpen}
       variant="temporary"
       layer={2}
-      onClose={() => dispatch(uiActions.setDetailsDrawerOpen(false))}
+      onClose={handleClose}
       sx={{
         display: 'flex',
         flexDirection: 'column',
