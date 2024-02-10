@@ -46,6 +46,15 @@ export type AppApiRequest = {
     website: string;
     description: string;
   };
+  editBusiness: {
+    companyName: string;
+    address: string;
+    addressCity: string;
+    addressState: string;
+    phone: string;
+    website: string;
+    description: string;
+  };
   login: {
     email: string;
     password: string;
@@ -76,6 +85,10 @@ export type AppApiResponse = {
     };
   };
   postNewBusiness: {
+    success: true;
+    data: { business: BusinessType };
+  };
+  editBusiness: {
     success: true;
     data: { business: BusinessType };
   };

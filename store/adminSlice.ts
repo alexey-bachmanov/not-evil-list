@@ -1,13 +1,54 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { uiActions } from '.';
+import { searchActions, uiActions } from '.';
 import fetchData from '@/lib/fetchData';
-import { AppApiResponse } from '@/types';
+import { AppApiRequest, AppApiResponse } from '@/types';
 
 ///// THUNKS /////
 // edit a business
 export const editBusiness = createAsyncThunk(
   'admin/editBusiness',
-  async () => {}
+  async (
+    data: {
+      businessId: string | undefined;
+      formData: {
+        companyName: string;
+        address: string;
+        addressCity: string;
+        addressState: string;
+        phone: string;
+        website: string;
+        description: string;
+      };
+    },
+    thunkAPI
+  ) => {
+    if (!data.businessId) {
+      throw new Error('editBusiness was called without an ID');
+    }
+    const reply = await fetchData<
+      AppApiRequest['editBusiness'],
+      AppApiResponse['editBusiness'] | AppApiResponse['fail']
+    >(`/api/businesses/${data.businessId}`, data.formData, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!reply.success) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: reply.message })
+      );
+      throw new Error(reply.message);
+    }
+    // if successful, open a success alert, close edits drawer, and reload data
+    thunkAPI.dispatch(
+      uiActions.openAlert({
+        type: 'success',
+        message: 'Business successfully updated',
+      })
+    );
+    thunkAPI.dispatch(uiActions.setEditsDrawerOpen(false));
+    // TODO: trigger details reload
+  }
 );
 
 // delete a business
@@ -30,7 +71,7 @@ export const deleteBusiness = createAsyncThunk(
       );
       throw new Error(reply.message);
     }
-    // if successful, open a success alert and close details drawer
+    // if successful, open a success alert, close details drawer, and reload businesses
     thunkAPI.dispatch(
       uiActions.openAlert({
         type: 'success',
@@ -38,10 +79,11 @@ export const deleteBusiness = createAsyncThunk(
       })
     );
     thunkAPI.dispatch(uiActions.setDetailsDrawerOpen(false));
+    // TODO: trigger business list reload
   }
 );
 
-// delete a business
+// approve a business
 export const approveBusiness = createAsyncThunk(
   'admin/approveBusiness',
   async (businessId: string | undefined, thunkAPI) => {}
@@ -50,8 +92,10 @@ export const approveBusiness = createAsyncThunk(
 ///// SLICE CREATION /////
 const initialState: {
   isInAdminMode: boolean;
+  error: string | null;
 } = {
   isInAdminMode: false,
+  error: null,
 };
 
 const adminSlice = createSlice({

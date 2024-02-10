@@ -3,6 +3,7 @@
 // app and I was tired of fighting with MUI's drawers and their limitations
 // slides in from the left on desktop, underneath previous drawers
 // slides in from the bottom on mobile and covers previous drawers
+// on exit, it also unmounts all children, thus clearing their stored state
 import React, { useState, useEffect } from 'react';
 import sleep from '@/lib/sleep';
 import classes from './Drawer.module.css';

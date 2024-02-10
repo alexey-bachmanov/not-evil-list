@@ -20,6 +20,7 @@ const SearchResult: React.FC<{ business: BusinessType }> = function ({
     // open the detail drawer and start loading
     dispatch(uiActions.setSelectedBusinessId(business._id));
     dispatch(uiActions.setDetailsDrawerOpen(true));
+    dispatch(uiActions.setEditsDrawerOpen(false));
     dispatch(searchActions.getDetails(business._id));
   };
 

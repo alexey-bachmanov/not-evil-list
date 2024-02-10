@@ -6,13 +6,13 @@
   - Implement reviews
 - Minor implementation:
   - Admin "review new submissions" functionality
-  - Admin "update" functionality
   - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
-  - Fill out EditsDrawer component
   - User feedback during login wait
   - User feedback on signup attempt with duplicate email
   - User feedback on login attempt with incorrect password
+  - User feedback on login failure due to no connection with backend
+  - Add confirmation dialog on business delete action
 - Responsiveness:
   - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box
   - Swipeable drawers?
