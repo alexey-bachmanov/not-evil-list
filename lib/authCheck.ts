@@ -14,7 +14,8 @@ export default async function authCheck(req: NextRequest) {
   // extract jwt cookie from the request object
   const cookie = req.cookies.get('jwt');
   if (!cookie) {
-    throw new ApiError('No json web token attached to request', 400);
+    // nobody is logged in at all
+    return { isUser: false, isAdmin: false };
   }
   // extract user id from 'jwt' cookie
   const payload = jwt.decode(cookie.value);

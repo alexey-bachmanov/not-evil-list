@@ -13,13 +13,8 @@ import parseBody from '@/lib/parseBody';
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    // get our query string from the headers
-    const queryString = req.headers.get('search-query');
-    if (typeof queryString !== 'string') {
-      throw new ApiError("No header named 'search-query' found", 400);
-    }
-
-    const mongoFilter = queryStringToMongoFilter(queryString);
+    // get our mongo search filter from the query string in the request
+    const mongoFilter = await queryStringToMongoFilter(req);
     const businesses = await Business.find<BusinessType>(mongoFilter);
     // by convention, even if no matching businesses were found, we
     // should return a 200 response

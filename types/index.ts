@@ -1,41 +1,7 @@
 // import types from models
 import { BusinessType } from '@/models/business';
 
-// basic information about a business to show in the search results
-export type BusinessDataEntry = {
-  _id: string;
-  companyName: string;
-  address: string;
-  addressCity: string;
-  addressState: string;
-  addressZip: string;
-  phone: string;
-  website: string | null;
-  description: string;
-  location: { type: 'Point'; coordinates: [number, number] };
-  ratingAvg: number;
-  ratingQty: number;
-};
-
-// detailed information about a specific business
-// for now, it's the same as BusinessDataEntry, but we will add other
-// information, like a list of reviews
-export type BusinessDetails = {
-  _id: string;
-  companyName: string;
-  address: string;
-  addressCity: string;
-  addressState: string;
-  addressZip: string;
-  phone: string;
-  website: string | null;
-  description: string;
-  location: { type: 'Point'; coordinates: [number, number] };
-  ratingAvg: number;
-  ratingQty: number;
-};
-
-// types for API responses
+// types for API requests
 export type AppApiRequest = {
   postNewBusiness: {
     companyName: string;
@@ -67,6 +33,7 @@ export type AppApiRequest = {
   };
 };
 
+// types for API responses
 export type AppApiResponse = {
   fail: {
     success: false;
@@ -116,3 +83,90 @@ export type AppApiResponse = {
     };
   };
 };
+
+// tag type and tags array
+// we're playing games with typescript so we only have to define the tags in one place
+const tagsConst = [
+  'Restaurant',
+  'Bar',
+  'Cafe',
+  'Bakery',
+  'Fast Food',
+  'Fine Dining',
+  'Food Truck',
+  'Pizzeria',
+  'Pub',
+  'Coffee Shop',
+  'Tea House',
+  'Ice Cream Parlor',
+  'Diner',
+  'Buffet',
+  'Grocery Store',
+  'Supermarket',
+  'Farmers Market',
+  'Convenience Store',
+  'Bookstore',
+  'Clothing Store',
+  'Electronics Store',
+  'Furniture Store',
+  'Hardware Store',
+  'Florist',
+  'Gift Shop',
+  'Jewelry Store',
+  'Art Gallery',
+  'Museum',
+  'Theater',
+  'Cinema',
+  'Fitness Center',
+  'Yoga Studio',
+  'Spa',
+  'Salon',
+  'Barbershop',
+  'Hotel',
+  'Motel',
+  'Bed and Breakfast',
+  'Hostel',
+  'Auto Repair Shop',
+  'Gas Station',
+  'Car Wash',
+  'Laundry Service',
+  'Dry Cleaner',
+  'Bank',
+  'Credit Union',
+  'Insurance Agency',
+  'Real Estate Agency',
+  'Law Firm',
+  'Medical Clinic',
+  'Dentist',
+  'Pharmacy',
+  'Veterinary Clinic',
+  'Pet Grooming',
+  'Child Care Center',
+  'School',
+  'University',
+  'Library',
+  'Community Center',
+  'Church',
+  'Synagogue',
+  'Mosque',
+  'Temple',
+  'Park',
+  'Zoo',
+  'Botanical Garden',
+  'Sports Stadium',
+  'Golf Course',
+  'Ski Resort',
+  'Amusement Park',
+  'Arcade',
+  'Casino',
+  'Nightclub',
+  'Lounge',
+  'Live Music Venue',
+  'Dance Studio',
+  'Photography Studio',
+  'Tech Startup',
+  'Consulting Firm',
+  'Marketing Agency',
+] as const;
+export const tags = [...tagsConst];
+export type Tag = (typeof tags)[number];

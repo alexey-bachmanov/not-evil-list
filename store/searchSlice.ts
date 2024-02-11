@@ -4,6 +4,45 @@ import { uiActions } from '.';
 import fetchData from '@/lib/fetchData';
 import { BusinessType } from '@/models/business';
 
+///// UTIL FUNCTIONS /////
+const stringToQueryString = (inputString: string) => {
+  // format for the input string is "restaurants near me -unverified"
+  // format for the output is "?search=restaurants+near+me&flags=unverified"
+  // handle edge case of empty string
+  if (inputString.trim() === '') {
+    return '';
+  }
+  const words = inputString.trim().split(' ');
+  const searchWords: string[] = [];
+  const flagWords: string[] = [];
+  words.forEach((word) => {
+    if (word.startsWith('-')) {
+      flagWords.push(word.slice(1));
+    } else {
+      searchWords.push(word);
+    }
+  });
+  const queryStringSearch = searchWords.join('+');
+  const queryStringflags = flagWords.join('+');
+  let queryString = '';
+  // options:
+  // queryString = '' (no search or flag words)
+  // queryString = '?search=...' (no flag words)
+  // queryString = '?flags=...' (no search words)
+  // queryString = '?search=...&flags=...' (search and flag words)
+  if (searchWords.length > 0 && flagWords.length === 0) {
+    queryString = `?search=${queryStringSearch}`;
+  }
+  if (searchWords.length === 0 && flagWords.length > 0) {
+    queryString = `?flags=${queryStringflags}`;
+  }
+  if (searchWords.length > 0 && flagWords.length > 0) {
+    queryString = `?search=${queryStringSearch}&flags=${queryStringflags}`;
+  }
+
+  return queryString;
+};
+
 ///// THUNKS /////
 // async thunks do async stuff and then dispatch actions to update our state
 // get a list of businesses that match the search query
@@ -12,22 +51,21 @@ export const executeSearch = createAsyncThunk(
   async (query: string, thunkAPI) => {
     // we don't want to use a try/catch block here, as normal, because
     // we want our errors to percolate up to the reducer
+    // turn the natural language query into a REST query string
+    const queryString = stringToQueryString(query);
     // close the details drawer, if it's open
     thunkAPI.dispatch(uiActions.setDetailsDrawerOpen(false));
-    // fetch list of businesses from our API, search query is passed in the headers
-    // and the body is empty
+    // fetch list of businesses from our API
     const reply = await fetchData<
       undefined,
       AppApiResponse['getBusinessList'] | AppApiResponse['fail']
-    >('/api/businesses', undefined, {
-      method: 'GET',
-      headers: { 'search-query': query },
-    });
+    >(`/api/businesses${queryString}`, undefined, { method: 'GET' });
     // pass results up to redux state
     if (!reply.success) {
       throw new Error(reply.message);
     }
     return {
+      query: query,
       results: reply.data.businesses,
     };
   }
@@ -92,6 +130,8 @@ const searchSlice = createSlice({
       executeSearch.fulfilled,
       (state: typeof initialState, action) => {
         state.status = 'success';
+        // save our search query for later (eg reloading after edits)
+        state.searchQuery = action.payload.query;
         // add search results to our results array
         state.results = action.payload.results;
       }
