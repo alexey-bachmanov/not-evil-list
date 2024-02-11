@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import addressToGeoData from '@/lib/addressToGeoData';
+import { Tag } from '@/types';
 
 ///// DEFINE INTERFACES /////
 // define the basic interface for our model
@@ -20,6 +21,7 @@ export interface IBusiness {
   ratingQty?: number;
   isVerified?: boolean;
   location?: IPoint;
+  tags: Tag[];
 }
 // extend it to include instance methods and values like '_id'
 interface IPointDocument extends IPoint, mongoose.Document {}
@@ -102,6 +104,10 @@ const businessSchema = new mongoose.Schema<IBusinessDocument>({
   isVerified: {
     type: Boolean,
     default: false,
+  },
+  tags: {
+    type: [String],
+    default: [],
   },
 });
 

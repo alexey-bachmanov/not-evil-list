@@ -2,17 +2,16 @@
 
 - Major implementations:
   - Implement search functions besides "get all"
-  - implement catagories for businesses
   - Implement reviews
 - Minor implementation:
   - Admin "review new submissions" functionality
-  - Switch search query from being header-based to url-based (more RESTful)
 - Look and feel:
   - User feedback during login wait
   - User feedback on signup attempt with duplicate email
   - User feedback on login attempt with incorrect password
   - User feedback on login failure due to no connection with backend
   - Add confirmation dialog on business delete action
+  - Add 'zoom to selected pin' functionality
 - Responsiveness:
   - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box
   - Swipeable drawers?

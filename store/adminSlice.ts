@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, searchActions, uiActions } from '.';
 import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse } from '@/types';
+import { AppApiRequest, AppApiResponse, Tag } from '@/types';
 
 ///// THUNKS /////
 // edit a business
@@ -18,6 +18,7 @@ export const editBusiness = createAsyncThunk(
         phone: string;
         website: string;
         description: string;
+        tags: Tag[];
       };
     },
     thunkAPI

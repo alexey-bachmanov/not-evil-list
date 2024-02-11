@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Logo from '@/components/Logo';
 import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse } from '@/types';
+import { AppApiRequest, AppApiResponse, Tag, tags } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, uiActions } from '@/store';
@@ -13,12 +13,23 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
 
 const NewBusinessPage: React.FC = function () {
   const [submitState, setSubmitState] = useState<
     'idle' | 'submitting' | 'done'
   >('idle');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    companyName: string;
+    address: string;
+    addressCity: string;
+    addressState: string;
+    phone: string;
+    website: string;
+    description: string;
+    tags: Tag[];
+  }>({
     companyName: '',
     address: '',
     addressCity: '',
@@ -26,6 +37,7 @@ const NewBusinessPage: React.FC = function () {
     phone: '',
     website: '',
     description: '',
+    tags: [],
   });
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -163,6 +175,32 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, description: e.target.value });
               }}
+            />
+          </Grid>
+          {/* TAGS */}
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              id="tags"
+              options={tags}
+              // freeSolo
+              value={formData.tags}
+              onChange={(e, newValue) => {
+                setFormData({ ...formData, tags: newValue });
+              }}
+              renderTags={(value: readonly string[], getTagProps) =>
+                value.map((option: string, index: number) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                    key={index}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField {...params} label="Tags" placeholder="Tags" />
+              )}
             />
           </Grid>
         </Grid>

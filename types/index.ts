@@ -11,6 +11,7 @@ export type AppApiRequest = {
     phone: string;
     website: string;
     description: string;
+    tags: Tag[];
   };
   editBusiness: {
     companyName: string;
@@ -20,6 +21,7 @@ export type AppApiRequest = {
     phone: string;
     website: string;
     description: string;
+    tags: Tag[];
   };
   login: {
     email: string;

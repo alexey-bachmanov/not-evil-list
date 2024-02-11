@@ -8,12 +8,21 @@
 // level component (in this case, EditsDrawer)
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch, adminActions, uiActions } from '@/store';
+import {
+  RootState,
+  AppDispatch,
+  adminActions,
+  uiActions,
+  searchActions,
+} from '@/store';
+import { tags } from '@/types';
 
 // MUI imports
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
 
 const EditsForm: React.FC = function () {
   // check our redux store for the business details to initially populate our form
@@ -29,6 +38,7 @@ const EditsForm: React.FC = function () {
     phone: initialState?.phone || '',
     website: initialState?.website || '',
     description: initialState?.description || '',
+    tags: initialState?.tags || [],
   });
   const [submitState, setSubmitState] = useState<'idle' | 'submitting'>('idle');
   const dispatch = useDispatch<AppDispatch>();
@@ -39,6 +49,7 @@ const EditsForm: React.FC = function () {
     await dispatch(
       adminActions.editBusiness({ businessId: initialState?._id, formData })
     );
+    dispatch(uiActions.setSelectedBusinessId(null));
     setSubmitState('idle');
   };
 
@@ -137,6 +148,30 @@ const EditsForm: React.FC = function () {
           setFormData({ ...formData, description: e.target.value });
         }}
         sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
+      />
+      {/* TAGS */}
+      <Autocomplete
+        multiple
+        id="tags"
+        options={tags}
+        // freeSolo
+        value={formData.tags}
+        onChange={(e, newValue) => {
+          setFormData({ ...formData, tags: newValue });
+        }}
+        renderTags={(value: readonly string[], getTagProps) =>
+          value.map((option: string, index: number) => (
+            <Chip
+              variant="outlined"
+              label={option}
+              {...getTagProps({ index })}
+              key={index}
+            />
+          ))
+        }
+        renderInput={(params) => (
+          <TextField {...params} label="Tags" placeholder="Tags" />
+        )}
       />
       <Button
         disabled={submitState === 'idle' ? false : true}

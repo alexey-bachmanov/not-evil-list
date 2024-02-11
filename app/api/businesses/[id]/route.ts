@@ -9,7 +9,8 @@ import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
 import authCheck from '@/lib/authCheck';
 import Business from '@/models/business';
-import { AppApiResponse } from '@/types';
+import { AppApiRequest, AppApiResponse } from '@/types';
+import parseBody from '@/lib/parseBody';
 
 ///// GET (GET BUSINESS DETAILS, BY ID) /////
 export async function GET(req: NextRequest) {
@@ -65,7 +66,7 @@ export async function PUT(req: NextRequest) {
     await dbConnect();
 
     // check if a body was sent with the request
-    const body = await req.json();
+    const body = await parseBody<AppApiRequest['editBusiness']>(req);
     if (!body) {
       throw new ApiError('No body sent with request', 400);
     }
@@ -91,6 +92,11 @@ export async function PUT(req: NextRequest) {
     // pre-save middleware
     const business = await Business.findById(businessID);
 
+    // check if that business actually existed (findById would return null)
+    if (!business) {
+      throw new ApiError('Business not found', 404);
+    }
+
     // edit the business values
     business.companyName = body.companyName;
     business.address = body.address;
@@ -99,14 +105,10 @@ export async function PUT(req: NextRequest) {
     business.phone = body.phone;
     business.website = body.website;
     business.description = body.description;
+    business.tags = body.tags;
 
     // save the edited business, and trigger our pre-save middleware
     business.save();
-
-    // check if that business actually existed (findByIdAndUpdate would return null)
-    if (!business) {
-      throw new ApiError('Business not found', 404);
-    }
 
     return NextResponse.json<AppApiResponse['putBusiness']>(
       { success: true, data: { business: business } },
