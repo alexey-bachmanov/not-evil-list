@@ -87,7 +87,47 @@ export const deleteBusiness = createAsyncThunk(
 // approve a business
 export const approveBusiness = createAsyncThunk(
   'admin/approveBusiness',
-  async (businessId: string | undefined, thunkAPI) => {}
+  async (_, thunkAPI) => {
+    // this will pull all the relevent business details from our redux store, and send a
+    // PUT request with all that info and isVerified field flipped to true
+    const businessDetails = (thunkAPI.getState() as RootState).search
+      .businessDetails.details;
+    if (!businessDetails) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({
+          type: 'error',
+          message: 'Approve business called without a details window open',
+        })
+      );
+      throw new Error('Approve business called without a details window open');
+    }
+    const reply = await fetchData<
+      AppApiRequest['editBusiness'],
+      AppApiResponse['editBusiness'] | AppApiResponse['fail']
+    >(
+      `/api/businesses/${businessDetails._id}`,
+      { ...businessDetails, isVerified: true },
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    if (!reply.success) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: reply.message })
+      );
+      throw new Error(reply.message);
+    }
+    // if successful, open a success alert, and reload search results (which will reset drawer states)
+    thunkAPI.dispatch(
+      uiActions.openAlert({
+        type: 'success',
+        message: 'Business verified',
+      })
+    );
+    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
+  }
 );
 
 ///// SLICE CREATION /////

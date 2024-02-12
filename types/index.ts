@@ -22,6 +22,7 @@ export type AppApiRequest = {
     website: string;
     description: string;
     tags: Tag[];
+    isVerified?: boolean;
   };
   login: {
     email: string;

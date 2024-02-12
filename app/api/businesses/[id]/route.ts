@@ -8,7 +8,7 @@ import { isValidObjectId } from 'mongoose';
 import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
 import authCheck from '@/lib/authCheck';
-import Business from '@/models/business';
+import Business, { BusinessType } from '@/models/business';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import parseBody from '@/lib/parseBody';
 
@@ -90,7 +90,7 @@ export async function PUT(req: NextRequest) {
 
     // store input data, missing values are populated by our
     // pre-save middleware
-    const business = await Business.findById(businessID);
+    const business = await Business.findById<BusinessType>(businessID);
 
     // check if that business actually existed (findById would return null)
     if (!business) {
@@ -106,6 +106,8 @@ export async function PUT(req: NextRequest) {
     business.website = body.website;
     business.description = body.description;
     business.tags = body.tags;
+    // either keep the current state (if truthy) or set to the input state (if that's truthy), or set to false
+    business.isVerified = business.isVerified || body.isVerified || false;
 
     // save the edited business, and trigger our pre-save middleware
     business.save();

@@ -6,7 +6,6 @@ import { RootState, AppDispatch, uiActions, adminActions } from '@/store';
 import formatPhoneNumber from '@/lib/formatPhoneNumber';
 
 // MUI imports
-import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -78,16 +77,25 @@ const DetailsDrawer: React.FC = function () {
       />
       <List sx={{ flexBasis: '100%' }}></List>
 
+      {userRole === 'admin' && isInAdminMode && !business?.isVerified && (
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => dispatch(adminActions.approveBusiness())}
+        >
+          Verify
+        </Button>
+      )}
       {userRole === 'admin' && isInAdminMode && (
-        <ButtonGroup>
+        <ButtonGroup fullWidth>
           <Button
-            fullWidth
+            // fullWidth
             onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}
           >
             Edit
           </Button>
           <Button
-            fullWidth
+            // fullWidth
             onClick={() => dispatch(adminActions.deleteBusiness(business?._id))}
           >
             Delete
