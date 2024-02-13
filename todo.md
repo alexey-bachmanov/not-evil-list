@@ -5,7 +5,6 @@
   - Implement reviews
 - Minor implementation:
 - Look and feel:
-  - User feedback during login wait
   - User feedback on signup attempt with duplicate email
   - User feedback on login attempt with incorrect password
   - User feedback on login failure due to no connection with backend

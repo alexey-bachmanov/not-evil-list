@@ -18,6 +18,7 @@ const LoginDialog: React.FC = function () {
   const dialogType = useSelector(
     (state: RootState) => state.ui.loginDialog.type
   );
+  const loginState = useSelector((state: RootState) => state.auth.status);
 
   // set up dispatch
   const dispatch = useDispatch<AppDispatch>();
@@ -146,10 +147,15 @@ const LoginDialog: React.FC = function () {
           {dialogType === 'login' ? loginJSX : signupJSX}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSwitchMode}>
+          <Button
+            onClick={handleSwitchMode}
+            disabled={loginState === 'authorizing'}
+          >
             {dialogType === 'login' ? 'Sign up' : 'Log in'}
           </Button>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={loginState === 'authorizing'}>
+            {loginState === 'authorizing' ? 'Processing...' : 'Submit'}
+          </Button>
         </DialogActions>
       </Box>
     </Dialog>
