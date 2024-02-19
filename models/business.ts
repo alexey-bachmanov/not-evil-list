@@ -114,6 +114,17 @@ const businessSchema = new mongoose.Schema<IBusinessDocument>({
 ///// INDICIES /////
 businessSchema.index({ location: '2dsphere' });
 
+///// VIRTUAL PROPERTIES /////
+// virtually populate tour with reviews, which are otherwise
+// inaccesible because they are parent-referenced
+// any document where foreignField === localField is a
+// 'virtual child' of this document
+businessSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'business',
+  localField: '_id',
+});
+
 ///// MIDDLEWARE /////
 businessSchema.pre('save', async function (next) {
   // call our geolocation api with address, city, and state to recieve

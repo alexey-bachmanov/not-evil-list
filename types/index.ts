@@ -1,5 +1,7 @@
 // import types from models
 import { BusinessType } from '@/models/business';
+import { ReviewType } from '@/models/review';
+import { ObjectId } from 'mongoose';
 
 // types for API requests
 export type AppApiRequest = {
@@ -23,6 +25,10 @@ export type AppApiRequest = {
     description: string;
     tags: Tag[];
     isVerified?: boolean;
+  };
+  postNewReview: {
+    rating: number;
+    review: string;
   };
   login: {
     email: string;
@@ -69,6 +75,14 @@ export type AppApiResponse = {
   putBusiness: {
     success: true;
     data: { business: BusinessType };
+  };
+  getAllReviews: {
+    success: true;
+    data: { reviews: ReviewType[] };
+  };
+  postNewReview: {
+    success: true;
+    data: { review: ReviewType };
   };
   login: {
     success: true;

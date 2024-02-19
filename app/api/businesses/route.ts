@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
     }
     // store input data, missing values are populated by our
     // pre-save middleware
-    // we
     const newBusiness: BusinessType = new Business<IBusiness>(body);
     await newBusiness.save();
 
