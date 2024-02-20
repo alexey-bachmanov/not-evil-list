@@ -4,16 +4,16 @@ import recalculateAvgRating from '@/lib/recalculateAvgRating';
 ///// DEFINE INTERFACES /////
 export interface IReview {
   business: mongoose.ObjectId;
-  user: mongoose.ObjectId;
+  user: mongoose.ObjectId | { _id: mongoose.ObjectId; userName: string };
   rating: number;
   review: string;
   createdAt?: Date;
 }
 
-interface IReviewDocument extends IReview, mongoose.Document {
+export interface IReviewDocument extends IReview, mongoose.Document {
   // instance methods
 }
-interface IReviewModel extends mongoose.Model<IReviewDocument> {
+export interface IReviewModel extends mongoose.Model<IReviewDocument> {
   // static methods
 }
 
@@ -71,14 +71,5 @@ reviewSchema.post('save', async function () {
   await recalculateAvgRating(this.business);
 });
 
-///// MODEL /////
-// because we're runing on a serverless framework, it sometimes happens
-// that this module is run more than once, and we get an error saying
-// 'Cannot overwrite model once compiled'. This short circuit asks for
-// the existing model, and if it can't find it, creates a new one.
-const Review =
-  mongoose.models.Review ||
-  mongoose.model<IReviewDocument, IReviewModel>('Review', reviewSchema);
-export default Review;
-// export types
-export type ReviewType = mongoose.InferSchemaType<typeof reviewSchema>;
+///// EXPORT IT ALL /////
+export { reviewSchema };

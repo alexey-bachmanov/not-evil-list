@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongoose';
 import ApiError from './apiError';
 import dbConnect from './dbConnect';
-import User, { UserType } from '@/models/user';
+import { User, IUserDocument } from '@/models';
 
 export default async function authCheck(
   req: NextRequest
@@ -35,7 +35,7 @@ export default async function authCheck(
   const userID = payload.id;
 
   // check if user with that id exists and is active
-  const user = await User.findById<UserType>(userID, {}).select('+active');
+  const user = await User.findById<IUserDocument>(userID, {}).select('+active');
   if (!user || !user.active) {
     return { isUser: false, isAdmin: false, userId: null };
   }

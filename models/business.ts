@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import addressToGeoData from '@/lib/addressToGeoData';
 import { Tag } from '@/types';
+import { IReviewDocument } from '.';
 
 ///// DEFINE INTERFACES /////
 // define the basic interface for our model
@@ -22,13 +23,14 @@ export interface IBusiness {
   isVerified?: boolean;
   location?: IPoint;
   tags: Tag[];
+  reviews?: IReviewDocument[];
 }
 // extend it to include instance methods and values like '_id'
 interface IPointDocument extends IPoint, mongoose.Document {}
-interface IBusinessDocument extends IBusiness, mongoose.Document {
+export interface IBusinessDocument extends IBusiness, mongoose.Document {
   // instance methods
 }
-interface IBusinessModel extends mongoose.Model<IBusinessDocument> {
+export interface IBusinessModel extends mongoose.Model<IBusinessDocument> {
   // static methods
 }
 
@@ -48,68 +50,74 @@ const pointSchema = new mongoose.Schema<IPointDocument>({
   // ↑ GeoJSON
 });
 
-const businessSchema = new mongoose.Schema<IBusinessDocument>({
-  companyName: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have a name'],
+const businessSchema = new mongoose.Schema<IBusinessDocument>(
+  {
+    companyName: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have a name'],
+    },
+    address: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have an address'],
+    },
+    addressCity: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have a city with its address'],
+    },
+    addressState: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have a state with its address'],
+    },
+    addressZip: {
+      type: String,
+      trim: true,
+      // required: [true, 'business must have a zip code with its address'],
+    },
+    phone: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have a phone number'],
+    },
+    website: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: [true, 'business must have a description'],
+    },
+    location: {
+      type: pointSchema,
+      // this will be set in the pre-save middleware
+    },
+    ratingAvg: {
+      type: Number,
+      default: 4.5,
+    },
+    ratingQty: {
+      type: Number,
+      default: 0,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
   },
-  address: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have an address'],
-  },
-  addressCity: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have a city with its address'],
-  },
-  addressState: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have a state with its address'],
-  },
-  addressZip: {
-    type: String,
-    trim: true,
-    // required: [true, 'business must have a zip code with its address'],
-  },
-  phone: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have a phone number'],
-  },
-  website: {
-    type: String,
-    trim: true,
-    default: '',
-  },
-  description: {
-    type: String,
-    trim: true,
-    required: [true, 'business must have a description'],
-  },
-  location: {
-    type: pointSchema,
-    // this will be set in the pre-save middleware
-  },
-  ratingAvg: {
-    type: Number,
-    default: 4.5,
-  },
-  ratingQty: {
-    type: Number,
-    default: 0,
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  tags: {
-    type: [String],
-    default: [],
-  },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 ///// INDICIES /////
 businessSchema.index({ location: '2dsphere' });
@@ -146,14 +154,5 @@ businessSchema.pre('save', async function (next) {
   next();
 });
 
-///// MODEL /////
-// because we're runing on a serverless framework, it sometimes happens
-// that this module is run more than once, and we get an error saying
-// 'Cannot overwrite model once compiled'. This short circuit asks for
-// the existing model, and if it can't find it, creates a new one.
-const Business =
-  mongoose.models.Business ||
-  mongoose.model<IBusinessDocument, IBusinessModel>('Business', businessSchema);
-export default Business;
-// export types
-export type BusinessType = mongoose.InferSchemaType<typeof businessSchema>;
+///// EXPORT IT ALL /////
+export { businessSchema };

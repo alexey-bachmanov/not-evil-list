@@ -3,8 +3,7 @@
 // doesn't know about a document's model inside that model's middleware
 // so we have to export it out into its own function
 import { ObjectId } from 'mongoose';
-import Review from '@/models/review';
-import Business from '@/models/business';
+import { Business, Review } from '@/models';
 
 export default async function recalculateAvgRating(businessId: ObjectId) {
   // re-calculate the average rating using Model.aggregate

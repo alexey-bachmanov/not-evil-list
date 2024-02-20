@@ -1,6 +1,5 @@
 // import types from models
-import { BusinessType } from '@/models/business';
-import { ReviewType } from '@/models/review';
+import { IBusinessDocument, IReviewDocument } from '@/models';
 import { ObjectId } from 'mongoose';
 
 // types for API requests
@@ -51,22 +50,22 @@ export type AppApiResponse = {
   getBusinessList: {
     success: true;
     data: {
-      businesses: BusinessType[];
+      businesses: IBusinessDocument[];
     };
   };
   getBusinessDetails: {
     success: true;
     data: {
-      business: BusinessType;
+      business: IBusinessDocument;
     };
   };
   postNewBusiness: {
     success: true;
-    data: { business: BusinessType };
+    data: { business: IBusinessDocument };
   };
   editBusiness: {
     success: true;
-    data: { business: BusinessType };
+    data: { business: IBusinessDocument };
   };
   deleteBusiness: {
     success: true;
@@ -74,15 +73,15 @@ export type AppApiResponse = {
   };
   putBusiness: {
     success: true;
-    data: { business: BusinessType };
+    data: { business: IBusinessDocument };
   };
   getAllReviews: {
     success: true;
-    data: { reviews: ReviewType[] };
+    data: { reviews: IReviewDocument[] };
   };
   postNewReview: {
     success: true;
-    data: { review: ReviewType };
+    data: { review: IReviewDocument };
   };
   login: {
     success: true;

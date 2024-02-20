@@ -2,7 +2,7 @@
 // Sign up ()
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import User, { IUser, UserType } from '@/models/user';
+import { User, IUser, IUserDocument } from '@/models';
 import ApiError from '@/lib/apiError';
 import createSendToken from '@/lib/createSendToken';
 import { AppApiRequest, AppApiResponse } from '@/types';
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     // create new user in our DB
     // we want to feed in data in IUser shape, but expect back data in UserType shape
-    const newUser: UserType = new User<IUser>({ ...body, role: 'user' });
+    const newUser: IUserDocument = new User<IUser>({ ...body, role: 'user' });
     await newUser.save();
 
     // create a response

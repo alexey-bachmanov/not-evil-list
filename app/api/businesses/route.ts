@@ -3,7 +3,7 @@
 // create new business
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Business, { BusinessType, IBusiness } from '@/models/business';
+import { Business, IBusiness, IBusinessDocument } from '@/models';
 import queryStringToMongoFilter from '@/lib/queryStringToMongoFilter';
 import ApiError from '@/lib/apiError';
 import { AppApiRequest, AppApiResponse } from '@/types';
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
     // get our mongo search filter from the query string in the request
     const mongoFilter = await queryStringToMongoFilter(req);
-    const businesses = await Business.find<BusinessType>(mongoFilter);
+    const businesses = await Business.find<IBusinessDocument>(mongoFilter);
     // by convention, even if no matching businesses were found, we
     // should return a 200 response
     return NextResponse.json<AppApiResponse['getBusinessList']>(
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     }
     // store input data, missing values are populated by our
     // pre-save middleware
-    const newBusiness: BusinessType = new Business<IBusiness>(body);
+    const newBusiness: IBusinessDocument = new Business<IBusiness>(body);
     await newBusiness.save();
 
     return NextResponse.json<AppApiResponse['postNewBusiness']>(

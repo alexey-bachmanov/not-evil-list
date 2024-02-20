@@ -20,14 +20,14 @@ export interface IUser {
   active?: boolean;
 }
 // extend it to include instance methods and values like '_id'
-interface IUserDocument extends IUser, mongoose.Document {
+export interface IUserDocument extends IUser, mongoose.Document {
   // instance methods
   passwordMatch: (
     candidatepassword: string,
     hashedpassword: string
   ) => Promise<boolean>;
 }
-interface IUserModel extends mongoose.Model<IUserDocument> {
+export interface IUserModel extends mongoose.Model<IUserDocument> {
   // static methods
 }
 
@@ -101,14 +101,5 @@ userSchema.methods.passwordMatch = async function (
   return await bcrypt.compare(candidatepassword, hashedpassword);
 };
 
-///// MODEL /////
-// because we're runing on a serverless framework, it sometimes happens
-// that this module is run more than once, and we get an error saying
-// 'Cannot overwrite model once compiled'. This short circuit asks for
-// the existing model, and if it can't find it, creates a new one.
-const User =
-  mongoose.models.User ||
-  mongoose.model<IUserDocument, IUserModel>('User', userSchema);
-export default User;
-// export types
-export type UserType = mongoose.InferSchemaType<typeof userSchema>;
+///// EXPORT IT ALL /////
+export { userSchema };

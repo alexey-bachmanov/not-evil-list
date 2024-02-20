@@ -6,8 +6,8 @@ import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import parseBody from '@/lib/parseBody';
-import Review, { IReview, ReviewType } from '@/models/review';
-import { ObjectId, isObjectIdOrHexString, isValidObjectId } from 'mongoose';
+import { Review, IReview, IReviewDocument } from '@/models';
+import { ObjectId, isValidObjectId } from 'mongoose';
 import authCheck from '@/lib/authCheck';
 
 ///// GET (RETRIEVE ALL REVIEWS, BY BUSINESS ID) /////
@@ -28,7 +28,9 @@ export async function GET(req: NextRequest) {
     // assert that the businessIdParam string IS a mongoDB ObjectID
     const businessId = businessIdParam as unknown as ObjectId;
     // find all reviews with that businessId
-    const reviews = await Review.find<ReviewType>({ business: businessId });
+    const reviews = await Review.find<IReviewDocument>({
+      business: businessId,
+    });
     // return array of reviews
     return NextResponse.json<AppApiResponse['getAllReviews']>({
       success: true,
@@ -76,7 +78,7 @@ export async function POST(req: NextRequest) {
     // parse the recieved body
     const body = await parseBody<AppApiRequest['postNewReview']>(req);
     // create new review from input data, and save it
-    const newReview: ReviewType = new Review<IReview>({
+    const newReview: IReviewDocument = new Review<IReview>({
       ...body,
       user: userId,
       business: businessId,

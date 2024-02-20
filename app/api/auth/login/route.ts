@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
-import User, { UserType } from '@/models/user';
+import { User, IUserDocument } from '@/models';
 import createSendToken from '@/lib/createSendToken';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import parseBody from '@/lib/parseBody';
@@ -26,9 +26,9 @@ export async function POST(req: NextRequest) {
     }
 
     // check if user exists and password is correct
-    const user = await User.findOne<UserType>({ email: body.email }).select(
-      '+password'
-    );
+    const user = await User.findOne<IUserDocument>({
+      email: body.email,
+    }).select('+password');
     if (!user || !(await user.passwordMatch(body.password, user.password))) {
       throw new ApiError('Incorrect email or password', 401);
     }

@@ -8,7 +8,7 @@ import { isValidObjectId } from 'mongoose';
 import dbConnect from '@/lib/dbConnect';
 import ApiError from '@/lib/apiError';
 import authCheck from '@/lib/authCheck';
-import Business, { BusinessType } from '@/models/business';
+import { Business, IBusinessDocument } from '@/models';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import parseBody from '@/lib/parseBody';
 
@@ -27,7 +27,9 @@ export async function GET(req: NextRequest) {
     }
 
     // try and get the business
-    const business = await Business.findById(businessID);
+    const business = await Business.findById<IBusinessDocument>(
+      businessID
+    ).populate('reviews');
 
     // check if the business actually exists (findById would return null)
     if (!business) {
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json<AppApiResponse['getBusinessDetails']>(
-      { success: true, data: { business: business } },
+      { success: true, data: { business } },
       { status: 200 }
     );
   } catch (err: any) {
@@ -90,7 +92,7 @@ export async function PUT(req: NextRequest) {
 
     // store input data, missing values are populated by our
     // pre-save middleware
-    const business = await Business.findById<BusinessType>(businessID);
+    const business = await Business.findById<IBusinessDocument>(businessID);
 
     // check if that business actually existed (findById would return null)
     if (!business) {
