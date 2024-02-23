@@ -2,7 +2,7 @@ import { AppApiResponse } from '@/types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { uiActions } from '.';
 import fetchData from '@/lib/fetchData';
-import { BusinessType } from '@/models/business';
+import { IBusinessDocument } from '@/models';
 
 ///// UTIL FUNCTIONS /////
 const stringToQueryString = (inputString: string) => {
@@ -88,12 +88,12 @@ export const getDetails = createAsyncThunk(
 ///// SLICE CREATION /////
 const initialState: {
   searchQuery: string;
-  results: BusinessType[];
+  results: IBusinessDocument[];
   status: 'idle' | 'loading' | 'success' | 'failure';
   error: string | undefined;
   businessDetails: {
     status: 'idle' | 'loading' | 'success' | 'failure';
-    details: BusinessType | undefined;
+    details: IBusinessDocument | undefined;
     error: string | undefined;
   };
 } = {

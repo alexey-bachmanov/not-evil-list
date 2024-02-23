@@ -4,6 +4,7 @@ import Drawer from './Drawer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, uiActions, adminActions } from '@/store';
 import formatPhoneNumber from '@/lib/formatPhoneNumber';
+import Review from './Review';
 
 // MUI imports
 import CircularProgress from '@mui/material/CircularProgress';
@@ -45,15 +46,18 @@ const DetailsDrawer: React.FC = function () {
       {/* TITLE */}
       <Typography variant="h6">{business?.companyName}</Typography>
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+
       {/* TAGS */}
       <Typography variant="caption">Tags go here...</Typography>
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+
       {/* OVERVIEW */}
       <Typography variant="caption" textAlign="right">
         Overview
       </Typography>
       <Typography variant="body2">{business?.description}</Typography>
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+
       {/* DETAILS */}
       <Typography variant="caption" textAlign="right">
         Details
@@ -64,6 +68,7 @@ const DetailsDrawer: React.FC = function () {
         {formatPhoneNumber(business?.phone)}
       </Typography>
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+
       {/* REVIEWS */}
       <Typography variant="caption" textAlign="right">
         Reviews
@@ -75,8 +80,13 @@ const DetailsDrawer: React.FC = function () {
         readOnly
         sx={{ marginLeft: 'auto', marginRight: 'auto' }}
       />
-      <List sx={{ flexBasis: '100%' }}></List>
+      <List sx={{ flexBasis: '100%' }}>
+        {business?.reviews?.map((review) => (
+          <Review key={review._id} review={review} />
+        ))}
+      </List>
 
+      {/* ADMIN ACTION BUTTONS */}
       {userRole === 'admin' && isInAdminMode && !business?.isVerified && (
         <Button
           fullWidth
