@@ -56,7 +56,7 @@ const reviewSchema = new mongoose.Schema<IReviewDocument>(
 );
 
 ///// INDICIES /////
-reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+reviewSchema.index({ business: 1, user: 1 }, { unique: true });
 
 ///// MIDDLEWARE /////
 // populate user data on query

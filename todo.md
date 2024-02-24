@@ -2,7 +2,6 @@
 
 - Major implementations:
   - Implement search functions besides "get all"
-  - Implement reviews
 - Minor implementation:
 - Look and feel:
   - User feedback on signup attempt with duplicate email

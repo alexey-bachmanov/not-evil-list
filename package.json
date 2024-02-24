@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "populate-reviews": "tsx scripts/populateReviews.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -37,8 +38,10 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@types/validator": "^13.11.8",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "^14.1.0",
+    "tsx": "^4.7.1",
     "typescript": "^5"
   }
 }
