@@ -1,152 +1,276 @@
-[
-  {
-    "_id": {
-      "$oid": "65bacaa126e57397c9ab45fc"
-    },
-    "companyName": "H-mart",
-    "address": "6201-31 N Front St",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "",
-    "description": "Spicy! Extremely so.",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "addressZip": "19120-1521",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.118111, 40.045102],
-      "_id": {
-        "$oid": "65ca85d04a287ecab4799aed"
-      }
-    },
-    "__v": 2,
-    "tags": ["Restaurant", "Grocery Store"]
+[{
+  "_id": {
+    "$oid": "65bacaa126e57397c9ab45fc"
   },
-  {
+  "companyName": "H-mart",
+  "address": "6201-31 N Front St",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "",
+  "description": "Spicy! Extremely so.",
+  "ratingAvg": 4.25,
+  "ratingQty": 16,
+  "isVerified": true,
+  "addressZip": "19120-1521",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.118111,
+      40.045102
+    ],
     "_id": {
-      "$oid": "65c3d6c28d48dbfe74240cb0"
-    },
-    "companyName": "Test Business",
-    "address": "607 E Allegheny Ave",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "www.website.com",
-    "description": "Test business. Please ignore.",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "addressZip": "19134-2302",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.118971, 39.997526],
-      "_id": {
-        "$oid": "65ca85224a287ecab4799ae1"
-      }
-    },
-    "__v": 1,
-    "tags": ["Bookstore"]
+      "$oid": "65ca85d04a287ecab4799aed"
+    }
   },
-  {
-    "_id": {
-      "$oid": "65c69f9b14c32f9a39f97e6f"
-    },
-    "companyName": "Test Business 2",
-    "address": "25 W Hortter St",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "www.website.com",
-    "description": "Like the original Test Business, but better!",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "addressZip": "19119-2705",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.185119, 40.050239],
-      "_id": {
-        "$oid": "65ca85dc4a287ecab4799af4"
-      }
-    },
-    "__v": 1,
-    "tags": ["Bookstore"]
+  "__v": 2,
+  "tags": [
+    "Restaurant",
+    "Grocery Store"
+  ]
+},
+{
+  "_id": {
+    "$oid": "65c3d6c28d48dbfe74240cb0"
   },
-  {
+  "companyName": "Test Business",
+  "address": "607 E Allegheny Ave",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "www.website.com",
+  "description": "Test business. Please ignore.",
+  "ratingAvg": 4.076923076923077,
+  "ratingQty": 13,
+  "isVerified": true,
+  "addressZip": "19134-2302",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.118971,
+      39.997526
+    ],
     "_id": {
-      "$oid": "65ca45ba4a287ecab4799a97"
-    },
-    "companyName": "Jake's Vegan Steaks",
-    "address": "1801 Liacouras Walk",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "www.website.com",
-    "description": "You can have anything you want, as long as it's vegetables",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "tags": ["Restaurant", "Food Truck", "Fast Food"],
-    "addressZip": "19122",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.155748, 39.980352],
-      "_id": {
-        "$oid": "65ca85e74a287ecab4799afb"
-      }
-    },
-    "__v": 0
+      "$oid": "65ca85224a287ecab4799ae1"
+    }
   },
-  {
-    "_id": {
-      "$oid": "65ca46544a287ecab4799a9d"
-    },
-    "companyName": "Yer-bar-matte",
-    "address": "1601-09 Fairmount Ave",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "www.website.com",
-    "description": "A bar for board games and yerba matte. Is it supposed to taste like dirt?",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "tags": ["Bar"],
-    "addressZip": "19130-2836",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.163984, 39.967385],
-      "_id": {
-        "$oid": "65ca85ef4a287ecab4799b02"
-      }
-    },
-    "__v": 0
+  "__v": 1,
+  "tags": [
+    "Bookstore"
+  ]
+},
+{
+  "_id": {
+    "$oid": "65c69f9b14c32f9a39f97e6f"
   },
-  {
+  "companyName": "Test Business 2",
+  "address": "25 W Hortter St",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "www.website.com",
+  "description": "Like the original Test Business, but better!",
+  "ratingAvg": 4,
+  "ratingQty": 13,
+  "isVerified": true,
+  "addressZip": "19119-2705",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.185119,
+      40.050239
+    ],
     "_id": {
-      "$oid": "65ca46aa4a287ecab4799aa0"
-    },
-    "companyName": "Smooth-flo Gluten-free Car Wash",
-    "address": "1428 N Broad St",
-    "addressCity": "Philadelphia",
-    "addressState": "PA",
-    "phone": "5555555555",
-    "website": "www.website.com",
-    "description": "Aren't you tired of high-gluten water sticking to your car?",
-    "ratingAvg": 4.5,
-    "ratingQty": 0,
-    "isVerified": true,
-    "tags": ["Car Wash"],
-    "addressZip": "19121-4326",
-    "location": {
-      "type": "Point",
-      "coordinates": [-75.159141, 39.97539],
-      "_id": {
-        "$oid": "65ca85f44a287ecab4799b09"
-      }
-    },
-    "__v": 0
-  }
-]
+      "$oid": "65ca85dc4a287ecab4799af4"
+    }
+  },
+  "__v": 1,
+  "tags": [
+    "Bookstore"
+  ]
+},
+{
+  "_id": {
+    "$oid": "65ca45ba4a287ecab4799a97"
+  },
+  "companyName": "Jake's Vegan Steaks",
+  "address": "1801 Liacouras Walk",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "www.website.com",
+  "description": "You can have anything you want, as long as it's vegetables",
+  "ratingAvg": 3.769230769230769,
+  "ratingQty": 13,
+  "isVerified": true,
+  "tags": [
+    "Restaurant",
+    "Food Truck",
+    "Fast Food"
+  ],
+  "addressZip": "19122",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.155748,
+      39.980352
+    ],
+    "_id": {
+      "$oid": "65ca85e74a287ecab4799afb"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ca46544a287ecab4799a9d"
+  },
+  "companyName": "Yer-bar-matte",
+  "address": "1601-09 Fairmount Ave",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "www.website.com",
+  "description": "A bar for board games and yerba matte. Is it supposed to taste like dirt?",
+  "ratingAvg": 3.923076923076923,
+  "ratingQty": 13,
+  "isVerified": true,
+  "tags": [
+    "Bar"
+  ],
+  "addressZip": "19130-2836",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.163984,
+      39.967385
+    ],
+    "_id": {
+      "$oid": "65ca85ef4a287ecab4799b02"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ca46aa4a287ecab4799aa0"
+  },
+  "companyName": "Smooth-flo Gluten-free Car Wash",
+  "address": "1428 N Broad St",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "5555555555",
+  "website": "www.website.com",
+  "description": "Aren't you tired of high-gluten water sticking to your car?",
+  "ratingAvg": 4.384615384615385,
+  "ratingQty": 13,
+  "isVerified": true,
+  "tags": [
+    "Car Wash"
+  ],
+  "addressZip": "19121-4326",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.159141,
+      39.97539
+    ],
+    "_id": {
+      "$oid": "65ca85f44a287ecab4799b09"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65da435257e784371304a135"
+  },
+  "companyName": "Business Factory",
+  "address": "3815 Haverford Ave",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "2155555555",
+  "website": "https://www.website.com",
+  "description": "A real fake business",
+  "ratingAvg": 4.333333333333333,
+  "ratingQty": 9,
+  "isVerified": true,
+  "tags": [
+    "Pub",
+    "Bookstore"
+  ],
+  "addressZip": "19104",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.197985,
+      39.963576
+    ],
+    "_id": {
+      "$oid": "65da581737240540cca420e4"
+    }
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "65da43b657e784371304a138"
+  },
+  "companyName": "Finn's Famous Flapjacks",
+  "address": "3370 tilton street",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "2155555555",
+  "website": "https://www.website.com",
+  "description": "Gluten-free goodness",
+  "ratingAvg": 4.4,
+  "ratingQty": 15,
+  "isVerified": true,
+  "tags": [
+    "Restaurant",
+    "Fast Food"
+  ],
+  "addressZip": "19134",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.097923,
+      39.986124
+    ],
+    "_id": {
+      "$oid": "65da58ef37240540cca420f9"
+    }
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "65da442f57e784371304a13b"
+  },
+  "companyName": "The Green Grocer",
+  "address": "Philadelphia",
+  "addressCity": "Philadelphia",
+  "addressState": "PA",
+  "phone": "2155555555",
+  "website": "https://www.website.com",
+  "description": "Green things in stock! But only green things.",
+  "ratingAvg": 4.142857142857143,
+  "ratingQty": 14,
+  "isVerified": true,
+  "tags": [
+    "Grocery Store",
+    "Cafe"
+  ],
+  "addressZip": null,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -75.168428,
+      39.990821
+    ],
+    "_id": {
+      "$oid": "65da590d37240540cca4210b"
+    }
+  },
+  "__v": 1
+}]

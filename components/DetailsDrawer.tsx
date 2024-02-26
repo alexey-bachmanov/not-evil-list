@@ -80,7 +80,7 @@ const DetailsDrawer: React.FC = function () {
         readOnly
         sx={{ marginLeft: 'auto', marginRight: 'auto' }}
       />
-      <List sx={{ flexBasis: '100%' }}>
+      <List sx={{ flexBasis: '100%', overflowY: 'auto' }}>
         {business?.reviews?.map((review) => (
           <Review key={review._id} review={review} />
         ))}

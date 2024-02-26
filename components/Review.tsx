@@ -35,7 +35,14 @@ const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
           <Avatar alt={`${user.userName} avatar`}>
             {user.userName.slice(0, 1).toUpperCase()}
           </Avatar>
-          <Typography variant="h6" sx={{ flexBasis: '100%', paddingLeft: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              flexBasis: '100%',
+              paddingLeft: 1,
+              textWrap: 'nowrap',
+            }}
+          >
             {user.userName}
           </Typography>
         </Grid>
@@ -44,7 +51,7 @@ const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
         <Grid item xs={6}>
           <Rating readOnly value={review.rating} size="small" />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{ textAlign: 'right' }}>
           <Typography variant="subtitle2">
             {date.toLocaleDateString()}
           </Typography>
