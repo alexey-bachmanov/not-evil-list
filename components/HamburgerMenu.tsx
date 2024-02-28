@@ -7,6 +7,7 @@ import {
   authActions,
   uiActions,
   adminActions,
+  loginDialogActions,
 } from '@/store';
 import sleep from '@/lib/sleep';
 
@@ -74,7 +75,7 @@ const HamburgerMenu: React.FC = function () {
   // auth handlers
   const handleLogin = () => {
     setAnchorEl(null);
-    dispatch(uiActions.openDialog());
+    dispatch(loginDialogActions.openDialog());
   };
   const handleLogout = async () => {
     setAnchorEl(null);

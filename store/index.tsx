@@ -11,6 +11,7 @@ import adminSlice, {
   deleteBusiness,
   approveBusiness,
 } from './adminSlice';
+import loginDialogSlice, { submit, validate } from './loginDialogSlice';
 
 ///// STORE COMPOSITION /////
 export const store = configureStore({
@@ -19,6 +20,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     ui: uiSlice.reducer,
     admin: adminSlice.reducer,
+    loginDialog: loginDialogSlice.reducer,
   },
 });
 
@@ -34,6 +36,11 @@ export const adminActions = {
   editBusiness,
   deleteBusiness,
   approveBusiness,
+};
+export const loginDialogActions = {
+  ...loginDialogSlice.actions,
+  submit,
+  validate,
 };
 
 // export types

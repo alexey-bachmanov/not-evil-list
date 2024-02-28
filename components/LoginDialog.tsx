@@ -1,7 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch, uiActions, authActions } from '@/store';
+import {
+  RootState,
+  AppDispatch,
+  authActions,
+  loginDialogActions,
+} from '@/store';
 
 // Material UI imports
 import Box from '@mui/material/Box';
@@ -11,14 +16,16 @@ import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import Alert from '@mui/material/Alert';
 
 const LoginDialog: React.FC = function () {
   // load stuff from our redux store
-  const isOpen = useSelector((state: RootState) => state.ui.loginDialog.isOpen);
-  const dialogType = useSelector(
-    (state: RootState) => state.ui.loginDialog.type
-  );
+  const isOpen = useSelector((state: RootState) => state.loginDialog.isOpen);
+  const dialogType = useSelector((state: RootState) => state.loginDialog.type);
   const loginState = useSelector((state: RootState) => state.auth.status);
+  const helperText = useSelector(
+    (state: RootState) => state.loginDialog.helperText
+  );
 
   // set up dispatch
   const dispatch = useDispatch<AppDispatch>();
@@ -31,31 +38,45 @@ const LoginDialog: React.FC = function () {
     passwordConfirm: '',
   });
 
+  // compute derivative state
+  const helperTextIsEmpty =
+    helperText.email === '' &&
+    helperText.userName === '' &&
+    helperText.password === '' &&
+    helperText.passwordConfirm === '';
+  const userInfoIsFilledOut =
+    (dialogType === 'login' &&
+      userInfo.email !== '' &&
+      userInfo.password !== '') ||
+    (dialogType === 'signup' &&
+      Object.values(userInfo).every((val) => val !== ''));
+
   // handlers
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (dialogType === 'login') {
-      await dispatch(
-        authActions.login({
-          email: userInfo.email,
-          password: userInfo.password,
-        })
-      );
-    } else {
-      await dispatch(authActions.signup(userInfo));
+    // call the loginDialog.submit thunk and store success or failure
+    const result = await dispatch(loginDialogActions.submit(userInfo));
+    // clear the data from the form on fulfilled dispatch
+    if (result.meta.requestStatus === 'fulfilled') {
+      setUserInfo({
+        email: '',
+        userName: '',
+        password: '',
+        passwordConfirm: '',
+      });
     }
-    // close the dialog window and reset state to 'login'
-    dispatch(uiActions.closeDialog());
-    // clear the data from the form
-    setUserInfo({ email: '', userName: '', password: '', passwordConfirm: '' });
+  };
+
+  const handleBlur = () => {
+    dispatch(loginDialogActions.validate(userInfo));
   };
 
   const handleSwitchMode = () => {
-    dispatch(uiActions.toggleDialogType());
+    dispatch(loginDialogActions.toggleDialogType());
   };
 
   const handleClose = () => {
-    dispatch(uiActions.closeDialog());
+    dispatch(loginDialogActions.closeDialog());
   };
 
   // define the contents of both the login form and signup form
@@ -70,7 +91,10 @@ const LoginDialog: React.FC = function () {
         variant="outlined"
         fullWidth
         value={userInfo.email}
+        error={helperText.email !== ''}
+        helperText={helperText.email}
         onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+        onBlur={handleBlur}
       />
       <TextField
         id="password"
@@ -80,26 +104,18 @@ const LoginDialog: React.FC = function () {
         variant="outlined"
         fullWidth
         value={userInfo.password}
+        error={helperText.password !== ''}
+        helperText={helperText.password}
         onChange={(e) => {
           setUserInfo({ ...userInfo, password: e.target.value });
         }}
+        onBlur={handleBlur}
       />
     </>
   );
 
   const signupJSX = (
     <>
-      <TextField
-        autoFocus
-        id="email"
-        margin="dense"
-        label="Email"
-        type="email"
-        variant="outlined"
-        fullWidth
-        value={userInfo.email}
-        onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-      />
       <TextField
         id="username"
         margin="dense"
@@ -108,20 +124,12 @@ const LoginDialog: React.FC = function () {
         variant="outlined"
         fullWidth
         value={userInfo.userName}
+        error={helperText.userName !== ''}
+        helperText={helperText.userName}
         onChange={(e) => setUserInfo({ ...userInfo, userName: e.target.value })}
+        onBlur={handleBlur}
       />
-      <TextField
-        id="password"
-        margin="dense"
-        label="Password"
-        type="password"
-        variant="outlined"
-        fullWidth
-        value={userInfo.password}
-        onChange={(e) => {
-          setUserInfo({ ...userInfo, password: e.target.value });
-        }}
-      />
+      {loginJSX}
       <TextField
         id="passwordConfirm"
         margin="dense"
@@ -130,9 +138,12 @@ const LoginDialog: React.FC = function () {
         variant="outlined"
         fullWidth
         value={userInfo.passwordConfirm}
+        error={helperText.passwordConfirm !== ''}
+        helperText={helperText.passwordConfirm}
         onChange={(e) => {
           setUserInfo({ ...userInfo, passwordConfirm: e.target.value });
         }}
+        onBlur={handleBlur}
       />
     </>
   );
@@ -144,6 +155,9 @@ const LoginDialog: React.FC = function () {
           {dialogType === 'login' ? 'Log in' : 'Sign up'}
         </DialogTitle>
         <DialogContent>
+          {helperText.globalError !== '' ? (
+            <Alert severity="error">{helperText.globalError}</Alert>
+          ) : null}
           {dialogType === 'login' ? loginJSX : signupJSX}
         </DialogContent>
         <DialogActions>
@@ -153,7 +167,14 @@ const LoginDialog: React.FC = function () {
           >
             {dialogType === 'login' ? 'Sign up' : 'Log in'}
           </Button>
-          <Button type="submit" disabled={loginState === 'authorizing'}>
+          <Button
+            type="submit"
+            disabled={
+              !helperTextIsEmpty ||
+              !userInfoIsFilledOut ||
+              loginState === 'authorizing'
+            }
+          >
             {loginState === 'authorizing' ? 'Processing...' : 'Submit'}
           </Button>
         </DialogActions>
