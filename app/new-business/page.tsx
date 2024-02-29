@@ -1,25 +1,29 @@
 'use client';
 import React, { useState } from 'react';
 import Logo from '@/components/Logo';
-import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse, Tag, tags } from '@/types';
+import { Tag, tags } from '@/types';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, uiActions } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, createNewBusinessActions, RootState } from '@/store';
 
 // MUI imports
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 
 const NewBusinessPage: React.FC = function () {
-  const [submitState, setSubmitState] = useState<
-    'idle' | 'submitting' | 'done'
-  >('idle');
+  const submitState = useSelector(
+    (state: RootState) => state.createNewBusiness.status
+  );
+  const helperText = useSelector(
+    (state: RootState) => state.createNewBusiness.helperText
+  );
   const [formData, setFormData] = useState<{
     companyName: string;
     address: string;
@@ -39,35 +43,27 @@ const NewBusinessPage: React.FC = function () {
     description: '',
     tags: [],
   });
+  const [touched, setTouched] = useState({
+    companyName: false,
+    address: false,
+    addressCity: false,
+    addressState: false,
+    phone: false,
+    website: false,
+    description: false,
+    tags: false,
+  });
+  // derived state
+  const helperTextIsEmpty = Object.values(helperText).every(
+    (val) => val === ''
+  );
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitState('submitting');
-    const reply = await fetchData<
-      AppApiRequest['postNewBusiness'],
-      AppApiResponse['postNewBusiness']
-    >('/api/businesses', formData, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (!reply.success) {
-      setSubmitState('idle');
-      dispatch(
-        uiActions.openAlert({
-          type: 'error',
-          message: 'Failed to submit. Try again later',
-        })
-      );
-    } else {
-      setSubmitState('done');
-      dispatch(
-        uiActions.openAlert({
-          type: 'success',
-          message: 'Business submitted to the database. Thank you!',
-        })
-      );
+    const result = await dispatch(createNewBusinessActions.submit(formData));
+    if (result.meta.requestStatus === 'fulfilled') {
       router.replace('/');
     }
   };
@@ -90,6 +86,12 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, companyName: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, companyName: true });
+              }}
+              error={touched.companyName && helperText.companyName !== ''}
+              helperText={touched.companyName && helperText.companyName}
             />
           </Grid>
           {/* ADDRESS */}
@@ -104,10 +106,16 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, address: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, address: true });
+              }}
+              error={touched.address && helperText.address !== ''}
+              helperText={touched.address && helperText.address}
             />
           </Grid>
           {/* CITY */}
-          <Grid item xs={10}>
+          <Grid item xs={9}>
             <TextField
               name="city"
               required
@@ -118,10 +126,16 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, addressCity: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, addressCity: true });
+              }}
+              error={touched.addressCity && helperText.addressCity !== ''}
+              helperText={touched.addressCity && helperText.addressCity}
             />
           </Grid>
           {/* STATE */}
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <TextField
               name="state"
               required
@@ -132,24 +146,38 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, addressState: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, addressState: true });
+              }}
+              error={touched.addressState && helperText.addressState !== ''}
+              helperText={touched.addressState && helperText.addressState}
             />
           </Grid>
           {/* PHONE */}
-          <Grid item xs={12} sm={4}>
-            <TextField
+          <Grid item xs={12} sm={5}>
+            <MuiPhoneNumber
               name="phone"
               required
               id="phone"
               label="Phone"
+              defaultCountry="us"
+              variant="outlined"
               fullWidth
               value={formData.phone}
-              onChange={(e) => {
-                setFormData({ ...formData, phone: e.target.value });
+              onChange={(val) => {
+                setFormData({ ...formData, phone: val as string });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, phone: true });
+              }}
+              error={touched.phone && helperText.phone !== ''}
+              helperText={touched.phone && helperText.phone}
             />
           </Grid>
           {/* WEBSITE */}
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7}>
             <TextField
               name="website"
               id="website"
@@ -159,6 +187,12 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, website: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, website: true });
+              }}
+              error={touched.website && helperText.website !== ''}
+              helperText={touched.website && helperText.website}
             />
           </Grid>
           {/* DESCRIPTION */}
@@ -175,6 +209,12 @@ const NewBusinessPage: React.FC = function () {
               onChange={(e) => {
                 setFormData({ ...formData, description: e.target.value });
               }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, description: true });
+              }}
+              error={touched.description && helperText.description !== ''}
+              helperText={touched.description && helperText.description}
             />
           </Grid>
           {/* TAGS */}
@@ -183,10 +223,21 @@ const NewBusinessPage: React.FC = function () {
               multiple
               id="tags"
               options={tags}
-              // freeSolo
               value={formData.tags}
               onChange={(e, newValue) => {
+                // we want to immediately re-validate on tag change
                 setFormData({ ...formData, tags: newValue });
+                dispatch(
+                  createNewBusinessActions.validate({
+                    ...formData,
+                    tags: newValue,
+                  })
+                );
+                setTouched({ ...touched, tags: true });
+              }}
+              onBlur={() => {
+                dispatch(createNewBusinessActions.validate(formData));
+                setTouched({ ...touched, tags: true });
               }}
               renderTags={(value: readonly string[], getTagProps) =>
                 value.map((option: string, index: number) => (
@@ -202,10 +253,16 @@ const NewBusinessPage: React.FC = function () {
                 <TextField {...params} label="Tags" placeholder="Tags" />
               )}
             />
+            {/* ghetto helper text for tags */}
+            {touched.tags && (
+              <Typography variant="caption" ml={1.5} mr={1.5}>
+                {helperText.tags}
+              </Typography>
+            )}
           </Grid>
         </Grid>
         <Button
-          disabled={submitState === 'idle' ? false : true}
+          disabled={submitState !== 'idle' || !helperTextIsEmpty}
           type="submit"
           variant="outlined"
           fullWidth

@@ -29,7 +29,7 @@ const Map: React.FC = function () {
       zoom={zoom}
       scrollWheelZoom={true}
       zoomControl={false}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100vw', height: '100vh' }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -4,14 +4,10 @@
   - Implement search functions besides "get all"
 - Minor implementation:
 - Look and feel:
-  - User feedback on signup attempt with duplicate email
-  - User feedback on login attempt with incorrect password
-  - User feedback on login failure due to no connection with backend
   - Add confirmation dialog on business delete action
   - Add 'zoom to selected pin' functionality
-  - Add front-end validation to 'new business' form
+  - Add validation to edits drawer
 - Responsiveness:
-  - Change how drawers animate on mobile to keep everything inside a 100vw x 100vh box
   - Swipeable drawers?
 - Accesibility:
   - Audit for keyboard navigation
@@ -28,7 +24,6 @@
   - Type safety on addressToGeoData function
 - DB and front-end validation:
   - Make sure phone # is a valid phone #
-  - Make sure website is a valid website
 - Testing:
   - Start doing it?
 - Bugs:

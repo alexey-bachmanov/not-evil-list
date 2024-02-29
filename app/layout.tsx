@@ -32,7 +32,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Providers>
-          <Box component="main" sx={{ width: '100vw', height: '100vh' }}>
+          <Box component="main">
             {children}
             <LoginDialog />
             <AlertBar />
