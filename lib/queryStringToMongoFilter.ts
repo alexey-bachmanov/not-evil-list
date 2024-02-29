@@ -2,7 +2,7 @@
 // a proper database query
 import { NextRequest } from 'next/server';
 import { FilterQuery } from 'mongoose';
-import { BusinessType } from '@/models/business';
+import { IBusinessDocument } from '@/models/business';
 import authCheck from './authCheck';
 
 export default async function queryStringToMongoFilter(req: NextRequest) {
@@ -13,7 +13,7 @@ export default async function queryStringToMongoFilter(req: NextRequest) {
   const { isAdmin } = await authCheck(req);
 
   // initialize mongo filter, default to only find verified results
-  let filter: FilterQuery<BusinessType> = { isVerified: true };
+  let filter: FilterQuery<IBusinessDocument> = { isVerified: true };
 
   // check for an empty string, return a filter that will return nothing
   if (!queryString) {

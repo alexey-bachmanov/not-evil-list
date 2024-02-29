@@ -4,7 +4,7 @@ import { RootState, AppDispatch, uiActions, searchActions } from '@/store';
 
 // leaflet imports
 import { Icon } from 'leaflet';
-import { Marker, Popup } from 'react-leaflet';
+import { Marker } from 'react-leaflet';
 
 // create a 'normal' icon and 'activated' icon
 const iconNormal = new Icon({
@@ -35,7 +35,11 @@ const MapMarkers: React.FC = function () {
       key={el._id}
       // GeoJSON has format [ lng, lat ]
       // Marker expects [ lat, lng ]
-      position={[el.location.coordinates[1], el.location.coordinates[0]]}
+      position={
+        el.location
+          ? [el.location.coordinates[1], el.location.coordinates[0]]
+          : [0, 0]
+      }
       icon={el._id === selectedBusinessID ? iconActivated : iconNormal}
       eventHandlers={{
         click: () => {

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Drawer from './Drawer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, uiActions } from '@/store';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BusinessType } from '@/models/business';
+import { IBusinessDocument } from '@/models';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, searchActions, uiActions } from '@/store';
 import formatPhoneNumber from '@/lib/formatPhoneNumber';
@@ -11,7 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
 
-const SearchResult: React.FC<{ business: BusinessType }> = function ({
+const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
   business,
 }) {
   const dispatch = useDispatch<AppDispatch>();

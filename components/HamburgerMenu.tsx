@@ -5,7 +5,6 @@ import {
   RootState,
   AppDispatch,
   authActions,
-  uiActions,
   adminActions,
   loginDialogActions,
 } from '@/store';

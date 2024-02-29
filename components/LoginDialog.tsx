@@ -1,12 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  RootState,
-  AppDispatch,
-  authActions,
-  loginDialogActions,
-} from '@/store';
+import { RootState, AppDispatch, loginDialogActions } from '@/store';
 
 // Material UI imports
 import Box from '@mui/material/Box';

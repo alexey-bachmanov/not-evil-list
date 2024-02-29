@@ -1,6 +1,5 @@
 // import types from models
 import { IBusinessDocument, IReviewDocument } from '@/models';
-import { ObjectId } from 'mongoose';
 
 // types for API requests
 export type AppApiRequest = {

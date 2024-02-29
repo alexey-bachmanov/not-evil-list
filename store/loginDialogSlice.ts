@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { uiActions, RootState, authActions } from '.';
 import validator from 'validator';
 
@@ -132,12 +132,6 @@ const loginDialogSlice = createSlice({
     },
     toggleDialogType(state) {
       state.type = state.type === 'login' ? 'signup' : 'login';
-    },
-    setHelperText(
-      state,
-      action: PayloadAction<typeof initialState.helperText>
-    ) {
-      state.helperText = action.payload;
     },
   },
   extraReducers(builder) {

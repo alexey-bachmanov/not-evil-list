@@ -8,13 +8,7 @@
 // level component (in this case, EditsDrawer)
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  RootState,
-  AppDispatch,
-  adminActions,
-  uiActions,
-  searchActions,
-} from '@/store';
+import { RootState, AppDispatch, adminActions, uiActions } from '@/store';
 import { tags } from '@/types';
 
 // MUI imports
