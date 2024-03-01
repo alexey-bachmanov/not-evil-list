@@ -3,6 +3,10 @@ import { Tag } from '@/types';
 import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import { uiActions } from '.';
+import {
+  isValidPhoneNumber,
+  unformatPhoneNumber,
+} from '@/lib/phoneFormatUtils';
 
 ///// THUNKS /////
 // validate - called every time one of the form inputs blurs
@@ -46,6 +50,9 @@ export const validate = createAsyncThunk(
     if (!formData.phone) {
       helperText.phone = 'Please enter a phone number';
     }
+    if (!isValidPhoneNumber(formData.phone)) {
+      helperText.phone = 'Please enter a valid phone number';
+    }
     // website
     // website is optional, and creating a library to check for url validity
     // is beyond the scope of this project, so we're leaving this empty
@@ -77,14 +84,12 @@ export const submit = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    // format phone number [+1 (555) 555-5555]=>[5555555555]
-    const unformattedPhoneNum = formData.phone.replace(/\D/g, '').slice(-10);
     const reply = await fetchData<
       AppApiRequest['postNewBusiness'],
       AppApiResponse['postNewBusiness'] | AppApiResponse['fail']
     >(
       '/api/businesses',
-      { ...formData, phone: unformattedPhoneNum },
+      { ...formData, phone: unformatPhoneNumber(formData.phone) },
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

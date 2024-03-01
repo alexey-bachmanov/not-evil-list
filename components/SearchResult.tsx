@@ -2,7 +2,7 @@ import React from 'react';
 import { IBusinessDocument } from '@/models';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, searchActions, uiActions } from '@/store';
-import formatPhoneNumber from '@/lib/formatPhoneNumber';
+import { formatPhoneNumber } from '@/lib/phoneFormatUtils';
 
 // MUI imports
 import Grid from '@mui/material/Grid';

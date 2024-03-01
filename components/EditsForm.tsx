@@ -10,10 +10,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, adminActions, uiActions } from '@/store';
 import { tags } from '@/types';
+import { formatPhoneNumber, isValidPhoneNumber } from '@/lib/phoneFormatUtils';
 
 // MUI imports
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
@@ -29,7 +31,7 @@ const EditsForm: React.FC = function () {
     address: initialState?.address || '',
     addressCity: initialState?.addressCity || '',
     addressState: initialState?.addressState || '',
-    phone: initialState?.phone || '',
+    phone: formatPhoneNumber(initialState?.phone) || '',
     website: initialState?.website || '',
     description: initialState?.description || '',
     tags: initialState?.tags || [],
@@ -104,17 +106,26 @@ const EditsForm: React.FC = function () {
         sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* PHONE */}
-      <TextField
+      <MuiPhoneNumber
         name="phone"
         required
         id="phone"
         label="Phone"
         fullWidth
+        variant="outlined"
         value={formData.phone}
-        onChange={(e) => {
-          setFormData({ ...formData, phone: e.target.value });
+        onChange={(val) => {
+          setFormData({ ...formData, phone: val as string });
         }}
         sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
+        onBlur={() => {
+          setFormData({
+            ...formData,
+            phone: isValidPhoneNumber(formData.phone)
+              ? (formatPhoneNumber(formData.phone) as string)
+              : '',
+          });
+        }}
       />
       {/* WEBSITE */}
       <TextField

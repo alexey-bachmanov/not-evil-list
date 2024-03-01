@@ -26,6 +26,7 @@
   - Make sure phone # is a valid phone #
 - Testing:
   - Start doing it?
+  - Set up mock mongoDB server
 - Bugs:
 
 ## Search behaviors to implement

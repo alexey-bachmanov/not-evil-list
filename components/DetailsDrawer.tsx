@@ -3,7 +3,7 @@ import React from 'react';
 import Drawer from './Drawer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch, uiActions, adminActions } from '@/store';
-import formatPhoneNumber from '@/lib/formatPhoneNumber';
+import { formatPhoneNumber } from '@/lib/phoneFormatUtils';
 import Review from './Review';
 
 // MUI imports
