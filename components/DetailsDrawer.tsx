@@ -14,6 +14,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Chip from '@mui/material/Chip';
 
 const DetailsDrawer: React.FC = function () {
   const loadingStatus = useSelector(
@@ -48,7 +50,23 @@ const DetailsDrawer: React.FC = function () {
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
 
       {/* TAGS */}
-      <Typography variant="caption">Tags go here...</Typography>
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          listStyle: 'none',
+          m: 0,
+          p: 0,
+          paddingTop: 1,
+        }}
+      >
+        {business?.tags.map((tag, index) => (
+          <ListItem key={index} sx={{ m: 0.5, p: 0, width: 'fit-content' }}>
+            <Chip label={tag} size="small" />
+          </ListItem>
+        ))}
+      </List>
       <Divider variant="middle" sx={{ marginTop: sectionGap }} />
 
       {/* OVERVIEW */}
