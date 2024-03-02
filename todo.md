@@ -15,7 +15,6 @@
   - More semantic html (e.g. nav)
   - More aria roles
 - Code improvement:
-  - Move 'create new business' logic into a redux thunk
   - Refactor redux actions to be declarative instead of imperative?
     - create 'coordinate action' thunks that call imperative thunks
   - Move authentication and route protection functionality to next.js middleware?
@@ -31,5 +30,4 @@
 
 ## Search behaviors to implement
 
-- Searching "X" searches DB by company name and category (e.g. 'restaurant' or 'bar')
 - Searching "X near me" searches DB by distance from user location
