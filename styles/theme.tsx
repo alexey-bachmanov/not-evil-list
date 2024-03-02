@@ -80,6 +80,31 @@ theme = createTheme(theme, {
   },
 });
 
+// Add some custom style overrides
+theme = createTheme(theme, {
+  components: {
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          marginTop: '8px',
+          marginBottom: '8px',
+        },
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+        margin: 'dense',
+      },
+    },
+  },
+});
+
 ///// CREATE THEME PROVIDER /////
 
 const AppThemeProvider: React.FC<{ children: React.ReactNode }> = function ({

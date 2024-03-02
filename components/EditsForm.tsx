@@ -51,7 +51,7 @@ const EditsForm: React.FC = function () {
 
   const typoMargins = 1;
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ padding: typoMargins }}>
+    <Box component="form" onSubmit={handleSubmit}>
       {/* COMPANY NAME */}
       <TextField
         name="companyName"
@@ -64,7 +64,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, companyName: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* ADDRESS */}
       <TextField
@@ -77,7 +76,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, address: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* CITY */}
       <TextField
@@ -90,7 +88,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, addressCity: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* STATE */}
       <TextField
@@ -103,7 +100,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, addressState: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* PHONE */}
       <MuiPhoneNumber
@@ -117,7 +113,6 @@ const EditsForm: React.FC = function () {
         onChange={(val) => {
           setFormData({ ...formData, phone: val as string });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
         onBlur={() => {
           setFormData({
             ...formData,
@@ -137,7 +132,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, website: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* DESCRIPTION */}
       <TextField
@@ -152,7 +146,6 @@ const EditsForm: React.FC = function () {
         onChange={(e) => {
           setFormData({ ...formData, description: e.target.value });
         }}
-        sx={{ marginTop: typoMargins, marginBottom: typoMargins }}
       />
       {/* TAGS */}
       <Autocomplete

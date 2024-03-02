@@ -7,6 +7,7 @@ import SearchResult from './SearchResult';
 // MUI imports
 import List from '@mui/material/List';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 
 const SearchResultsList: React.FC = function () {
   // load stuff from our redux store
@@ -15,9 +16,23 @@ const SearchResultsList: React.FC = function () {
   const errorMessage = useSelector((state: RootState) => state.search.error);
 
   // convert search result list into JSX list
-  const searchResultJSX = searchResults.map((val) => {
-    return <SearchResult key={String(val._id)} business={val} />;
-  });
+  let searchResultJSX: React.JSX.Element;
+  // display placeholder for empty list
+  if (searchResults.length > 0) {
+    searchResultJSX = (
+      <>
+        {searchResults.map((val) => (
+          <SearchResult key={String(val._id)} business={val} />
+        ))}
+      </>
+    );
+  } else {
+    searchResultJSX = (
+      <Typography variant="body1">
+        {"There don't seem to be any results..."}
+      </Typography>
+    );
+  }
 
   // determine what we're gonna show in the results list
   let displayedJSX;
@@ -41,7 +56,9 @@ const SearchResultsList: React.FC = function () {
     displayedJSX = searchResultJSX;
   }
   return (
-    <List sx={{ overflowY: 'scroll', flexBasis: '100%' }}>{displayedJSX}</List>
+    <List sx={{ overflowY: 'auto', flexBasis: '100%', p: 0 }}>
+      {displayedJSX}
+    </List>
   );
 };
 

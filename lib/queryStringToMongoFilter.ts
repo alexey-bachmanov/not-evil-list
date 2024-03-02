@@ -87,12 +87,6 @@ export default async function queryStringToMongoFilter(req: NextRequest) {
   // combine the two arrays together
   searchWords = [...searchWords, ...searchWordsSingular];
 
-  // SPECIAL CASE - '-all'
-  if (flagWords.includes('all') && isAdmin) {
-    filter = {};
-    return filter;
-  }
-
   // SPECIAL CASE - '-all -unverified'
   if (
     flagWords.includes('all') &&
@@ -100,6 +94,12 @@ export default async function queryStringToMongoFilter(req: NextRequest) {
     isAdmin
   ) {
     filter = { isVerified: false };
+    return filter;
+  }
+
+  // SPECIAL CASE - '-all'
+  if (flagWords.includes('all') && isAdmin) {
+    filter = {};
     return filter;
   }
 

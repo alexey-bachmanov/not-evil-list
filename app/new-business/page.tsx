@@ -72,7 +72,7 @@ const NewBusinessPage: React.FC = function () {
     <Container maxWidth="sm">
       <Logo />
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={0}>
           {/* COMPANY NAME */}
           <Grid item xs={12}>
             <TextField

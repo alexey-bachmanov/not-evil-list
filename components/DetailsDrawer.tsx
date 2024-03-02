@@ -41,13 +41,13 @@ const DetailsDrawer: React.FC = function () {
     dispatch(uiActions.setSelectedBusinessId(null));
   };
 
-  const typoMargins = 1;
-  const sectionGap = 1.5;
   const successContentsJSX = (
     <>
       {/* TITLE */}
-      <Typography variant="h6">{business?.companyName}</Typography>
-      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      <Typography variant="h6" sx={{ marginTop: 1 }}>
+        {business?.companyName}
+      </Typography>
+      <Divider variant="middle" />
 
       {/* TAGS */}
       <List
@@ -58,7 +58,6 @@ const DetailsDrawer: React.FC = function () {
           listStyle: 'none',
           m: 0,
           p: 0,
-          paddingTop: 1,
         }}
       >
         {business?.tags.map((tag, index) => (
@@ -67,14 +66,14 @@ const DetailsDrawer: React.FC = function () {
           </ListItem>
         ))}
       </List>
-      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      <Divider variant="middle" />
 
       {/* OVERVIEW */}
       <Typography variant="caption" textAlign="right">
         Overview
       </Typography>
       <Typography variant="body2">{business?.description}</Typography>
-      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      <Divider variant="middle" />
 
       {/* DETAILS */}
       <Typography variant="caption" textAlign="right">
@@ -85,7 +84,7 @@ const DetailsDrawer: React.FC = function () {
       <Typography variant="subtitle2">
         {formatPhoneNumber(business?.phone)}
       </Typography>
-      <Divider variant="middle" sx={{ marginTop: sectionGap }} />
+      <Divider variant="middle" />
 
       {/* REVIEWS */}
       <Typography variant="caption" textAlign="right">
@@ -116,14 +115,10 @@ const DetailsDrawer: React.FC = function () {
       )}
       {userRole === 'admin' && isInAdminMode && (
         <ButtonGroup fullWidth>
-          <Button
-            // fullWidth
-            onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}
-          >
+          <Button onClick={() => dispatch(uiActions.setEditsDrawerOpen(true))}>
             Edit
           </Button>
           <Button
-            // fullWidth
             onClick={() => dispatch(adminActions.deleteBusiness(business?._id))}
           >
             Delete
@@ -142,7 +137,7 @@ const DetailsDrawer: React.FC = function () {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        padding: typoMargins,
+        padding: 1,
         height: '100%',
       }}
     >

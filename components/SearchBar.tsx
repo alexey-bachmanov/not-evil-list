@@ -37,29 +37,24 @@ const SearchBar: React.FC = function () {
         component="form"
         width="100%"
         onSubmit={handleSubmit}
-        sx={{ p: 1, display: 'flex' }}
+        sx={{ display: 'flex' }}
       >
         <TextField
           id="search-bar"
           className="text"
           label="Search..."
-          variant="outlined"
           size="small"
           aria-label="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          sx={{ flexBasis: '100%', pr: 1 }}
+          sx={{ flexBasis: '100%', m: 0, p: 0 }}
         />
         <IconButton type="submit" aria-label="search">
           <SearchIcon style={{ fill: 'blue' }} />
         </IconButton>
       </Box>
       {userRole === 'admin' && isInAdminMode && (
-        <Button
-          variant="outlined"
-          onClick={handleUnverifiedSearch}
-          sx={{ m: 1, marginTop: 0 }}
-        >
+        <Button onClick={handleUnverifiedSearch} sx={{ marginTop: 1 }}>
           Search All Unverified
         </Button>
       )}

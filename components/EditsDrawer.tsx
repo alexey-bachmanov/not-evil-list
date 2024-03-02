@@ -15,7 +15,7 @@ const EditsDrawer: React.FC = function () {
       variant="temporary"
       layer={3}
       onClose={() => dispatch(uiActions.setEditsDrawerOpen(false))}
-      sx={{ display: 'flex', flexDirection: 'column' }}
+      sx={{ display: 'flex', flexDirection: 'column', padding: 1 }}
     >
       <EditsForm />
     </Drawer>

@@ -15,6 +15,7 @@ const SearchDrawer: React.FC = function () {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        padding: 1,
       }}
     >
       <SearchBar />

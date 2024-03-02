@@ -80,10 +80,8 @@ const LoginDialog: React.FC = function () {
       <TextField
         autoFocus
         id="email"
-        margin="dense"
         label="Email"
         type="email"
-        variant="outlined"
         fullWidth
         value={userInfo.email}
         error={helperText.email !== ''}
@@ -93,10 +91,8 @@ const LoginDialog: React.FC = function () {
       />
       <TextField
         id="password"
-        margin="dense"
         label="Password"
         type="password"
-        variant="outlined"
         fullWidth
         value={userInfo.password}
         error={helperText.password !== ''}
@@ -113,10 +109,8 @@ const LoginDialog: React.FC = function () {
     <>
       <TextField
         id="username"
-        margin="dense"
         label="User name"
         type="username"
-        variant="outlined"
         fullWidth
         value={userInfo.userName}
         error={helperText.userName !== ''}
@@ -127,10 +121,8 @@ const LoginDialog: React.FC = function () {
       {loginJSX}
       <TextField
         id="passwordConfirm"
-        margin="dense"
         label="Confirm password"
         type="password"
-        variant="outlined"
         fullWidth
         value={userInfo.passwordConfirm}
         error={helperText.passwordConfirm !== ''}
@@ -157,6 +149,7 @@ const LoginDialog: React.FC = function () {
         </DialogContent>
         <DialogActions>
           <Button
+            variant="text"
             onClick={handleSwitchMode}
             disabled={loginState === 'authorizing'}
           >
@@ -164,6 +157,7 @@ const LoginDialog: React.FC = function () {
           </Button>
           <Button
             type="submit"
+            variant="text"
             disabled={
               !helperTextIsEmpty ||
               !userInfoIsFilledOut ||

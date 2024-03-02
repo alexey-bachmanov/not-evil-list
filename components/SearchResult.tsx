@@ -26,14 +26,12 @@ const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
 
   const typoMargins = 1;
   return (
-    <ListItemButton component="li">
+    <ListItemButton component="li" sx={{ p: 1 }}>
       <Grid container spacing={0} onClick={handleClick}>
         {/* COMPANY NAME */}
         <Grid item xs={12}>
-          <Typography variant="h6" marginLeft={typoMargins}>
-            {business.companyName}
-          </Typography>
-          <Divider />
+          <Typography variant="h6">{business.companyName}</Typography>
+          <Divider variant="middle" />
         </Grid>
         {/* RATING */}
         <Grid
@@ -47,7 +45,7 @@ const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
             precision={0.1}
             size="small"
             readOnly
-            sx={{ marginLeft: typoMargins, marginRight: 0.5 }}
+            sx={{ marginLeft: 1, marginRight: 0.5 }}
           />
           <Typography variant="caption" sx={{ lineHeight: '18px' }}>
             ({business.ratingQty})
@@ -55,20 +53,16 @@ const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
         </Grid>
         {/* ADDRESS AND PHONE # */}
         <Grid item xs={6}>
-          <Typography variant="caption" marginLeft={typoMargins}>
-            {business.address}
-          </Typography>
+          <Typography variant="caption">{business.address}</Typography>
         </Grid>
         <Grid item xs={6} textAlign="right">
-          <Typography variant="caption" marginRight={typoMargins}>
+          <Typography variant="caption">
             {formatPhoneNumber(business.phone)}
           </Typography>
         </Grid>
         {/* DESCRIPTION */}
         <Grid item xs={12}>
-          <Typography variant="body2" margin={typoMargins}>
-            {business.description}
-          </Typography>
+          <Typography variant="body2">{business.description}</Typography>
         </Grid>
       </Grid>
     </ListItemButton>
