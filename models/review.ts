@@ -1,20 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import recalculateAvgRating from '@/lib/recalculateAvgRating';
 
 ///// DEFINE INTERFACES /////
 export interface IReview {
   business: mongoose.ObjectId;
-  // we have to define this interface field as a field that will be populated upon query
-  // in order to make typescript happy about acessing it throughout our app
-  user: mongoose.PopulatedDoc<
-    { _id: mongoose.ObjectId; userName: string } | mongoose.ObjectId
-  >;
+  user: mongoose.ObjectId;
+  rating: number;
+  review: string;
+  createdAt?: string;
+}
+export interface IReviewPopulated {
+  business: mongoose.ObjectId;
+  user: { _id: mongoose.ObjectId; userName: string };
   rating: number;
   review: string;
   createdAt?: string;
 }
 
-export interface IReviewDocument extends IReview, mongoose.Document {
+// any time we access a Review document, it will be populated
+export interface IReviewDocument extends IReviewPopulated, mongoose.Document {
   // instance methods
 }
 export interface IReviewModel extends mongoose.Model<IReviewDocument> {

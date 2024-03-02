@@ -13,8 +13,8 @@ import Grid from '@mui/material/Grid';
 const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
   // extract user data - we have to confirm that the document returned to us has actually been populated
   // with user data
-  let user: { _id: null | ObjectId; userName: string };
-  if (review.user && !(review.user instanceof Types.ObjectId)) {
+  let user: { _id: ObjectId | null; userName: string };
+  if (review.user) {
     user = review.user;
   } else {
     user = { _id: null, userName: 'Default User' };
