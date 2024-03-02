@@ -21,7 +21,7 @@
   - Refactor Drawer component to use MUI theming and breakpoints instead of module-scoped css
   - Split out api access class (e.g. Api.getBusinessDetails(...))
   - Type safety on addressToGeoData function
-- DB and front-end validation:
+- DB validation:
   - Make sure phone # is a valid phone #
 - Testing:
   - Start doing it?

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import addressToGeoData from '@/lib/addressToGeoData';
+import { isValidPhoneNumber } from '@/lib/phoneFormatUtils';
 import { Tag } from '@/types';
 import { IReviewDocument } from '.';
 
@@ -81,6 +82,10 @@ const businessSchema = new mongoose.Schema<IBusinessDocument>(
       type: String,
       trim: true,
       required: [true, 'business must have a phone number'],
+      validate: {
+        validator: (phone: string) => isValidPhoneNumber(phone),
+        message: 'please enter a valid phone number',
+      },
     },
     website: {
       type: String,
