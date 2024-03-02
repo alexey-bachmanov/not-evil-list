@@ -26,9 +26,9 @@ const SearchBar: React.FC = function () {
   };
 
   const handleUnverifiedSearch = () => {
-    setQuery('-unverified');
-    dispatch(searchActions.setSearchQuery('-unverified'));
-    dispatch(searchActions.executeSearch('-unverified'));
+    setQuery('-all -unverified');
+    dispatch(searchActions.setSearchQuery('-all -unverified'));
+    dispatch(searchActions.executeSearch('-all -unverified'));
   };
 
   return (
