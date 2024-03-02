@@ -7,10 +7,7 @@ export interface IReview {
   // we have to define this interface field as a field that will be populated upon query
   // in order to make typescript happy about acessing it throughout our app
   user: mongoose.PopulatedDoc<
-    mongoose.Document<mongoose.ObjectId> & {
-      _id: mongoose.ObjectId;
-      userName: string;
-    }
+    { _id: mongoose.ObjectId; userName: string } | mongoose.ObjectId
   >;
   rating: number;
   review: string;
