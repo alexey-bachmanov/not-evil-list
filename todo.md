@@ -22,7 +22,6 @@
   - Split out api access class (e.g. Api.getBusinessDetails(...))
   - Type safety on addressToGeoData function
 - Testing:
-  - Start doing it?
   - Set up mock mongoDB server
 - Bugs:
 

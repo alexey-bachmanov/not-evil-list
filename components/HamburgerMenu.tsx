@@ -138,7 +138,7 @@ const HamburgerMenu: React.FC = function () {
   }
 
   return (
-    <div
+    <nav
       style={{
         position: 'fixed',
         top: '20px',
@@ -168,7 +168,7 @@ const HamburgerMenu: React.FC = function () {
         <Divider variant="middle" />
         {authMenuJSX}
       </StyledMenu>
-    </div>
+    </nav>
   );
 };
 
