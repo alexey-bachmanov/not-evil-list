@@ -87,6 +87,18 @@ export default async function queryStringToMongoFilter(req: NextRequest) {
   // combine the two arrays together
   searchWords = [...searchWords, ...searchWordsSingular];
 
+  // SPECIAL CASE - non-admin trying to use just flags
+  if (searchWords.length === 0 && !isAdmin) {
+    filter = { _id: null };
+    return filter;
+  }
+
+  // SPECIAL CASE - somebody fed us an invalid query string with postman
+  if (searchWords.length === 0 && flagWords.length === 0) {
+    filter = { _id: null };
+    return filter;
+  }
+
   // SPECIAL CASE - '-all -unverified'
   if (
     flagWords.includes('all') &&

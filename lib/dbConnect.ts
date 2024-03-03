@@ -21,6 +21,14 @@ if (!MONGODB_URI) {
   );
 }
 
+// do the same with the database name
+const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME!;
+if (!MONGODB_DB_NAME) {
+  throw new Error(
+    'Please define the MONGODB_DB_NAME environment variable inside .env.local'
+  );
+}
+
 // cached is the actual object we'll be working with. If you connected to
 // mongoose earlier, the cached connection will be stored in the global
 // mongoose object, and we can just use that. Otherwise, we need to
@@ -41,7 +49,7 @@ async function dbConnect() {
     const opts = {
       bufferCommands: false,
       autoCreate: false,
-      dbName: 'Not-Evil-List',
+      dbName: MONGODB_DB_NAME,
     };
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
