@@ -12,33 +12,33 @@ declare global {
   var mongoose: any; // This must be a `var` and not a `let / const`
 }
 
-// pull mongo connection string from .env.local, make sure you actually
-// have a .env.local to pull it from
-const MONGODB_URI = process.env.MONGODB_URI!;
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
-}
-
-// do the same with the database name
-const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME!;
-if (!MONGODB_DB_NAME) {
-  throw new Error(
-    'Please define the MONGODB_DB_NAME environment variable inside .env.local'
-  );
-}
-
-// cached is the actual object we'll be working with. If you connected to
-// mongoose earlier, the cached connection will be stored in the global
-// mongoose object, and we can just use that. Otherwise, we need to
-// initialize a null connection, so we can define it further down
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
 async function dbConnect() {
+  // pull mongo connection string from .env.local, make sure you actually
+  // have a .env.local to pull it from
+  const MONGODB_URI = process.env.MONGODB_URI!;
+  if (!MONGODB_URI) {
+    throw new Error(
+      'Please define the MONGODB_URI environment variable inside .env.local'
+    );
+  }
+
+  // do the same with the database name
+  const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME!;
+  if (!MONGODB_DB_NAME) {
+    throw new Error(
+      'Please define the MONGODB_DB_NAME environment variable inside .env.local'
+    );
+  }
+
+  // cached is the actual object we'll be working with. If you connected to
+  // mongoose earlier, the cached connection will be stored in the global
+  // mongoose object, and we can just use that. Otherwise, we need to
+  // initialize a null connection, so we can define it further down
+  let cached = global.mongoose;
+  if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+  }
+
   // if you're already connected to DB, just use that connection
   if (cached.conn) {
     // return your existing connection
