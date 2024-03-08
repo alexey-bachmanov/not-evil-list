@@ -9,7 +9,8 @@
     "lint": "next lint",
     "populate-reviews": "tsx scripts/populateReviews.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -40,7 +41,7 @@
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/leaflet": "^1.9.6",
-    "@types/node": "^20",
+    "@types/node": "^20.11.24",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@types/validator": "^13.11.8",

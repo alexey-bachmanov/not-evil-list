@@ -5,6 +5,7 @@ const OLD_ENV = process.env;
 describe('dbConnect', () => {
   beforeEach(() => {
     // Reset the cached connection before each test
+    mongoose.disconnect();
     delete global.mongoose;
     jest.resetModules();
     process.env = { ...OLD_ENV };
@@ -25,7 +26,7 @@ describe('dbConnect', () => {
 
     // Check if the connection is established
     expect(connection).toBeDefined();
-    expect(connection.readyState).toBe(1); // 1 means the connection is open
+    expect(connection.connections[0]._readyState).toBe(1); // 1 means the connection is open
   });
 
   test('should reuse the cached connection', async () => {

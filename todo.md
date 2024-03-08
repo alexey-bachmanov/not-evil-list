@@ -1,8 +1,7 @@
 ## To-do
 
-- Major implementations:
-  - Implement search functions besides "get all"
 - Minor implementation:
+  - XSS security middleware
 - Look and feel:
   - Add confirmation dialog on business delete action
   - Add 'zoom to selected pin' functionality
