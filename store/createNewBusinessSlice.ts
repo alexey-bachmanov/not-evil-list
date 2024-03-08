@@ -143,7 +143,7 @@ const initialState: {
 };
 
 const createNewBusinessSlice = createSlice({
-  name: 'createNewBusinessSlice',
+  name: 'createNewBusiness',
   initialState: initialState,
   reducers: {},
   extraReducers(builder) {

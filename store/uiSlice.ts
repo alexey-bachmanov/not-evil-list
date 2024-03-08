@@ -30,7 +30,7 @@ const initialState: {
 };
 
 const uiSlice = createSlice({
-  name: 'uiSlice',
+  name: 'ui',
   initialState: initialState,
   reducers: {
     // alert bar stuff

@@ -140,7 +140,7 @@ const initialState: {
 };
 
 const adminSlice = createSlice({
-  name: 'adminSlice',
+  name: 'admin',
   initialState: initialState,
   reducers: {
     setAdminMode(state, action: PayloadAction<boolean>) {

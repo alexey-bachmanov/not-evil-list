@@ -119,7 +119,7 @@ const initialState: {
 };
 
 const loginDialogSlice = createSlice({
-  name: 'loginDialogSlice',
+  name: 'loginDialog',
   initialState: initialState,
   reducers: {
     openDialog(state) {
