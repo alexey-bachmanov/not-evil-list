@@ -98,7 +98,7 @@ const HamburgerMenu: React.FC = function () {
   //  logged in (admin): [Home][Logout]
 
   // navigation links
-  const navMenuJSX = [];
+  const navMenuJSX: React.JSX.Element[] = [];
   if (pathname === '/new-business') {
     navMenuJSX.push(
       <MenuItem key="home" onClick={handleNavigateToHome}>
@@ -138,7 +138,7 @@ const HamburgerMenu: React.FC = function () {
   }
 
   return (
-    <nav
+    <div
       style={{
         position: 'fixed',
         top: '20px',
@@ -157,6 +157,7 @@ const HamburgerMenu: React.FC = function () {
         <MenuRoundedIcon />
       </Button>
       <StyledMenu
+        component="nav"
         id="navigation-menu"
         anchorEl={anchorEl}
         open={isOpen}
@@ -168,7 +169,7 @@ const HamburgerMenu: React.FC = function () {
         <Divider variant="middle" />
         {authMenuJSX}
       </StyledMenu>
-    </nav>
+    </div>
   );
 };
 

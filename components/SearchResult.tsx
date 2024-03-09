@@ -24,7 +24,6 @@ const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
     dispatch(searchActions.getDetails(business._id));
   };
 
-  const typoMargins = 1;
   return (
     <ListItemButton component="li" sx={{ p: 1 }}>
       <Grid container spacing={0} onClick={handleClick}>
