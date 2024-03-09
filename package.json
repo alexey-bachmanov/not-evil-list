@@ -10,7 +10,7 @@
     "populate-reviews": "tsx scripts/populateReviews.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "coverage": "jest --coverage"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -19,6 +19,7 @@
     "@mui/material": "^5.14.12",
     "@reduxjs/toolkit": "^2.2.0",
     "aws4": "^1.12.0",
+    "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
