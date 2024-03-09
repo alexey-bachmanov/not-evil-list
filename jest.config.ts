@@ -110,7 +110,7 @@ const config: Config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -142,7 +142,7 @@ const config: Config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ['./jest.polyfills.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: ['./jest.setup.ts'],
@@ -154,16 +154,28 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing: jsdom or node
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-environment-jsdom',
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  testEnvironmentOptions: {
+    /**
+     * @note Opt-out from JSDOM using browser-sc
+     * tyle resolution
+     * for dependencies. This is simply incorrect, as JSDOM is
+     * not a browser, and loading browser-oriented bundles in
+     * Node.js will break things.
+     *
+     * Consider migrating to a more modern test runner if you
+     * don't want to deal with this.
+     */
+    customExportConditions: [''],
+  },
 
   // Adds a location field to test results
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(test|spec).[tj]s?(x)'],
+  // testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(test|spec).[tj]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -180,7 +192,12 @@ const config: Config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+  // transform: {
+  //   '^.+\\.tsx?$': '@swc/jest',
+  // },
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
