@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Tag } from '@/types';
+import api from '@/lib/apiService';
 import fetchData from '@/lib/fetchData';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import { uiActions } from '.';
@@ -84,34 +85,27 @@ export const submit = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    const reply = await fetchData<
-      AppApiRequest['postNewBusiness'],
-      AppApiResponse['postNewBusiness'] | AppApiResponse['fail']
-    >(
-      '/api/businesses',
-      { ...formData, phone: unformatPhoneNumber(formData.phone) },
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-    if (!reply.success) {
-      thunkAPI.dispatch(
-        uiActions.openAlert({
-          type: 'error',
-          message: 'Failed to submit. Try again later',
-        })
-      );
-      throw new Error('Failed to submit');
-    } else {
+    try {
+      await api.businesses.post({
+        ...formData,
+        phone: unformatPhoneNumber(formData.phone),
+      });
       thunkAPI.dispatch(
         uiActions.openAlert({
           type: 'success',
           message: 'Business submitted to the database. Thank you!',
         })
       );
+      return;
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({
+          type: 'error',
+          message: 'Failed to submit. Try again later',
+        })
+      );
+      throw err;
     }
-    return;
   }
 );
 

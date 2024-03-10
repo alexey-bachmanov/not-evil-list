@@ -1,83 +1,84 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { uiActions } from '.';
-import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse } from '@/types';
+import api from '@/lib/apiService';
 
 ///// THUNKS /////
 // Log in
 export const login = createAsyncThunk(
   'auth/login',
-  async (logInInfo: { email: string; password: string }) => {
-    const reply = await fetchData<
-      AppApiRequest['login'],
-      AppApiResponse['login'] | AppApiResponse['fail']
-    >('/api/auth/login', logInInfo, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    // check if username and password were valid
-    if (!reply.success) {
-      throw new Error(reply.message);
+  async (logInInfo: { email: string; password: string }, thunkAPI) => {
+    try {
+      const user = await api.auth.login(logInInfo);
+      // if successful, show a success alert
+      thunkAPI.dispatch(
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Succesfully logged in',
+        })
+      );
+      return user;
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: err.message })
+      );
+      throw err;
     }
-    // if successful, return user data
-    return {
-      user: reply.data.user,
-    };
   }
 );
 
 // Log out - this has to be an async thunk since we're calling our API
 // to get an empty httpOnly cookie that immediately expires
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-  const reply = await fetchData<
-    undefined,
-    AppApiResponse['logout'] | AppApiResponse['fail']
-  >('/api/auth/logout', undefined, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  if (!reply.success) {
+  try {
+    await api.auth.logout();
+    // if successful, show a success alert
     thunkAPI.dispatch(
-      uiActions.openAlert({ type: 'error', message: reply.message })
+      uiActions.openAlert({
+        type: 'success',
+        message: 'Succesfully logged out',
+      })
     );
-    throw new Error(reply.message);
+    return; // nothing to return, we just reset our auth state
+  } catch (err: any) {
+    thunkAPI.dispatch(
+      uiActions.openAlert({ type: 'error', message: err.message })
+    );
+    throw err;
   }
-  // if successful, show a success alert
-  thunkAPI.dispatch(
-    uiActions.openAlert({ type: 'success', message: 'Succesfully logged out' })
-  );
-  return; // nothing to return, we just reset our auth state
 });
 
 // Sign up
 export const signup = createAsyncThunk(
   'auth/signup',
-  async (logInInfo: {
-    email: string;
-    userName: string;
-    password: string;
-    passwordConfirm: string;
-  }) => {
-    // check if the passwords match
-    if (logInInfo.password !== logInInfo.passwordConfirm) {
-      throw new Error('Passwords do not match');
+  async (
+    logInInfo: {
+      email: string;
+      userName: string;
+      password: string;
+      passwordConfirm: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      // check if the passwords match
+      if (logInInfo.password !== logInInfo.passwordConfirm) {
+        throw new Error('Passwords do not match');
+      }
+      const user = await api.auth.signup(logInInfo);
+      // if successful, show a success alert
+      thunkAPI.dispatch(
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Succesfully signed up. Welcome!',
+        })
+      );
+      return user;
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: err.message })
+      );
+      throw err;
     }
-    // send our request to the API
-    const reply = await fetchData<
-      AppApiRequest['signup'],
-      AppApiResponse['signup'] | AppApiResponse['fail']
-    >('/api/auth/signup', logInInfo, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    // check if api gave us back any kind of error
-    if (!reply.success) {
-      throw new Error(reply.message);
-    }
-    // if successful, return user data
-    return {
-      user: reply.data.user,
-    };
   }
 );
 
@@ -113,7 +114,7 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = 'logged in';
-      state.user = action.payload.user;
+      state.user = action.payload;
       state.error = null;
     });
     builder.addCase(login.rejected, (state, action) => {
@@ -133,7 +134,7 @@ const authSlice = createSlice({
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.status = 'logged in';
-      state.user = action.payload.user;
+      state.user = action.payload;
       state.error = null;
     });
     builder.addCase(signup.rejected, (state, action) => {

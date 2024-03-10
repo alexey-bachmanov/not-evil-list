@@ -29,15 +29,17 @@
 import axios, { AxiosResponse } from 'axios';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import { ObjectId } from 'mongoose';
+import queryToQueryParams from './queryToQueryParams';
 
 ///// PRIVATE CLASSES, TO BE COMPOSED INTO BIGGER CLASS FOR EXPORT /////
 
 class Businesses {
-  async getAll() {
+  async getAll(query: string) {
     try {
+      const queryString = queryToQueryParams(query);
       const response: AxiosResponse<
         AppApiResponse['getBusinessList'] | AppApiResponse['fail']
-      > = await axios.get('/api/businesses');
+      > = await axios.get(`/api/businesses${queryString}`);
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -166,9 +168,9 @@ class Auth {
 
 class Reviews {}
 
-///// COMPOSED PUBLIC CLASS /////
+///// COMPOSED CLASS /////
 
-export default class ApiService {
+class ApiService {
   public businesses: Businesses;
   public users: Users;
   public auth: Auth;
@@ -181,3 +183,8 @@ export default class ApiService {
     this.reviews = new Reviews();
   }
 }
+
+///// CREATE AN INSTANCE AND EXPORT IT /////
+
+const api = new ApiService();
+export default api;

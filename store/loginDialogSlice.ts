@@ -73,24 +73,8 @@ export const submit = createAsyncThunk(
       throw new Error(result.error?.message);
     }
     // if you made it here, the auth call was succesful and
-    // we should display a sucess alert and close the
-    // dialog (handled in extraReducers)
-    if (state.loginDialog.type === 'login') {
-      thunkAPI.dispatch(
-        uiActions.openAlert({
-          type: 'success',
-          message: 'Successfully logged in',
-        })
-      );
-    }
-    if (state.loginDialog.type === 'signup') {
-      thunkAPI.dispatch(
-        uiActions.openAlert({
-          type: 'success',
-          message: 'Successfully signed up. Welcome!',
-        })
-      );
-    }
+    // we should display an alert (handled in authSlice)
+    // we should close the dialog (handled in extraReducers)
     return;
   }
 );

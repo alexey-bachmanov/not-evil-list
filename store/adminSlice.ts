@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, searchActions, uiActions } from '.';
-import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse, Tag } from '@/types';
+import { Tag } from '@/types';
+import api from '@/lib/apiService';
+import { unformatPhoneNumber } from '@/lib/phoneFormatUtils';
+import { ObjectId } from 'mongoose';
 
 ///// THUNKS /////
 // edit a business
@@ -9,7 +11,7 @@ export const editBusiness = createAsyncThunk(
   'admin/editBusiness',
   async (
     data: {
-      businessId: string | undefined;
+      businessId: ObjectId;
       formData: {
         companyName: string;
         address: string;
@@ -23,64 +25,50 @@ export const editBusiness = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    if (!data.businessId) {
-      throw new Error('editBusiness was called without an ID');
-    }
-    const reply = await fetchData<
-      AppApiRequest['editBusiness'],
-      AppApiResponse['editBusiness'] | AppApiResponse['fail']
-    >(`/api/businesses/${data.businessId}`, data.formData, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!reply.success) {
+    try {
+      await api.businesses.put(data.businessId, {
+        ...data.formData,
+        phone: unformatPhoneNumber(data.formData.phone),
+      });
+      // if successful, open a success alert, and reload businesses (which will reset drawer states)
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: reply.message })
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Business successfully updated',
+        })
       );
-      throw new Error(reply.message);
+      const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+      thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: err.message })
+      );
+      throw err;
     }
-    // if successful, open a success alert, and reload search results (which will reset drawer states)
-    thunkAPI.dispatch(
-      uiActions.openAlert({
-        type: 'success',
-        message: 'Business successfully updated',
-      })
-    );
-    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
-    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
   }
 );
 
 // delete a business
 export const deleteBusiness = createAsyncThunk(
   'admin/deleteBusiness',
-  async (businessId: string | undefined, thunkAPI) => {
-    if (!businessId) {
-      throw new Error('deleteBusiness was called without an ID');
-    }
-    const reply = await fetchData<
-      undefined,
-      AppApiResponse['deleteBusiness'] | AppApiResponse['fail']
-    >(`/api/businesses/${businessId}`, undefined, {
-      method: 'DELETE',
-    });
-
-    if (!reply.success) {
+  async (businessId: ObjectId, thunkAPI) => {
+    try {
+      await api.businesses.delete(businessId);
+      // if successful, open a success alert, and reload businesses (which will reset drawer states)
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: reply.message })
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Business successfully deleted',
+        })
       );
-      throw new Error(reply.message);
+      const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+      thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: err.message })
+      );
+      throw err;
     }
-    // if successful, open a success alert, and reload businesses (which will reset drawer states)
-    thunkAPI.dispatch(
-      uiActions.openAlert({
-        type: 'success',
-        message: 'Business successfully deleted',
-      })
-    );
-    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
-    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
   }
 );
 
@@ -101,32 +89,26 @@ export const approveBusiness = createAsyncThunk(
       );
       throw new Error('Approve business called without a details window open');
     }
-    const reply = await fetchData<
-      AppApiRequest['editBusiness'],
-      AppApiResponse['editBusiness'] | AppApiResponse['fail']
-    >(
-      `/api/businesses/${businessDetails._id}`,
-      { ...businessDetails, isVerified: true },
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-    if (!reply.success) {
+    try {
+      await api.businesses.put(businessDetails._id, {
+        ...businessDetails,
+        isVerified: true,
+      });
+      // if successful, open a success alert, and reload search results (which will reset drawer states)
       thunkAPI.dispatch(
-        uiActions.openAlert({ type: 'error', message: reply.message })
+        uiActions.openAlert({
+          type: 'success',
+          message: 'Business verified',
+        })
       );
-      throw new Error(reply.message);
+      const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
+      thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
+    } catch (err: any) {
+      thunkAPI.dispatch(
+        uiActions.openAlert({ type: 'error', message: err.message })
+      );
+      throw err;
     }
-    // if successful, open a success alert, and reload search results (which will reset drawer states)
-    thunkAPI.dispatch(
-      uiActions.openAlert({
-        type: 'success',
-        message: 'Business verified',
-      })
-    );
-    const searchQuery = (thunkAPI.getState() as RootState).search.searchQuery;
-    thunkAPI.dispatch(searchActions.executeSearch(searchQuery));
   }
 );
 

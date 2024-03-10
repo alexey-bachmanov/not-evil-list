@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ApiService from './apiService';
+import api from './apiService';
 import { AppApiRequest, AppApiResponse } from '@/types';
 import { ObjectId } from 'mongoose';
 
@@ -7,12 +7,6 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('ApiService', () => {
-  let apiService: ApiService;
-
-  beforeEach(() => {
-    apiService = new ApiService();
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -38,16 +32,18 @@ describe('ApiService', () => {
         };
         mockedAxios.get.mockResolvedValueOnce({ data: mockResponse });
 
-        const businesses = await apiService.businesses.getAll();
+        const businesses = await api.businesses.getAll('search query');
 
-        expect(axios.get).toHaveBeenCalledWith('/api/businesses');
+        expect(axios.get).toHaveBeenCalledWith(
+          '/api/businesses?search=search+query'
+        );
         expect(businesses).toEqual(mockBusinesses);
       });
 
       test('should throw an error on failure', async () => {
         mockedAxios.get.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.businesses.getAll()).rejects.toThrow(
+        await expect(api.businesses.getAll('search query')).rejects.toThrow(
           mockError.message
         );
       });
@@ -61,7 +57,7 @@ describe('ApiService', () => {
         };
         mockedAxios.get.mockResolvedValueOnce({ data: mockResponse });
 
-        const business = await apiService.businesses.get(id);
+        const business = await api.businesses.get(id);
 
         expect(axios.get).toHaveBeenCalledWith('/api/businesses/1');
         expect(business).toEqual(mockBusiness);
@@ -70,9 +66,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.get.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.businesses.get(id)).rejects.toThrow(
-          mockError.message
-        );
+        await expect(api.businesses.get(id)).rejects.toThrow(mockError.message);
       });
     });
 
@@ -84,7 +78,7 @@ describe('ApiService', () => {
         };
         mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
-        const business = await apiService.businesses.post(mockBusiness);
+        const business = await api.businesses.post(mockBusiness);
 
         expect(axios.post).toHaveBeenCalledWith(
           '/api/businesses',
@@ -97,7 +91,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.businesses.post(mockBusiness)).rejects.toThrow(
+        await expect(api.businesses.post(mockBusiness)).rejects.toThrow(
           mockError.message
         );
       });
@@ -111,7 +105,7 @@ describe('ApiService', () => {
         };
         mockedAxios.put.mockResolvedValueOnce({ data: mockResponse });
 
-        const business = await apiService.businesses.put(id, mockBusiness);
+        const business = await api.businesses.put(id, mockBusiness);
 
         expect(axios.put).toHaveBeenCalledWith(
           '/api/businesses/1',
@@ -124,9 +118,9 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.put.mockResolvedValueOnce({ data: mockError });
 
-        await expect(
-          apiService.businesses.put(id, mockBusiness)
-        ).rejects.toThrow(mockError.message);
+        await expect(api.businesses.put(id, mockBusiness)).rejects.toThrow(
+          mockError.message
+        );
       });
     });
 
@@ -138,7 +132,7 @@ describe('ApiService', () => {
         };
         mockedAxios.delete.mockResolvedValueOnce({ data: mockResponse });
 
-        const business = await apiService.businesses.delete(id);
+        const business = await api.businesses.delete(id);
 
         expect(axios.delete).toHaveBeenCalledWith('/api/businesses/1');
         expect(business).toBeNull();
@@ -147,7 +141,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.delete.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.businesses.delete(id)).rejects.toThrow(
+        await expect(api.businesses.delete(id)).rejects.toThrow(
           mockError.message
         );
       });
@@ -183,7 +177,7 @@ describe('ApiService', () => {
         };
         mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
-        const user = await apiService.auth.login(mockAuthData);
+        const user = await api.auth.login(mockAuthData);
 
         expect(axios.post).toHaveBeenCalledWith(
           '/api/auth/login',
@@ -198,7 +192,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.auth.login(mockAuthData)).rejects.toThrow(
+        await expect(api.auth.login(mockAuthData)).rejects.toThrow(
           mockError.message
         );
       });
@@ -209,7 +203,7 @@ describe('ApiService', () => {
         const mockResponse: AppApiResponse['logout'] = { success: true };
         mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
-        const user = await apiService.auth.logout();
+        const user = await api.auth.logout();
 
         expect(axios.post).toHaveBeenCalledWith(
           '/api/auth/logout',
@@ -224,9 +218,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.auth.logout()).rejects.toThrow(
-          mockError.message
-        );
+        await expect(api.auth.logout()).rejects.toThrow(mockError.message);
       });
     });
 
@@ -238,7 +230,7 @@ describe('ApiService', () => {
         };
         mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
-        const user = await apiService.auth.signup(mockAuthData);
+        const user = await api.auth.signup(mockAuthData);
 
         expect(axios.post).toHaveBeenCalledWith(
           '/api/auth/signup',
@@ -253,7 +245,7 @@ describe('ApiService', () => {
       test('should throw an error on failure', async () => {
         mockedAxios.post.mockResolvedValueOnce({ data: mockError });
 
-        await expect(apiService.auth.signup(mockAuthData)).rejects.toThrow(
+        await expect(api.auth.signup(mockAuthData)).rejects.toThrow(
           mockError.message
         );
       });
