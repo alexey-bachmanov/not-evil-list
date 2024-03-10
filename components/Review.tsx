@@ -1,6 +1,5 @@
 import React from 'react';
 import { IReviewDocument } from '@/models';
-import { ObjectId } from 'mongoose';
 
 // MUI imports
 import ListItem from '@mui/material/ListItem';
@@ -10,14 +9,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
-  // extract user data - we have to confirm that the document returned to us has actually been populated
-  // with user data
-  let user: { _id: ObjectId | null; userName: string };
-  if (review.user) {
-    user = review.user;
-  } else {
-    user = { _id: null, userName: 'Default User' };
-  }
+  const user = review.user;
   // extract date - it's stored as a string-like object in mongoDB, without
   // any methods attached
   let date: Date;
@@ -31,9 +23,7 @@ const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
       <Grid container spacing={1}>
         {/* USER AVATAR AND NAME */}
         <Grid item xs={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          <Avatar alt={`${user.userName} avatar`}>
-            {user.userName.slice(0, 1).toUpperCase()}
-          </Avatar>
+          <Avatar>{user.userName.slice(0, 1).toUpperCase()}</Avatar>
           <Typography
             variant="h6"
             sx={{
@@ -48,7 +38,12 @@ const Review: React.FC<{ review: IReviewDocument }> = function ({ review }) {
 
         {/* RATING AND DATE */}
         <Grid item xs={6}>
-          <Rating readOnly value={review.rating} size="small" />
+          <Rating
+            readOnly
+            value={review.rating}
+            size="small"
+            data-testid="rating"
+          />
         </Grid>
         <Grid item xs={6} sx={{ textAlign: 'right' }}>
           <Typography variant="subtitle2">
