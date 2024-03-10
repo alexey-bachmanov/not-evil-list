@@ -59,7 +59,10 @@ async function dbConnect() {
   // resolved promise as your connection from now on.
   try {
     cached.conn = await cached.promise;
-    console.log('connected to mongoDB!');
+    if (process.env.NODE_ENV === 'development') {
+      // only log this in dev mode, not in production or testing
+      console.log('connected to mongoDB!');
+    }
   } catch (err) {
     cached.promise = null;
     throw err;

@@ -49,7 +49,6 @@ const EditsForm: React.FC = function () {
     setSubmitState('idle');
   };
 
-  const typoMargins = 1;
   return (
     <Box component="form" onSubmit={handleSubmit}>
       {/* COMPANY NAME */}

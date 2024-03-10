@@ -1,6 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import Logo from '@/components/Logo';
+import AlertBar from '@/components/AlertBar';
+import HamburgerMenu from '@/components/HamburgerMenu';
+import LoginDialog from '@/components/LoginDialog';
 import { Tag, tags } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -69,209 +72,214 @@ const NewBusinessPage: React.FC = function () {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Logo />
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        <Grid container spacing={0}>
-          {/* COMPANY NAME */}
-          <Grid item xs={12}>
-            <TextField
-              name="companyName"
-              required
-              id="companyName"
-              label="Company Name"
-              fullWidth
-              autoFocus
-              value={formData.companyName}
-              onChange={(e) => {
-                setFormData({ ...formData, companyName: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, companyName: true });
-              }}
-              error={touched.companyName && helperText.companyName !== ''}
-              helperText={touched.companyName && helperText.companyName}
-            />
-          </Grid>
-          {/* ADDRESS */}
-          <Grid item xs={12}>
-            <TextField
-              name="address"
-              required
-              id="address"
-              label="Address"
-              fullWidth
-              value={formData.address}
-              onChange={(e) => {
-                setFormData({ ...formData, address: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, address: true });
-              }}
-              error={touched.address && helperText.address !== ''}
-              helperText={touched.address && helperText.address}
-            />
-          </Grid>
-          {/* CITY */}
-          <Grid item xs={9}>
-            <TextField
-              name="city"
-              required
-              id="city"
-              label="City"
-              fullWidth
-              value={formData.addressCity}
-              onChange={(e) => {
-                setFormData({ ...formData, addressCity: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, addressCity: true });
-              }}
-              error={touched.addressCity && helperText.addressCity !== ''}
-              helperText={touched.addressCity && helperText.addressCity}
-            />
-          </Grid>
-          {/* STATE */}
-          <Grid item xs={3}>
-            <TextField
-              name="state"
-              required
-              id="state"
-              label="State"
-              fullWidth
-              value={formData.addressState}
-              onChange={(e) => {
-                setFormData({ ...formData, addressState: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, addressState: true });
-              }}
-              error={touched.addressState && helperText.addressState !== ''}
-              helperText={touched.addressState && helperText.addressState}
-            />
-          </Grid>
-          {/* PHONE */}
-          <Grid item xs={12} sm={5}>
-            <MuiPhoneNumber
-              name="phone"
-              required
-              id="phone"
-              label="Phone"
-              defaultCountry="us"
-              variant="outlined"
-              fullWidth
-              value={formData.phone}
-              onChange={(val) => {
-                setFormData({ ...formData, phone: val as string });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, phone: true });
-              }}
-              error={touched.phone && helperText.phone !== ''}
-              helperText={touched.phone && helperText.phone}
-            />
-          </Grid>
-          {/* WEBSITE */}
-          <Grid item xs={12} sm={7}>
-            <TextField
-              name="website"
-              id="website"
-              label="Website"
-              fullWidth
-              value={formData.website}
-              onChange={(e) => {
-                setFormData({ ...formData, website: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, website: true });
-              }}
-              error={touched.website && helperText.website !== ''}
-              helperText={touched.website && helperText.website}
-            />
-          </Grid>
-          {/* DESCRIPTION */}
-          <Grid item xs={12}>
-            <TextField
-              name="description"
-              required
-              id="description"
-              label="Description"
-              fullWidth
-              multiline
-              maxRows={4}
-              value={formData.description}
-              onChange={(e) => {
-                setFormData({ ...formData, description: e.target.value });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, description: true });
-              }}
-              error={touched.description && helperText.description !== ''}
-              helperText={touched.description && helperText.description}
-            />
-          </Grid>
-          {/* TAGS */}
-          <Grid item xs={12}>
-            <Autocomplete
-              multiple
-              id="tags"
-              options={tags}
-              value={formData.tags}
-              onChange={(e, newValue) => {
-                // we want to immediately re-validate on tag change
-                setFormData({ ...formData, tags: newValue });
-                dispatch(
-                  createNewBusinessActions.validate({
-                    ...formData,
-                    tags: newValue,
-                  })
-                );
-                setTouched({ ...touched, tags: true });
-              }}
-              onBlur={() => {
-                dispatch(createNewBusinessActions.validate(formData));
-                setTouched({ ...touched, tags: true });
-              }}
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                    key={index}
-                  />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField {...params} label="Tags" placeholder="Tags" />
+    <>
+      <Container maxWidth="sm">
+        <Logo />
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={0}>
+            {/* COMPANY NAME */}
+            <Grid item xs={12}>
+              <TextField
+                name="companyName"
+                required
+                id="companyName"
+                label="Company Name"
+                fullWidth
+                autoFocus
+                value={formData.companyName}
+                onChange={(e) => {
+                  setFormData({ ...formData, companyName: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, companyName: true });
+                }}
+                error={touched.companyName && helperText.companyName !== ''}
+                helperText={touched.companyName && helperText.companyName}
+              />
+            </Grid>
+            {/* ADDRESS */}
+            <Grid item xs={12}>
+              <TextField
+                name="address"
+                required
+                id="address"
+                label="Address"
+                fullWidth
+                value={formData.address}
+                onChange={(e) => {
+                  setFormData({ ...formData, address: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, address: true });
+                }}
+                error={touched.address && helperText.address !== ''}
+                helperText={touched.address && helperText.address}
+              />
+            </Grid>
+            {/* CITY */}
+            <Grid item xs={9}>
+              <TextField
+                name="city"
+                required
+                id="city"
+                label="City"
+                fullWidth
+                value={formData.addressCity}
+                onChange={(e) => {
+                  setFormData({ ...formData, addressCity: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, addressCity: true });
+                }}
+                error={touched.addressCity && helperText.addressCity !== ''}
+                helperText={touched.addressCity && helperText.addressCity}
+              />
+            </Grid>
+            {/* STATE */}
+            <Grid item xs={3}>
+              <TextField
+                name="state"
+                required
+                id="state"
+                label="State"
+                fullWidth
+                value={formData.addressState}
+                onChange={(e) => {
+                  setFormData({ ...formData, addressState: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, addressState: true });
+                }}
+                error={touched.addressState && helperText.addressState !== ''}
+                helperText={touched.addressState && helperText.addressState}
+              />
+            </Grid>
+            {/* PHONE */}
+            <Grid item xs={12} sm={5}>
+              <MuiPhoneNumber
+                name="phone"
+                required
+                id="phone"
+                label="Phone"
+                defaultCountry="us"
+                variant="outlined"
+                fullWidth
+                value={formData.phone}
+                onChange={(val) => {
+                  setFormData({ ...formData, phone: val as string });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, phone: true });
+                }}
+                error={touched.phone && helperText.phone !== ''}
+                helperText={touched.phone && helperText.phone}
+              />
+            </Grid>
+            {/* WEBSITE */}
+            <Grid item xs={12} sm={7}>
+              <TextField
+                name="website"
+                id="website"
+                label="Website"
+                fullWidth
+                value={formData.website}
+                onChange={(e) => {
+                  setFormData({ ...formData, website: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, website: true });
+                }}
+                error={touched.website && helperText.website !== ''}
+                helperText={touched.website && helperText.website}
+              />
+            </Grid>
+            {/* DESCRIPTION */}
+            <Grid item xs={12}>
+              <TextField
+                name="description"
+                required
+                id="description"
+                label="Description"
+                fullWidth
+                multiline
+                maxRows={4}
+                value={formData.description}
+                onChange={(e) => {
+                  setFormData({ ...formData, description: e.target.value });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, description: true });
+                }}
+                error={touched.description && helperText.description !== ''}
+                helperText={touched.description && helperText.description}
+              />
+            </Grid>
+            {/* TAGS */}
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                id="tags"
+                options={tags}
+                value={formData.tags}
+                onChange={(e, newValue) => {
+                  // we want to immediately re-validate on tag change
+                  setFormData({ ...formData, tags: newValue });
+                  dispatch(
+                    createNewBusinessActions.validate({
+                      ...formData,
+                      tags: newValue,
+                    })
+                  );
+                  setTouched({ ...touched, tags: true });
+                }}
+                onBlur={() => {
+                  dispatch(createNewBusinessActions.validate(formData));
+                  setTouched({ ...touched, tags: true });
+                }}
+                renderTags={(value: readonly string[], getTagProps) =>
+                  value.map((option: string, index: number) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                      key={index}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField {...params} label="Tags" placeholder="Tags" />
+                )}
+              />
+              {/* ghetto helper text for tags */}
+              {touched.tags && (
+                <Typography variant="caption" ml={1.5} mr={1.5}>
+                  {helperText.tags}
+                </Typography>
               )}
-            />
-            {/* ghetto helper text for tags */}
-            {touched.tags && (
-              <Typography variant="caption" ml={1.5} mr={1.5}>
-                {helperText.tags}
-              </Typography>
-            )}
+            </Grid>
           </Grid>
-        </Grid>
-        <Button
-          disabled={submitState !== 'idle' || !helperTextIsEmpty}
-          type="submit"
-          variant="outlined"
-          fullWidth
-          sx={{ mt: 3, mb: 2 }}
-        >
-          {submitState === 'submitting' ? 'Submitting...' : 'Submit'}
-        </Button>
-      </Box>
-    </Container>
+          <Button
+            disabled={submitState !== 'idle' || !helperTextIsEmpty}
+            type="submit"
+            variant="outlined"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
+          >
+            {submitState === 'submitting' ? 'Submitting...' : 'Submit'}
+          </Button>
+        </Box>
+      </Container>
+      <LoginDialog />
+      <AlertBar />
+      <HamburgerMenu />
+    </>
   );
 };
 

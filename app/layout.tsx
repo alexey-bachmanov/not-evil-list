@@ -3,9 +3,6 @@
 import 'leaflet/dist/leaflet.css';
 import { Roboto } from 'next/font/google';
 import Providers from '@/store/providers';
-import AlertBar from '@/components/AlertBar';
-import HamburgerMenu from '@/components/HamburgerMenu';
-import LoginDialog from '@/components/LoginDialog';
 
 // MUI imports
 import Box from '@mui/material/Box';
@@ -32,12 +29,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Providers>
-          <Box component="main">
-            {children}
-            <LoginDialog />
-            <AlertBar />
-            <HamburgerMenu />
-          </Box>
+          <Box component="main">{children}</Box>
         </Providers>
       </body>
     </html>

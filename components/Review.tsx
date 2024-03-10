@@ -1,7 +1,6 @@
 import React from 'react';
 import { IReviewDocument } from '@/models';
-// mongoose.ObjectId is a *type*, mongoose.Types.ObjectId is a *class constructor*
-import { ObjectId, Types } from 'mongoose';
+import { ObjectId } from 'mongoose';
 
 // MUI imports
 import ListItem from '@mui/material/ListItem';
