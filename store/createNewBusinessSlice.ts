@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Tag } from '@/types';
 import api from '@/lib/apiService';
-import fetchData from '@/lib/fetchData';
-import { AppApiRequest, AppApiResponse } from '@/types';
 import { uiActions } from '.';
 import {
   isValidPhoneNumber,

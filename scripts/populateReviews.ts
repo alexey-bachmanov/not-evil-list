@@ -11,7 +11,6 @@ import {
   IReviewDocument,
   IBusinessDocument,
 } from '@/models/index.ts';
-import sleep from '@/lib/sleep';
 
 ///// ENVIRONMENT VARiABLES /////
 dotenv.config({ path: './.env.local' });

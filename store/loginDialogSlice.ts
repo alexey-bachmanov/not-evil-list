@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { uiActions, RootState, authActions } from '.';
+import { RootState, authActions } from '.';
 import validator from 'validator';
 
 ///// THUNKS /////

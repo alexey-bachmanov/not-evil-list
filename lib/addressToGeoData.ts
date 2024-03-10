@@ -6,21 +6,21 @@ interface PositionstackResponse {
     latitude: number;
     longitude: number;
     type: string;
-    name: string | null;
-    number: string | null;
-    postal_code: string | null;
-    street: string | null;
+    name: string;
+    number: string;
+    postal_code: string;
+    street: string;
     confidence: number;
-    region: string | null;
-    region_code: string | null;
-    county: string | null;
-    locality: string | null;
-    administrative_area: string | null;
-    neighbourhood: string | null;
-    country: string | null;
-    country_code: string | null;
-    continent: string | null;
-    label: string | null;
+    region: string;
+    region_code: string;
+    county: string;
+    locality: string;
+    administrative_area: string;
+    neighbourhood: string;
+    country: string;
+    country_code: string;
+    continent: string;
+    label: string;
   }[];
 }
 interface PositionstackError {
