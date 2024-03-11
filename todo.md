@@ -19,7 +19,9 @@
   - Move authentication and route protection functionality to next.js middleware?
   - Refactor Drawer component to use MUI theming and breakpoints instead of module-scoped css
 - Testing:
-  - Set up mock mongoDB server
+  - integration testing with pages/components/redux, boundary at axios calls to backend
+  - integration testing with routes/models, boundary at mongodb-memory-server
+  - unit testing of models (check middleware, crud operations, etc.)
 - Bugs:
 
 ## Search behaviors to implement

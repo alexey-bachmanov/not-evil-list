@@ -16,7 +16,7 @@ async function dbConnect() {
   // pull mongo connection string from .env.local, make sure you actually
   // have a .env.local to pull it from
   const MONGODB_URI = process.env.MONGODB_URI!;
-  if (!MONGODB_URI) {
+  if (MONGODB_URI === undefined) {
     throw new Error(
       'Please define the MONGODB_URI environment variable inside .env.local'
     );
@@ -24,7 +24,7 @@ async function dbConnect() {
 
   // do the same with the database name
   const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME!;
-  if (!MONGODB_DB_NAME) {
+  if (MONGODB_DB_NAME === undefined) {
     throw new Error(
       'Please define the MONGODB_DB_NAME environment variable inside .env.local'
     );
