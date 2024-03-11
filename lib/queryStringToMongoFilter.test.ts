@@ -87,7 +87,7 @@ describe('queryStringToMongoFilter', () => {
     });
 
     const req = {
-      url: '/path?search=word1+word2+plurals&flags=all',
+      url: '/path?search=word1+word2+plurals',
     } as NextRequest;
     const filter = await queryStringToMongoFilter(req);
 
@@ -103,6 +103,38 @@ describe('queryStringToMongoFilter', () => {
                 { companyName: { $regex: 'word2', $options: 'i' } },
                 { companyName: { $regex: 'plurals', $options: 'i' } },
                 { companyName: { $regex: 'plural', $options: 'i' } },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(filter).toEqual(expectedFilter);
+  });
+
+  test('returns correct filter for two-word tags (eg food truck)', async () => {
+    mockAuthCheck.mockResolvedValue({
+      isAdmin: false,
+      isUser: true,
+      userId: null,
+    });
+
+    const req = {
+      url: '/path?search=food+truck',
+    } as NextRequest;
+    const filter = await queryStringToMongoFilter(req);
+
+    const expectedFilter = {
+      $and: [
+        { isVerified: true },
+        {
+          $or: [
+            { tags: { $regex: 'food|truck', $options: 'i' } },
+            {
+              $and: [
+                { companyName: { $regex: 'food', $options: 'i' } },
+                { companyName: { $regex: 'truck', $options: 'i' } },
               ],
             },
           ],

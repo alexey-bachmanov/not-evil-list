@@ -63,7 +63,7 @@ reviewSchema.index({ business: 1, user: 1 }, { unique: true });
 // populate user data on query
 // this only works on the Model.find() method, since we won't need
 // this info on e.g. findOneAndUpdate
-reviewSchema.pre('find', function (next) {
+reviewSchema.pre(['find', 'findOne'], function (next) {
   this.populate({
     path: 'user',
     select: 'userName',
@@ -72,12 +72,21 @@ reviewSchema.pre('find', function (next) {
 });
 
 // recalculate ratings after saving document
-reviewSchema.post('save', async function () {
+reviewSchema.post(['save'], async function () {
   // we need to access Model.aggregate for this middleware, and you
   // would access it by calling this.constructor.aggregate(), but typescript
   // doesn't know this exists and keeps throwing errors.
   await recalculateAvgRating(this.business);
 });
+
+reviewSchema.post(
+  /findOneAndDelete|findByIdAndDelete/,
+  async function (doc, next) {
+    // we have to handle review deletion separately, since this middleware
+    // will be attached to a query-like object
+    await recalculateAvgRating(doc.business);
+  }
+);
 
 ///// EXPORT IT ALL /////
 export { reviewSchema };
