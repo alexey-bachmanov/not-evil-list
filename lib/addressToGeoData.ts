@@ -35,12 +35,14 @@ export default async function addressToGeoData(
   city: string,
   state: string
 ) {
-  const apiKey = process.env.POSITIONSTACK_API_KEY;
-  const reply = await axios.get<PositionstackResponse | PositionstackError>(
-    `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${address}, ${city} ${state}`
-  );
-  if (reply.status !== 200) {
+  try {
+    const apiKey = process.env.POSITIONSTACK_API_KEY;
+    const response = await axios.get<PositionstackResponse>(
+      `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${address}, ${city} ${state}`
+    );
+    return response.data.data[0];
+  } catch (err: any) {
     throw new ApiError('GeoLocation API failed to return data', 500);
+    // throw new ApiError(err.message, 500);
   }
-  return (reply.data as PositionstackResponse).data[0];
 }
