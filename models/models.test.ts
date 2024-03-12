@@ -16,18 +16,11 @@ const mockATGD = addressToGeoData as jest.MockedFunction<
 >;
 
 describe('Mongoose models', () => {
-  beforeAll(async () => {
-    await openDatabase();
-  });
   beforeEach(async () => {
-    await clearDatabase();
+    await openDatabase();
   });
 
   afterEach(async () => {
-    await clearDatabase();
-  });
-
-  afterAll(async () => {
     await closeDatabase();
   });
 
@@ -267,7 +260,6 @@ describe('Mongoose models', () => {
 
       // save and update rating
       const result = await Business.findOne({ _id: business._id });
-      console.log(result);
       expect(result.ratingAvg).toBe(4.5);
       expect(result.ratingQty).toBe(0);
 

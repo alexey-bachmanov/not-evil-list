@@ -23,8 +23,8 @@ export async function openDatabase() {
   const uri = mongod.getUri();
 
   // set uri and db name to environment variables
-  process.env.MONGODB_URI = uri;
-  process.env.MONGODB_DB_NAME = '';
+  // process.env.MONGODB_URI = uri;
+  // process.env.MONGODB_DB_NAME = '';
 
   // if we alrady have a connection open, throw an error
   if (mongoose.connections[0].readyState) {
@@ -34,7 +34,7 @@ export async function openDatabase() {
   }
 
   // fire up the initial connection, using our environment variables
-  await dbConnect();
+  await mongoose.connect(uri, { dbName: '' });
 }
 
 // drop database, close connection, and stop mongod
