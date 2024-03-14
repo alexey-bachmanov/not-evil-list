@@ -2,11 +2,7 @@
 // here - middleware, instance methods, and recalculateAvgRating
 import { Business, User, Review } from '.';
 import addressToGeoData from '@/lib/addressToGeoData';
-import {
-  openDatabase,
-  clearDatabase,
-  closeDatabase,
-} from '@/test-utils/mongoMemoryUtils';
+import { openDatabase, closeDatabase } from '@/test-utils/mongoMemoryUtils';
 import mocks from '@/test-utils/mockDbEntries';
 
 // mock addressToGeoData

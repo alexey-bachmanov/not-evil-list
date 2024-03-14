@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import dbConnect from '@/lib/dbConnect';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
   Business,
