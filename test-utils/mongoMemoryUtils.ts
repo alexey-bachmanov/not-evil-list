@@ -39,9 +39,13 @@ export async function openDatabase() {
 // drop database, close connection, and stop mongod
 export async function closeDatabase() {
   if (mongod) {
+    // drop everything from the fake database
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
+    // terminate the process
     await mongod.stop();
+    // reset mongod so other checks in this module know it's closed
+    mongod = undefined;
   }
 }
 
