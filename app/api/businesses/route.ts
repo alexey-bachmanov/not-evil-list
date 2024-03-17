@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
     );
   } catch (err: any) {
     // handle any errors we created ourselves
+    // nothing in the handler code should trigger this block
     if (err.isOperational) {
       return NextResponse.json<AppApiResponse['fail']>(
         { success: false, message: err.message },

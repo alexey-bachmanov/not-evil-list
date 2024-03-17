@@ -37,6 +37,7 @@ describe('/api/businesses', () => {
 
   afterEach(async () => {
     await closeDatabase();
+    jest.resetAllMocks();
   });
 
   describe('GET', () => {
@@ -45,9 +46,8 @@ describe('/api/businesses', () => {
       (addressToGeoData as jest.Mock).mockResolvedValue(mocks.geoDataSuccess);
       await primeDatabase();
 
-      // create request to test and expected test result
+      // create request to test
       const { req, res } = createMocks({ method: 'GET' });
-      const actualBusinesses = await Business.find({});
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -62,7 +62,25 @@ describe('/api/businesses', () => {
       expect(responseBody.data?.businesses?.length).toBe(2);
     });
 
-    // Write similar tests for error scenarios
+    test('throws 500 error on failed db connection', async () => {
+      // disable console from printing errors
+      jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      // make sure the db is shut down
+      await closeDatabase();
+
+      // create request to test
+      const { req, res } = createMocks({ method: 'GET' });
+
+      // Mock dependencies' behavior
+      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (queryStringToMongoFilter as jest.Mock).mockResolvedValueOnce({});
+
+      // get our response from the handler
+      const response = await GET(req as unknown as NextRequest);
+
+      expect(response.status).toBe(500);
+    });
   });
 
   describe('POST', () => {
@@ -109,6 +127,58 @@ describe('/api/businesses', () => {
       expect(dbBusinesses.length).toBe(1);
     });
 
-    // Write similar tests for error scenarios
+    test('throws 500 error on failed db connection', async () => {
+      // disable console from printing errors
+      jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      // make sure the db is shut down
+      await closeDatabase();
+
+      // create request to test
+      const mockNewBusiness = mocks.business1;
+      const { req, res } = createMocks({ method: 'POST' });
+
+      // Mock dependencies' behavior
+      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (parseBody as jest.Mock).mockResolvedValueOnce(mockNewBusiness);
+      (addressToGeoData as jest.Mock).mockResolvedValue(mocks.geoDataSuccess);
+
+      // get our response from the handler
+      const response = await POST(req as unknown as NextRequest);
+
+      expect(response.status).toBe(500);
+    });
+
+    test('throws 400 error when body is not included', async () => {
+      // create request to test
+      const { req, res } = createMocks({ method: 'POST' });
+
+      // Mock dependencies' behavior
+      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (parseBody as jest.Mock).mockResolvedValueOnce(undefined);
+
+      // get our response from the handler
+      const response = await POST(req as unknown as NextRequest);
+
+      expect(response.status).toBe(400);
+    });
+
+    test('throws 400 error on business validation failure', async () => {
+      // create request to test
+      const mockNewBusiness: any = mocks.business1;
+      delete mockNewBusiness.companyName;
+      const { req, res } = createMocks({ method: 'POST' });
+
+      // Mock dependencies' behavior
+      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (parseBody as jest.Mock).mockResolvedValueOnce(mockNewBusiness);
+      (addressToGeoData as jest.Mock).mockResolvedValue(mocks.geoDataSuccess);
+
+      // get our response from the handler
+      const response = await POST(req as unknown as NextRequest);
+
+      expect(response.status).toBe(400);
+      expect((await response.json()).message).toBe('Validation failed');
+    });
   });
 });
