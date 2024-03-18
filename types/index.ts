@@ -1,5 +1,5 @@
-// import types from models
 import { IBusinessDocument, IReviewDocument } from '@/models';
+import { NextMiddleware } from 'next/server';
 
 // types for API requests
 export type AppApiRequest = {
@@ -185,3 +185,5 @@ const tagsConst = [
 ] as const;
 export const tags = [...tagsConst];
 export type Tag = (typeof tags)[number];
+
+export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware;

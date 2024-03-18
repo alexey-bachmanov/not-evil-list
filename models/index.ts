@@ -18,13 +18,13 @@ import {
 // 'Cannot overwrite model once compiled'. This short circuit asks for
 // the existing model, and if it can't find it, creates a new one.
 export const User =
-  mongoose.models.User ||
+  mongoose.models?.User ||
   mongoose.model<IUserDocument, IUserModel>('User', userSchema);
 export const Review =
-  mongoose.models.Review ||
+  mongoose.models?.Review ||
   mongoose.model<IReviewDocument, IReviewModel>('Review', reviewSchema);
 export const Business =
-  mongoose.models.Business ||
+  mongoose.models?.Business ||
   mongoose.model<IBusinessDocument, IBusinessModel>('Business', businessSchema);
 
 ///// TYPES /////

@@ -2,6 +2,7 @@
 
 - Minor implementation:
   - XSS security middleware
+  - Content security policy stuff
 - Look and feel:
   - Add confirmation dialog on business delete action
   - Add 'zoom to selected pin' functionality
@@ -21,8 +22,9 @@
 - Testing:
   - Integration testing with pages/components/redux, boundary at axios calls to backend
   - Integration testing with routes/models, boundary at mongodb-memory-server
+  - Middleware, somehow...
 - Bugs:
-  - Searching 2-word tags like "fast food" yields 0 results
+  - Loading spinners not centered
 
 ## Search behaviors to implement
 

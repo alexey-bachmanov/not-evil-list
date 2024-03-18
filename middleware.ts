@@ -1,18 +1,15 @@
-// development-only middleware to add a short delay to all requests
-// when in the development environment.
-// should run without delay in production and testing
-import { NextRequest, NextResponse } from 'next/server';
-// import sleep from './lib/sleep'; // this is causing fast refresh to stop working
-async function sleep(duration: number) {
-  await new Promise((resolve) => setTimeout(resolve, duration));
-}
+/**
+ * Next.js only supports having one middleware (boo), so we have to
+ * create a custom solution to stack multiple middlewares together.
+ * Unfortunately, this breaks things like custom path matchers, so we'll
+ * have to use things like regex to match paths
+ */
+import { stackMiddlewares } from './middlewares/stackMiddlewares';
+import { withDelay } from './middlewares/withDelay';
+import { withAuthentication } from './middlewares/withAuthentication';
 
-export async function middleware(request: NextRequest) {
-  if (process.env.NODE_ENV === 'development') {
-    await sleep(1000);
-  }
-  return NextResponse.next();
-}
+const middlewares = [withDelay, withAuthentication];
+export default stackMiddlewares(middlewares);
 
 export const config = {
   matcher: '/:path*',
