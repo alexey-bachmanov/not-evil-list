@@ -7,6 +7,7 @@ import SearchResult from './SearchResult';
 // MUI imports
 import List from '@mui/material/List';
 import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const SearchResultsList: React.FC = function () {
@@ -38,15 +39,9 @@ const SearchResultsList: React.FC = function () {
   let displayedJSX;
   if (loadingStatus === 'loading') {
     displayedJSX = (
-      <CircularProgress
-        sx={{
-          display: 'block',
-          position: 'relative',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
+      <Stack alignItems="center" justifyContent="center" height="100%">
+        <CircularProgress />
+      </Stack>
     );
   }
   if (loadingStatus === 'failure') {

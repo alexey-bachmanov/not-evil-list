@@ -3,6 +3,7 @@
 - Minor implementation:
   - XSS security middleware
   - Content security policy stuff
+  - Add/edit/delete reviews
 - Look and feel:
   - Add confirmation dialog on business delete action
   - Add 'zoom to selected pin' functionality
@@ -24,7 +25,6 @@
   - Integration testing with routes/models, boundary at mongodb-memory-server
   - Middleware, somehow...
 - Bugs:
-  - Loading spinners not centered
 
 ## Search behaviors to implement
 

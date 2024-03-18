@@ -8,6 +8,7 @@ import Review from './Review';
 
 // MUI imports
 import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -142,15 +143,9 @@ const DetailsDrawer: React.FC = function () {
       }}
     >
       {loadingStatus === 'loading' && (
-        <CircularProgress
-          sx={{
-            display: 'block',
-            position: 'relative',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
+        <Stack alignItems="center" justifyContent="center" height="100%">
+          <CircularProgress />
+        </Stack>
       )}
       {loadingStatus === 'failure' && error}
       {loadingStatus === 'success' && successContentsJSX}
