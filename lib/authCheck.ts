@@ -1,49 +1,27 @@
 import { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongoose';
-import ApiError from './apiError';
-import dbConnect from './dbConnect';
-import { User, IUserDocument } from '@/models';
 
-export default async function authCheck(
-  req: NextRequest
-): Promise<{ isUser: boolean; isAdmin: boolean; userId: ObjectId | null }> {
-  // takes a NextRequest object, checks for the presence of a JWT,
-  // decodes it, and checks the roles of that user
+export default function authCheck(req: NextRequest): {
+  isUser: boolean;
+  isAdmin: boolean;
+  userId: ObjectId | null;
+} {
+  const role = req.headers.get('userRole');
+  // if userId was provided by middleware, it must be a valid ObjectId
+  const userIdHeader = req.headers.get('userId');
 
-  // connect to DB
-  await dbConnect();
+  let userId: ObjectId | null;
+  if (!userIdHeader) {
+    userId = null;
+  } else {
+    userId = userIdHeader as unknown as ObjectId;
+  }
 
-  // extract jwt cookie from the request object
-  const cookie = req.cookies.get('jwt');
-  if (!cookie) {
-    // nobody is logged in at all
+  if (role === 'admin') {
+    return { isUser: true, isAdmin: true, userId };
+  } else if (role === 'user') {
+    return { isUser: true, isAdmin: false, userId };
+  } else {
     return { isUser: false, isAdmin: false, userId: null };
   }
-  // extract user id from 'jwt' cookie
-  const payload = jwt.decode(cookie.value);
-  if (
-    typeof payload === 'string' || //payload must be an object
-    !payload?.id || // which must have an id field
-    typeof payload.id !== 'string' // and that field should be a string
-  ) {
-    throw new ApiError(
-      'Json web token badly formed: is not an object or does not contain valid id field',
-      400
-    );
-  }
-  const userID = payload.id;
-
-  // check if user with that id exists and is active
-  const user = await User.findById<IUserDocument>(userID, {}).select('+active');
-  if (!user || !user.active) {
-    return { isUser: false, isAdmin: false, userId: null };
-  }
-  // check if that user is an admin
-  if (user.role === 'admin') {
-    return { isUser: true, isAdmin: true, userId: user._id };
-  }
-
-  // otherwise, our user is a regular user
-  return { isUser: true, isAdmin: false, userId: user._id };
 }
