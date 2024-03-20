@@ -6,7 +6,8 @@
  * mock the model.save() method correctly, so unit tests would be a
  * fragile mess
  * Instead, we're going to do integration tests while connecting to
- * our in-memory database
+ * our in-memory database. So, we'll be testing everything between the
+ * output of the middleware and the input to our database.
  */
 
 import { NextRequest } from 'next/server';
@@ -14,7 +15,7 @@ import { GET, POST } from './route';
 import dbConnect from '@/lib/dbConnect';
 import queryStringToMongoFilter from '@/lib/queryStringToMongoFilter';
 import parseBody from '@/lib/parseBody';
-import { createMocks } from 'node-mocks-http';
+import { createRequest } from 'node-mocks-http';
 import mocks from '@/test-utils/mockDbEntries';
 import {
   openDatabase,
@@ -47,7 +48,7 @@ describe('/api/businesses', () => {
       await primeDatabase();
 
       // create request to test
-      const { req, res } = createMocks({ method: 'GET' });
+      const req = createRequest({ method: 'GET', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -70,7 +71,7 @@ describe('/api/businesses', () => {
       await closeDatabase();
 
       // create request to test
-      const { req, res } = createMocks({ method: 'GET' });
+      const req = createRequest({ method: 'GET', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -87,7 +88,7 @@ describe('/api/businesses', () => {
     test('creates new business on successful save', async () => {
       // create request to test
       const mockNewBusiness = mocks.business1;
-      const { req, res } = createMocks({ method: 'POST' });
+      const req = createRequest({ method: 'POST', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -136,7 +137,7 @@ describe('/api/businesses', () => {
 
       // create request to test
       const mockNewBusiness = mocks.business1;
-      const { req, res } = createMocks({ method: 'POST' });
+      const req = createRequest({ method: 'POST', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -151,7 +152,7 @@ describe('/api/businesses', () => {
 
     test('throws 400 error when body is not included', async () => {
       // create request to test
-      const { req, res } = createMocks({ method: 'POST' });
+      const req = createRequest({ method: 'POST', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
@@ -167,12 +168,14 @@ describe('/api/businesses', () => {
       // create request to test
       const mockNewBusiness: any = mocks.business1;
       delete mockNewBusiness.companyName;
-      const { req, res } = createMocks({ method: 'POST' });
+      const req = createRequest({ method: 'POST', url: '/api/businesses' });
 
       // Mock dependencies' behavior
       (dbConnect as jest.Mock).mockResolvedValueOnce(null);
       (parseBody as jest.Mock).mockResolvedValueOnce(mockNewBusiness);
-      (addressToGeoData as jest.Mock).mockResolvedValue(mocks.geoDataSuccess);
+      (addressToGeoData as jest.Mock).mockResolvedValueOnce(
+        mocks.geoDataSuccess
+      );
 
       // get our response from the handler
       const response = await POST(req as unknown as NextRequest);

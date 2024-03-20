@@ -112,7 +112,7 @@ export async function PUT(req: NextRequest) {
     business.isVerified = business.isVerified || body.isVerified || false;
 
     // save the edited business, and trigger our pre-save middleware
-    business.save();
+    await business.save();
 
     return NextResponse.json<AppApiResponse['putBusiness']>(
       { success: true, data: { business: business } },
