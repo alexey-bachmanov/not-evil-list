@@ -2,10 +2,8 @@
  * @jest-environment node
  */
 import { POST } from './route';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import { User } from '@/models';
-import createSendToken from '@/lib/createSendToken';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import parseBody from '@/lib/parseBody';
 import { createRequest } from 'node-mocks-http';
@@ -20,7 +18,7 @@ import mocks from '@/test-utils/mockDbEntries';
 jest.mock('@/lib/dbConnect');
 jest.mock('@/lib/parseBody');
 
-describe('/api/login', () => {
+describe('/api/auth/login', () => {
   beforeEach(async () => {
     await openDatabase();
     await primeDatabase();
