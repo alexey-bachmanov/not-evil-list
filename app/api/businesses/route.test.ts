@@ -74,8 +74,9 @@ describe('/api/businesses', () => {
       const req = createRequest({ method: 'GET', url: '/api/businesses' });
 
       // Mock dependencies' behavior
-      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
-      (queryStringToMongoFilter as jest.Mock).mockResolvedValueOnce({});
+      (dbConnect as jest.Mock).mockRejectedValueOnce(
+        new Error('Failed DB connection')
+      );
 
       // get our response from the handler
       const response = await GET(req as unknown as NextRequest);
@@ -136,13 +137,12 @@ describe('/api/businesses', () => {
       await closeDatabase();
 
       // create request to test
-      const mockNewBusiness = mocks.business1;
       const req = createRequest({ method: 'POST', url: '/api/businesses' });
 
       // Mock dependencies' behavior
-      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
-      (parseBody as jest.Mock).mockResolvedValueOnce(mockNewBusiness);
-      (addressToGeoData as jest.Mock).mockResolvedValue(mocks.geoDataSuccess);
+      (dbConnect as jest.Mock).mockRejectedValueOnce(
+        new Error('Failed DB connection')
+      );
 
       // get our response from the handler
       const response = await POST(req as unknown as NextRequest);

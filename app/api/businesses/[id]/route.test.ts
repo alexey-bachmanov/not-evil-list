@@ -139,7 +139,9 @@ describe('/api/businesses/[id]', () => {
       });
 
       // Mock dependencies' behavior
-      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (dbConnect as jest.Mock).mockRejectedValueOnce(
+        new Error('Failed DB connection')
+      );
 
       // get our response from the handler
       const response = await GET(req as unknown as NextRequest);
@@ -434,25 +436,11 @@ describe('/api/businesses/[id]', () => {
         method: 'PUT',
         url: '/api/businesses/65fb381dfc60e60000000000',
       });
-      const mockUpdate = {
-        companyName: 'New Company Name',
-        address: '',
-        addressCity: '',
-        addressState: '',
-        phone: '',
-        website: '',
-        description: '',
-        tags: [],
-      };
 
       // Mock dependencies' behavior
-      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
-      (parseBody as jest.Mock).mockResolvedValueOnce(mockUpdate);
-      (authCheck as jest.Mock).mockReturnValueOnce({
-        isUser: true,
-        isAdmin: true,
-        userId: null,
-      });
+      (dbConnect as jest.Mock).mockRejectedValueOnce(
+        new Error('Failed DB connection')
+      );
 
       // get our response from the handler
       const response = await PUT(req as unknown as NextRequest);
