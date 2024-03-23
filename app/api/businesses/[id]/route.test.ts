@@ -618,7 +618,9 @@ describe('/api/businesses/[id]', () => {
       });
 
       // Mock dependencies' behavior
-      (dbConnect as jest.Mock).mockResolvedValueOnce(null);
+      (dbConnect as jest.Mock).mockRejectedValueOnce(
+        new Error('Failed DB connection')
+      );
 
       // get our response from the handler
       const response = await DELETE(req as unknown as NextRequest);

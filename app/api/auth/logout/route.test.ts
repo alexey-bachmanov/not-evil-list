@@ -15,7 +15,6 @@ describe('api/auth/logout', () => {
 
     // extract jwt cookie
     const cookie = response.cookies.get('jwt');
-    console.log(cookie);
 
     expect(response.status).toBe(200);
     // expect cookie to exist and be an http-only cookie

@@ -22,7 +22,6 @@
   - Refactor Drawer component to use MUI theming and breakpoints instead of module-scoped css
 - Testing:
   - Integration testing with pages/components/redux, boundary at axios calls to backend
-  - Integration testing with routes/models, boundary at mongodb-memory-server
   - Middleware, somehow...
 - Bugs:
 
