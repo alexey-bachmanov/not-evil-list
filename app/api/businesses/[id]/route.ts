@@ -74,7 +74,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // check if the user exists and is authorized to update a DB entry
-    const { isUser, isAdmin } = authCheck(req);
+    const { isUser, isAdmin } = await authCheck(req);
     if (!isUser) {
       throw new ApiError('User does not exist', 401);
     }
@@ -143,7 +143,7 @@ export async function DELETE(req: NextRequest) {
     await dbConnect();
 
     // check if the user exists and is authorized to update a DB entry
-    const { isUser, isAdmin } = authCheck(req);
+    const { isUser, isAdmin } = await authCheck(req);
     if (!isUser) {
       throw new ApiError('User does not exist', 401);
     }

@@ -6,9 +6,8 @@
  */
 import { stackMiddlewares } from './middlewares/stackMiddlewares';
 import { withDelay } from './middlewares/withDelay';
-import { withAuthentication } from './middlewares/withAuthentication';
 
-const middlewares = [withDelay, withAuthentication];
+const middlewares = [withDelay];
 export default stackMiddlewares(middlewares);
 
 export const config = {
