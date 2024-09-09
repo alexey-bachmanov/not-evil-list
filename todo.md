@@ -22,6 +22,58 @@
   - Refactor Drawer component to use MUI theming and breakpoints instead of module-scoped css
 - Testing:
   - Integration testing with pages/components/redux, boundary at axios calls to backend
+    - Flows:
+      - Basic search and business selection:
+        - User types in business, hits search:
+          - appropriate SearchResult components to display in the SearchResults component
+        - User clicks on a search result:
+          - details drawer pops out
+          - details drawer contains correct details about business
+          - appropriate map pin is highlighted
+        - User clicks on a map pin:
+          - details drawer pops out
+          - details drawer contains correct details about business
+          - appropriate map pin is highlighted
+      - Menu navigation:
+        - User clicks hamburger menu button:
+          - menu div displays
+          - menu div has "Add a business" and "Login" displayed
+        - User on home page, opens menu, clicks "Add a business":
+          - menu is hidden
+          - route changes to "/new-business"
+          - "new business" page displays (form, submit button, menu button)
+        - User on "new business" page, opens menu:
+          - menu div displays
+          - menu div has "Home" and "Login" displayed
+        - User on "new business" page, opens menu, clicks "Home":
+          - menu is hidden
+          - route changes to "/"
+          - "home" page displays (leaflet div, search drawer, menu button)
+      - Authentication stuff:
+        - User opens menu, clicks "Login":
+          - menu is hidden
+          - login dialog is showing
+          - dialog contains 2 text fields and 2 buttons
+          - login fields are empty
+          - submit button is disabled
+        - User opens menu, clicks "Login", logs in with correct user credentials, hits submit:
+          - login dialog is hidden
+          - alert bar shows success
+        - User opens menu, clicks "Login", logs in with incorrect user credentials, hits submit:
+          - login dialog is showing
+          - alert bar shows failure
+        - User opens menu, clicks "Login", clicks "Sign up":
+          - login dialog is showing
+          - dialog contains 4 text fields and 2 buttons
+          - login fields are empty
+        - User opens menu, clicks "Login", clicks "Sign up", enters appropriate info, clicks submit:
+          - login dialog is hidden
+          - alert bar shows success
+          - signup route is called with entered data
+        - User opens menu, clicks "Login", clicks "Sign up", enters incorrect info, clicks submit:
+          - login dialog is showing
+          - alert bar shows error
+          - signup route is called with entered data
 - Bugs:
 
 ## Search behaviors to implement
