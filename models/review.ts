@@ -18,7 +18,9 @@ export interface IReviewPopulated {
 }
 
 // any time we access a Review document, it will be populated
-export interface IReviewDocument extends IReviewPopulated, mongoose.Document {
+export interface IReviewDocument
+  extends IReviewPopulated,
+    mongoose.Document<string> {
   // instance methods
 }
 export interface IReviewModel extends mongoose.Model<IReviewDocument> {

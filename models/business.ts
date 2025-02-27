@@ -28,7 +28,9 @@ export interface IBusiness {
 }
 // extend it to include instance methods and values like '_id'
 interface IPointDocument extends IPoint, mongoose.Document {}
-export interface IBusinessDocument extends IBusiness, mongoose.Document {
+export interface IBusinessDocument
+  extends IBusiness,
+    mongoose.Document<string> {
   // instance methods
 }
 export interface IBusinessModel extends mongoose.Model<IBusinessDocument> {
