@@ -20,7 +20,7 @@ export interface IUser {
   active?: boolean;
 }
 // extend it to include instance methods and values like '_id'
-export interface IUserDocument extends IUser, mongoose.Document<string> {
+export interface IUserDocument extends IUser, mongoose.Document {
   // instance methods
   passwordMatch: (
     candidatepassword: string,
