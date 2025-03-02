@@ -79,7 +79,7 @@ class Businesses {
     }
   }
 
-  async put(id: ObjectId, data: AppApiRequest['editBusiness']) {
+  async put(id: string, data: AppApiRequest['editBusiness']) {
     try {
       const response: AxiosResponse<
         AppApiResponse['editBusiness'] | AppApiResponse['fail']
@@ -95,7 +95,7 @@ class Businesses {
     }
   }
 
-  async delete(id: ObjectId) {
+  async delete(id: string) {
     try {
       const response: AxiosResponse<
         AppApiResponse['deleteBusiness'] | AppApiResponse['fail']

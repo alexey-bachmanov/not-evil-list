@@ -3,7 +3,7 @@ import { RootState, searchActions, uiActions } from '.';
 import { Tag } from '@/types';
 import api from '@/lib/apiService';
 import { unformatPhoneNumber } from '@/lib/phoneFormatUtils';
-import { ObjectId } from 'mongoose';
+// import { ObjectId } from 'mongoose';
 
 ///// THUNKS /////
 // edit a business
@@ -11,7 +11,7 @@ export const editBusiness = createAsyncThunk(
   'admin/editBusiness',
   async (
     data: {
-      businessId: ObjectId;
+      businessId: string;
       formData: {
         companyName: string;
         address: string;
@@ -51,7 +51,7 @@ export const editBusiness = createAsyncThunk(
 // delete a business
 export const deleteBusiness = createAsyncThunk(
   'admin/deleteBusiness',
-  async (businessId: ObjectId, thunkAPI) => {
+  async (businessId: string, thunkAPI) => {
     try {
       await api.businesses.delete(businessId);
       // if successful, open a success alert, and reload businesses (which will reset drawer states)
