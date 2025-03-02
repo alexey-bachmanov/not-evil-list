@@ -11,7 +11,7 @@ import classes from './Drawer.module.css';
 // MUI imports
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowLeft from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 ///// DRAWER COMPONENT /////
 const Drawer: React.FC<{
@@ -101,7 +101,7 @@ const Drawer: React.FC<{
         >
           {variant === 'temporary' && (
             <Button onClick={handleClose} fullWidth>
-              <KeyboardDoubleArrowLeftIcon />
+              <KeyboardDoubleArrowLeft />
             </Button>
           )}
           {children}

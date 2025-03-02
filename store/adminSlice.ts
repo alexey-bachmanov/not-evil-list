@@ -80,7 +80,8 @@ export const approveBusiness = createAsyncThunk(
     // PUT request with all that info and isVerified field flipped to true
     const businessDetails = (thunkAPI.getState() as RootState).search
       .businessDetails.details;
-    if (!businessDetails) {
+    // redundant guard clause to keep typescript happy
+    if (!businessDetails || !businessDetails._id) {
       thunkAPI.dispatch(
         uiActions.openAlert({
           type: 'error',
@@ -90,7 +91,7 @@ export const approveBusiness = createAsyncThunk(
       throw new Error('Approve business called without a details window open');
     }
     try {
-      await api.businesses.put(businessDetails._id, {
+      await api.businesses.put(businessDetails!._id, {
         ...businessDetails,
         isVerified: true,
       });

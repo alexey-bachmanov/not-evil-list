@@ -5,7 +5,7 @@
 import { ObjectId } from 'mongoose';
 import { Business, Review } from '@/models';
 
-export default async function recalculateAvgRating(businessId: ObjectId) {
+export default async function recalculateAvgRating(businessId: string) {
   // re-calculate the average rating using Model.aggregate
   // this should give us an array of average and number of reviews,
   // sorted by businessId, but since we're only matching one businessId,

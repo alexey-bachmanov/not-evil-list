@@ -39,7 +39,7 @@ const DetailsDrawer: React.FC = function () {
 
   const handleClose = () => {
     dispatch(uiActions.setDetailsDrawerOpen(false));
-    dispatch(uiActions.setSelectedBusinessId(null));
+    dispatch(uiActions.setSelectedBusinessId(undefined));
   };
 
   const successContentsJSX = (
@@ -120,7 +120,19 @@ const DetailsDrawer: React.FC = function () {
             Edit
           </Button>
           <Button
-            onClick={() => dispatch(adminActions.deleteBusiness(business?._id))}
+            onClick={() => {
+              // redundant guard clause
+              if (!business?._id) {
+                dispatch(
+                  uiActions.openAlert({
+                    type: 'error',
+                    message: 'Something went wrong',
+                  })
+                );
+                return;
+              }
+              dispatch(adminActions.deleteBusiness(business?._id));
+            }}
           >
             Delete
           </Button>

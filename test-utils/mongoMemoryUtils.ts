@@ -88,14 +88,14 @@ export async function primeDatabase() {
     // create reviews
     const review1: IReviewDocument = new Review<IReview>({
       ...mocks.review1,
-      business: business1._id,
-      user: user._id,
+      business: business1._id!,
+      user: user._id!,
     });
     await review1.save();
     const review2: IReviewDocument = new Review<IReview>({
       ...mocks.review2,
-      business: business2._id,
-      user: user._id,
+      business: business2._id!,
+      user: user._id!,
     });
     await review2.save();
   }

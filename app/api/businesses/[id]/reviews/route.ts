@@ -59,17 +59,15 @@ export async function POST(req: NextRequest) {
     // connect to DB, as usual
     await dbConnect();
     // get the businessId param
-    const businessIdParam = (
+    const businessId = (
       req.nextUrl.pathname.match(
         /\/api\/businesses\/([^/]+)\/reviews/
       ) as RegExpExecArray
     )[1];
     // check if that businessIdParam is a valid mongoDB ObjectID
-    if (!businessIdParam || !isValidObjectId(businessIdParam)) {
+    if (!businessId || !isValidObjectId(businessId)) {
       throw new ApiError('Invalid Business ID', 400);
     }
-    // assert that the businessIdParam string IS a mongoDB ObjectID
-    const businessId = businessIdParam as unknown as ObjectId;
     // get the user ID from the authCheck utility
     const { userId } = await authCheck(req);
     if (!userId) {

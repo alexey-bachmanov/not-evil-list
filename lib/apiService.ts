@@ -49,7 +49,7 @@ class Businesses {
     }
   }
 
-  async get(id: ObjectId) {
+  async get(id: string) {
     try {
       const response: AxiosResponse<
         AppApiResponse['getBusinessDetails'] | AppApiResponse['fail']

@@ -25,6 +25,11 @@ export async function POST(req: NextRequest) {
     // create new user in our DB
     // we want to feed in data in IUser shape, but expect back data in UserType shape
     const newUser: IUserDocument = new User<IUser>({ ...body, role: 'user' });
+
+    // redundant guard clause to keep typescript happy
+    if (!newUser._id) {
+      throw new ApiError('Internal server error', 500);
+    }
     await newUser.save();
 
     // create a response

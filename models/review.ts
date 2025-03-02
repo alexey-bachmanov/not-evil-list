@@ -3,15 +3,15 @@ import recalculateAvgRating from '@/lib/recalculateAvgRating';
 
 ///// DEFINE INTERFACES /////
 export interface IReview {
-  business: mongoose.ObjectId;
-  user: mongoose.ObjectId;
+  business: string;
+  user: string;
   rating: number;
   review: string;
   createdAt?: string;
 }
 export interface IReviewPopulated {
-  business: mongoose.ObjectId;
-  user: { _id: mongoose.ObjectId; userName: string };
+  business: string;
+  user: { _id: string; userName: string };
   rating: number;
   review: string;
   createdAt?: string;
@@ -31,11 +31,11 @@ export interface IReviewModel extends mongoose.Model<IReviewDocument> {
 const reviewSchema = new mongoose.Schema<IReviewDocument>(
   {
     business: {
-      type: mongoose.Schema.ObjectId,
+      type: String,
       ref: 'Business',
     },
     user: {
-      type: mongoose.Schema.ObjectId,
+      type: String,
       ref: 'User',
     },
     rating: {

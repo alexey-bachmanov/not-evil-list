@@ -41,11 +41,18 @@ const EditsForm: React.FC = function () {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // redundant guard clause
+    if (!initialState?._id) {
+      dispatch(
+        uiActions.openAlert({ type: 'error', message: 'Something went wrong' })
+      );
+      return;
+    }
     setSubmitState('submitting');
     await dispatch(
       adminActions.editBusiness({ businessId: initialState?._id, formData })
     );
-    dispatch(uiActions.setSelectedBusinessId(null));
+    dispatch(uiActions.setSelectedBusinessId(undefined));
     setSubmitState('idle');
   };
 

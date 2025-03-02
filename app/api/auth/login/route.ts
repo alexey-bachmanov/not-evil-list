@@ -29,7 +29,12 @@ export async function POST(req: NextRequest) {
     const user = await User.findOne<IUserDocument>({
       email: body.email,
     }).select('+password');
-    if (!user || !(await user.passwordMatch(body.password, user.password))) {
+    // redundant guard clause to keep typescript happy
+    if (
+      !user ||
+      !user._id ||
+      !(await user.passwordMatch(body.password, user.password))
+    ) {
       throw new ApiError('Incorrect email or password', 401);
     }
     // create a response

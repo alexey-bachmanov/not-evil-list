@@ -6,14 +6,13 @@
  */
 import { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
 import ApiError from './apiError';
 import dbConnect from './dbConnect';
 import { User, IUserDocument } from '@/models';
 
 export default async function authCheck(
   req: NextRequest
-): Promise<{ isUser: boolean; isAdmin: boolean; userId: ObjectId | null }> {
+): Promise<{ isUser: boolean; isAdmin: boolean; userId: string | undefined }> {
   // takes a NextRequest object, checks for the presence of a JWT,
   // decodes it, and checks the roles of that user
 
@@ -24,7 +23,7 @@ export default async function authCheck(
   const cookie = req.cookies.get('jwt');
   if (!cookie) {
     // nobody is logged in at all
-    return { isUser: false, isAdmin: false, userId: null };
+    return { isUser: false, isAdmin: false, userId: undefined };
   }
 
   // extract user id from 'jwt' cookie
@@ -44,7 +43,7 @@ export default async function authCheck(
   // check if user with that id exists and is active
   const user = await User.findById<IUserDocument>(userID, {}).select('+active');
   if (!user || !user.active) {
-    return { isUser: false, isAdmin: false, userId: null };
+    return { isUser: false, isAdmin: false, userId: undefined };
   }
 
   // check if that user is an admin

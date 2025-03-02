@@ -23,7 +23,7 @@ export const executeSearch = createAsyncThunk(
 // get details about a specific business, by its mongo ID
 export const getDetails = createAsyncThunk(
   'search/getDetails',
-  async (id: ObjectId) => {
+  async (id: string) => {
     try {
       const business = await api.businesses.get(id);
       return business;

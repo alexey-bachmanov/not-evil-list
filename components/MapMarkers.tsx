@@ -30,27 +30,39 @@ const MapMarkers: React.FC = function () {
   const dispatch = useDispatch<AppDispatch>();
 
   // turn array of search results into array of map markers
-  const markersJSX = searchResults.map((el) => (
-    <Marker
-      key={el._id}
-      // GeoJSON has format [ lng, lat ]
-      // Marker expects [ lat, lng ]
-      position={
-        el.location
-          ? [el.location.coordinates[1], el.location.coordinates[0]]
-          : [0, 0]
-      }
-      icon={el._id === selectedBusinessID ? iconActivated : iconNormal}
-      eventHandlers={{
-        click: () => {
-          // open the detail drawer and start loading
-          dispatch(uiActions.setSelectedBusinessId(el._id));
-          dispatch(uiActions.setDetailsDrawerOpen(true));
-          dispatch(searchActions.getDetails(el._id));
-        },
-      }}
-    ></Marker>
-  ));
+  const markersJSX = searchResults.map((el) => {
+    return (
+      <Marker
+        key={el._id}
+        // GeoJSON has format [ lng, lat ]
+        // Marker expects [ lat, lng ]
+        position={
+          el.location
+            ? [el.location.coordinates[1], el.location.coordinates[0]]
+            : [0, 0]
+        }
+        icon={el._id === selectedBusinessID ? iconActivated : iconNormal}
+        eventHandlers={{
+          click: () => {
+            // redundant guard clause
+            if (!el || !el._id) {
+              dispatch(
+                uiActions.openAlert({
+                  type: 'error',
+                  message: 'Something went wrong',
+                })
+              );
+              return;
+            }
+            // open the detail drawer and start loading
+            dispatch(uiActions.setSelectedBusinessId(el._id));
+            dispatch(uiActions.setDetailsDrawerOpen(true));
+            dispatch(searchActions.getDetails(el._id));
+          },
+        }}
+      ></Marker>
+    );
+  });
   return <>{markersJSX}</>;
 };
 

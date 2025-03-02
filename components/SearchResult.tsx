@@ -17,6 +17,13 @@ const SearchResult: React.FC<{ business: IBusinessDocument }> = function ({
   const dispatch = useDispatch<AppDispatch>();
   // handlers
   const handleClick = () => {
+    // redundant guard clause
+    if (!business._id) {
+      dispatch(
+        uiActions.openAlert({ type: 'error', message: 'something went wrong' })
+      );
+      return;
+    }
     // open the detail drawer and start loading
     dispatch(uiActions.setSelectedBusinessId(business._id));
     dispatch(uiActions.setDetailsDrawerOpen(true));
